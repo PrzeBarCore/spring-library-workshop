@@ -10,6 +10,14 @@
   <component name="CodeInsightWorkspaceSettings">
     <option name="optimizeImportsOnTheFly" value="true" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -126,26 +134,30 @@
     </ignored-roots>
   </component>
   <component name="WindowStateProjectService">
+    <state x="1245" y="209" key="#com.intellij.ide.util.MemberChooser" timestamp="1602941243997">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="1245" y="209" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1050@0.0.1920.1050" timestamp="1602941243997" />
     <state x="740" y="280" key="FileChooserDialogImpl" timestamp="1602932712693">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="740" y="280" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1602932712693" />
-    <state width="915" height="281" key="GridCell.Tab.0.bottom" timestamp="1602940249335">
+    <state width="915" height="281" key="GridCell.Tab.0.bottom" timestamp="1602943093908">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="915" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1602940249335" />
-    <state width="915" height="281" key="GridCell.Tab.0.center" timestamp="1602940249335">
+    <state width="915" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1602943093908" />
+    <state width="915" height="281" key="GridCell.Tab.0.center" timestamp="1602943093908">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="915" height="281" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1602940249335" />
-    <state width="915" height="281" key="GridCell.Tab.0.left" timestamp="1602940249334">
+    <state width="915" height="281" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1602943093908" />
+    <state width="915" height="281" key="GridCell.Tab.0.left" timestamp="1602943093908">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="915" height="281" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1602940249334" />
-    <state width="915" height="281" key="GridCell.Tab.0.right" timestamp="1602940249335">
+    <state width="915" height="281" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1602943093908" />
+    <state width="915" height="281" key="GridCell.Tab.0.right" timestamp="1602943093908">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="915" height="281" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1602940249335" />
+    <state width="915" height="281" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1602943093908" />
     <state x="490" y="180" key="Maven.ArtifactSearchDialog" timestamp="1602695709950">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
