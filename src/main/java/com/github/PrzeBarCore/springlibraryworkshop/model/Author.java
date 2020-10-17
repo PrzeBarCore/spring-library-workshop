@@ -1,21 +1,29 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
 @Table(name="authors")
-public class Author {
+    class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @NotBlank(message = "Name cannot be empty")
     private String name;
+
     private String lastName;
+
     @ManyToMany(mappedBy = "authors")
     private List<Book> books;
 
+    Author(){
 
-    int getId() {
+    }
+
+    public int getId() {
         return id;
     }
 
@@ -23,7 +31,7 @@ public class Author {
         this.id = id;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
@@ -31,7 +39,7 @@ public class Author {
         this.name = name;
     }
 
-    String getLastName() {
+    public String getLastName() {
         return lastName;
     }
 

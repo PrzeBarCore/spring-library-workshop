@@ -1,16 +1,20 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
 @Table(name="books")
-public class Book {
+    class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank(message = "Title cannot be empty")
     private String title;
+
+    @NotBlank(message = "Publication date cannot be empty")
     private int publicationDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,8 +32,11 @@ public class Book {
     private List<Author> authors;
 
 
+    Book(){
 
-    int getId() {
+    }
+
+    public int getId() {
         return id;
     }
 
@@ -37,7 +44,7 @@ public class Book {
         this.id = id;
     }
 
-    String getTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -45,7 +52,7 @@ public class Book {
         this.title = title;
     }
 
-    int getPublicationDate() {
+    public int getPublicationDate() {
         return publicationDate;
     }
 
@@ -53,7 +60,7 @@ public class Book {
         this.publicationDate = publicationDate;
     }
 
-    Publisher getPublisher() {
+    public Publisher getPublisher() {
         return publisher;
     }
 
@@ -61,7 +68,7 @@ public class Book {
         this.publisher = publisher;
     }
 
-    Section getSection() {
+    public Section getSection() {
         return section;
     }
 
