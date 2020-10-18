@@ -2,7 +2,7 @@ package com.github.PrzeBarCore.springlibraryworkshop.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="authors")
@@ -17,7 +17,7 @@ import java.util.List;
     private String lastName;
 
     @ManyToMany(mappedBy = "authors")
-    private List<Book> books;
+    private Set<Book> books;
 
     Author(){
 
@@ -45,5 +45,13 @@ import java.util.List;
 
     void setLastName(final String lastName) {
         this.lastName = lastName;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    void setBooks(final Set<Book> books) {
+        this.books = books;
     }
 }

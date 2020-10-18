@@ -5,8 +5,10 @@ spring:
       path: '/console'
 
   datasource:
-    url: 'jdbc:h2:file:C:\Users\Administrator\Documents\Work\Projects\spring-library-workshop\library.db'
+    url: 'jdbc:h2:file:C:\Users\Administrator\Documents\Work\Projects\spring-library-workshop\library'
 
-  spring:
-    jpa:
-      show-sql
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate

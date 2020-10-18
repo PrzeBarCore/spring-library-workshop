@@ -2,7 +2,7 @@ package com.github.PrzeBarCore.springlibraryworkshop.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="books")
@@ -29,12 +29,12 @@ import java.util.List;
     @JoinTable(name = "books_authors",
     joinColumns = @JoinColumn(name="book_id"),
     inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private List<Author> authors;
-
+    private Set<Author> authors;
 
     Book(){
 
     }
+
 
     public int getId() {
         return id;
@@ -74,5 +74,13 @@ import java.util.List;
 
     void setSection(final Section section) {
         this.section = section;
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    void setAuthors(final Set<Author> authors) {
+        this.authors = authors;
     }
 }

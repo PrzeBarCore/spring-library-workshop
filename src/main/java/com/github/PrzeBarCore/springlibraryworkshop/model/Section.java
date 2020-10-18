@@ -2,7 +2,7 @@ package com.github.PrzeBarCore.springlibraryworkshop.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "sections")
@@ -15,7 +15,7 @@ import java.util.List;
     private String name;
 
     @OneToMany(mappedBy = "section")
-    private List<Book> books;
+    private Set<Book> books;
 
     Section(){
 
