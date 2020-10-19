@@ -6,7 +6,8 @@ import java.util.Set;
 
 @Entity
 @Table(name="authors")
-    class Author {
+public
+class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

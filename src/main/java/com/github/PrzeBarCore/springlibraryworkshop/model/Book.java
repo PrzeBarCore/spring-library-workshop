@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="books")
-    class Book {
+public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -17,11 +17,11 @@ import java.util.Set;
     @NotBlank(message = "Publication date cannot be empty")
     private int publicationDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "publisher_id")
     private Publisher publisher;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name= "section_id")
     private Section section;
 

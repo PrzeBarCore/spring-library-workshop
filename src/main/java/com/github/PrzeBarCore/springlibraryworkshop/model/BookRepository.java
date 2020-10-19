@@ -1,9 +1,14 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.List;
+import java.util.Optional;
 
-@Repository
-public interface BookRepository extends JpaRepository<Book,Integer> {
+public interface BookRepository {
+
+    Optional<Book> findById(Integer id);
+
+    List<Book> findAll();
+
+    List<Book> findBySection_Id(Integer sectionId);
 
 }

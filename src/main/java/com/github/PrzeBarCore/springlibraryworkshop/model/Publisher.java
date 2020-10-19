@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "publishers")
-    class Publisher {
+public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -35,5 +35,13 @@ import java.util.Set;
 
     void setName(final String name) {
         this.name = name;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    void setBooks(final Set<Book> books) {
+        this.books = books;
     }
 }

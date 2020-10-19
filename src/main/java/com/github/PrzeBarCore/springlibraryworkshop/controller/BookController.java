@@ -22,4 +22,10 @@ class BookController {
         return ResponseEntity.ok(repository.findAll());
     }
 
+    @GetMapping("/book")
+    ResponseEntity<?> readBooksBySection_Id() {
+
+        return ResponseEntity.ok(repository.findBySection_Id(1));
+    }
+
 }
