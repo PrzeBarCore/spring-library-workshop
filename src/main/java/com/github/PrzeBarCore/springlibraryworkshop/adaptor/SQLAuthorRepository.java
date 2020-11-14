@@ -14,4 +14,9 @@ interface SQLAuthorRepository extends AuthorRepository, JpaRepository<Author,Int
     @Override
     @Query("Select distinct a from Author a join fetch a.books")
     List<Author> findAll();
+
+
+//    @Override
+//    @Query("Select distinct a from Author a join fetch a.books")
+//    Page<Author> findAll(Pageable page);
 }
