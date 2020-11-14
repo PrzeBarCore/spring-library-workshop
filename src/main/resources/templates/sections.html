@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Library</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/fontello.css" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="jquery-3.5.1.min.js" ></script>
+    <script>
+
+		$(document).ready(function() {
+		var NavY = $('.header_menu').offset().top;
+
+		var stickyNav = function(){
+		var ScrollY = $(window).scrollTop();
+
+		if (ScrollY > NavY) {
+			$('.header_menu').addClass('sticky');
+		} else {
+			$('.header_menu').removeClass('sticky');
+		}
+		};
+
+		stickyNav();
+
+		$(window).scroll(function() {
+			stickyNav();
+		});
+		});
+
+		</script>
+
+</head>
+<body>
+
+<header>
+    <div class="header_wrapper">
+
+        <div class="header_center" >
+            <div class="header_logo">
+                <img src="img/logo.png" height="100" style="float:left; margin-right: 10px"></div>
+            <div>
+                <h1 style="font-size:60px; margin-top:0px; margin-bottom:0px;">LIBRARY</h1>
+                <p style="margin-top:0px; margin-left:180px; letter-spacing:1px;">“A room without books is like a body without a soul.”</p>
+            </div>
+            <div style="clear:both;"></div>
+
+        </div>
+        <div class="header_menu">
+            <i class="icon-th-list"></i>
+            <div class="menu_list">
+                <nav>
+                    <ul>
+                        <li> <a href="#">News</a> </li>
+                        <li> <a href="/authors">Authors</a> </li>
+                        <li> <a href="/sections">Sections</a> </li>
+                        <li> <a href="#">About us</a></li>
+                        <li> <a href="#">Contact</a> </li>
+                    </ul>
+                </nav>
+            </div>
+            <div style="clear:both;"> </div>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="main_body">
+        <article>
+            <dl th:each="section:${sections}">
+                <div class="book_item">
+                    <h1 th:text="${section.name}"></h1>
+                </div>
+            </dl>
+        </article>
+
+    </div>
+</main>
+<footer>
+    <div class="footer_body">
+    </div>
+</footer>
+</body>
+</html>
