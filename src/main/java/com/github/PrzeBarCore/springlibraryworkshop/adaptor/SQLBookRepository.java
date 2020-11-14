@@ -12,7 +12,12 @@ import java.util.List;
 interface SQLBookRepository extends BookRepository, JpaRepository<Book,Integer> {
 
     @Override
-    @Query("Select distinct b from Book b join fetch b.authors")
+    @Query("Select distinct b from Book b join fetch b.authors join fetch b.section join fetch b.publisher")
     List<Book> findAll();
+
+//    @Override
+//    @Query("Select distinct b from Book b join fetch b.authors join fetch b.section join fetch b.publisher")
+//    Page<Book> findAll(Pageable page);
+
 
 }

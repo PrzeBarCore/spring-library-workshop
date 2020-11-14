@@ -13,8 +13,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="HTML File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -36,18 +37,23 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/db/migration" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../todo-app/pom.xml" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Documents\Work\Projects\spring-library-workshop\src\main\resources\static\img" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.github.PrzeBarCore.springlibraryworkshop.model" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Documents\Work\Projects\spring-library-workshop\src\main\resources\static" />
       <recent name="C:\Users\Administrator\Documents\Work\Projects\spring-library-workshop\src\main\resources\db\migration" />
     </key>
   </component>
@@ -141,30 +147,34 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="552" y="183" key="#Auto_Import/0.0.1920.1050@0.0.1920.1050" timestamp="1603050170942" />
-    <state x="1245" y="209" key="#com.intellij.ide.util.MemberChooser" timestamp="1603051482067">
+    <state x="1245" y="209" key="#com.intellij.ide.util.MemberChooser" timestamp="1605363318803">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="1245" y="209" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1050@0.0.1920.1050" timestamp="1603051482067" />
-    <state x="740" y="280" key="FileChooserDialogImpl" timestamp="1602932712693">
+    <state x="1245" y="209" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1050@0.0.1920.1050" timestamp="1605363318803" />
+    <state x="751" y="355" key="#com.intellij.refactoring.move.moveInstanceMethod.MoveInstanceMethodDialog" timestamp="1605359472689">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="740" y="280" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1602932712693" />
-    <state width="1876" height="355" key="GridCell.Tab.0.bottom" timestamp="1603052321148">
+    <state x="751" y="355" key="#com.intellij.refactoring.move.moveInstanceMethod.MoveInstanceMethodDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1605359472689" />
+    <state x="740" y="280" key="FileChooserDialogImpl" timestamp="1604513598075">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1876" height="355" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1603052321148" />
-    <state width="1876" height="355" key="GridCell.Tab.0.center" timestamp="1603052321147">
+    <state x="740" y="280" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1604513598075" />
+    <state width="1876" height="280" key="GridCell.Tab.0.bottom" timestamp="1605363324928">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1876" height="355" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1603052321147" />
-    <state width="1876" height="355" key="GridCell.Tab.0.left" timestamp="1603052321147">
+    <state width="1876" height="280" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1605363324928" />
+    <state width="1876" height="280" key="GridCell.Tab.0.center" timestamp="1605363324928">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1876" height="355" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1603052321147" />
-    <state width="1876" height="355" key="GridCell.Tab.0.right" timestamp="1603052321148">
+    <state width="1876" height="280" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1605363324928" />
+    <state width="1876" height="280" key="GridCell.Tab.0.left" timestamp="1605363324928">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1876" height="355" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1603052321148" />
+    <state width="1876" height="280" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1605363324928" />
+    <state width="1876" height="280" key="GridCell.Tab.0.right" timestamp="1605363324928">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1876" height="280" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1605363324928" />
     <state width="1876" height="355" key="GridCell.Tab.1.bottom" timestamp="1603052321148">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
