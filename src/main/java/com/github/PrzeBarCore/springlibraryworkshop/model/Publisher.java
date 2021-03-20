@@ -1,7 +1,8 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,14 +12,19 @@ public class Publisher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank(message = "Name cannot be empty")
+    @NotEmpty(message = "Name cannot be empty")
     private String name;
 
-    @OneToMany(mappedBy = "publisher")
-    private Set<Book> books;
+    @OneToMany(mappedBy = "publisher", cascade = CascadeType.REMOVE)
+    private Set<BookCopy> bookCopies=new HashSet<>();
 
-    Publisher(){
+    public Publisher(){
 
+    }
+
+    public Publisher(String name, BookCopy bookCopy) {
+        this.name=name;
+        this.bookCopies.add(bookCopy);
     }
 
     public int getId() {
@@ -37,11 +43,11 @@ public class Publisher {
         this.name = name;
     }
 
-    public Set<Book> getBooks() {
-        return books;
+    public Set<BookCopy> getBookCopies() {
+        return bookCopies;
     }
 
-    void setBooks(final Set<Book> books) {
-        this.books = books;
+    void setBookCopies(final Set<BookCopy> books) {
+        this.bookCopies = books;
     }
 }

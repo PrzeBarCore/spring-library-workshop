@@ -12,6 +12,8 @@ public interface SectionRepository {
 
     Page<Section> findAll(Pageable page);
 
+    Section save(Section toCreate);
+
     List<Section> findAll();
 
 }

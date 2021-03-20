@@ -1,34 +1,38 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name="authors")
-public
-class Author {
+public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank(message = "Name cannot be empty")
+    @NotEmpty(message = "Name cannot be empty")
     private String name;
 
     private String lastName;
 
-    @ManyToMany(mappedBy = "authors")
-    private Set<Book> books;
+    @ManyToMany(mappedBy = "authors", cascade = CascadeType.REMOVE)
+    private Set<Book> books= new HashSet<>();
 
-    Author(){
+    public Author(){};
 
+    public Author(String name, String lastName, Book book) {
+        this.name=name;
+        this.lastName=lastName;
+        this.books.add(book);
     }
 
     public int getId() {
         return id;
     }
 
-    void setId(final int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
@@ -36,7 +40,7 @@ class Author {
         return name;
     }
 
-    void setName(final String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -44,7 +48,7 @@ class Author {
         return lastName;
     }
 
-    void setLastName(final String lastName) {
+    public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
 
@@ -52,7 +56,7 @@ class Author {
         return books;
     }
 
-    void setBooks(final Set<Book> books) {
+    public void setBooks(final Set<Book> books) {
         this.books = books;
     }
 }

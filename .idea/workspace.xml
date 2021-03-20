@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="1df0c04c-9ecb-421d-9a36-e00f06e2d92b" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,8 +16,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="HTML File" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -22,28 +25,39 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="importingSettings">
-      <MavenImportingSettings>
-        <option name="importAutomatically" value="true" />
-      </MavenImportingSettings>
-    </option>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$PROJECT_DIR$/../../../../../../Program Files/AdoptOpenJDK/jdk-15.0.0.36-hotspot/lib/src.zip!/java.base/java/util/stream/Stream.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1isSxvf5MSgT9YpPtZe9zBxCGKo" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="h2" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../todo-app/pom.xml" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/com/github/PrzeBarCore/springlibraryworkshop/model/projection" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
+    <property name="settings.editor.selected.configurable" value="reference.idesettings.debugger.capture" />
+  </component>
+  <component name="ReaderModeSettings">
+    <option name="enabled" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -57,7 +71,7 @@
       <recent name="C:\Users\Administrator\Documents\Work\Projects\spring-library-workshop\src\main\resources\db\migration" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.SpringLibraryWorkshopApplication">
     <configuration name="SpringLibraryWorkshopApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.github.PrzeBarCore.springlibraryworkshop.SpringLibraryWorkshopApplication" />
       <module name="spring-library-workshop" />
@@ -71,7 +85,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
+    <configuration default="true" type="JetRunConfigurationType">
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -84,7 +98,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
       <option name="filePath" />
       <option name="vmParameters" />
       <option name="alternativeJrePath" />
@@ -114,6 +128,13 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="MAIN_CLASS_NAME" />
       <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringLibraryWorkshopApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="spring-library-workshop" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.github.PrzeBarCore.springlibraryworkshop.SpringLibraryWorkshopApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -124,6 +145,7 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -134,78 +156,35 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1602695056166</updated>
+      <workItem from="1615230359158" duration="4958000" />
+      <workItem from="1615284815263" duration="14448000" />
+      <workItem from="1615368922551" duration="9344000" />
+      <workItem from="1615383180429" duration="24006000" />
+      <workItem from="1616145912502" duration="8550000" />
+      <workItem from="1616260894862" duration="1835000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
   </component>
-  <component name="WindowStateProjectService">
-    <state x="552" y="183" key="#Auto_Import" timestamp="1603050170942">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state x="552" y="183" key="#Auto_Import/0.0.1920.1050@0.0.1920.1050" timestamp="1603050170942" />
-    <state x="1245" y="209" key="#com.intellij.ide.util.MemberChooser" timestamp="1605363318803">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state x="1245" y="209" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1050@0.0.1920.1050" timestamp="1605363318803" />
-    <state x="751" y="355" key="#com.intellij.refactoring.move.moveInstanceMethod.MoveInstanceMethodDialog" timestamp="1605359472689">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state x="751" y="355" key="#com.intellij.refactoring.move.moveInstanceMethod.MoveInstanceMethodDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1605359472689" />
-    <state x="740" y="280" key="FileChooserDialogImpl" timestamp="1604513598075">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state x="740" y="280" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1604513598075" />
-    <state width="1876" height="280" key="GridCell.Tab.0.bottom" timestamp="1605363324928">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state width="1876" height="280" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1605363324928" />
-    <state width="1876" height="280" key="GridCell.Tab.0.center" timestamp="1605363324928">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state width="1876" height="280" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1605363324928" />
-    <state width="1876" height="280" key="GridCell.Tab.0.left" timestamp="1605363324928">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state width="1876" height="280" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1605363324928" />
-    <state width="1876" height="280" key="GridCell.Tab.0.right" timestamp="1605363324928">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state width="1876" height="280" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1605363324928" />
-    <state width="1876" height="355" key="GridCell.Tab.1.bottom" timestamp="1603052321148">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state width="1876" height="355" key="GridCell.Tab.1.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1603052321148" />
-    <state width="1876" height="355" key="GridCell.Tab.1.center" timestamp="1603052321148">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state width="1876" height="355" key="GridCell.Tab.1.center/0.0.1920.1050@0.0.1920.1050" timestamp="1603052321148" />
-    <state width="1876" height="355" key="GridCell.Tab.1.left" timestamp="1603052321148">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state width="1876" height="355" key="GridCell.Tab.1.left/0.0.1920.1050@0.0.1920.1050" timestamp="1603052321148" />
-    <state width="1876" height="355" key="GridCell.Tab.1.right" timestamp="1603052321148">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state width="1876" height="355" key="GridCell.Tab.1.right/0.0.1920.1050@0.0.1920.1050" timestamp="1603052321148" />
-    <state x="490" y="180" key="Maven.ArtifactSearchDialog" timestamp="1602947167957">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state x="490" y="180" key="Maven.ArtifactSearchDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1602947167957" />
-    <state x="461" y="167" key="SettingsEditor" timestamp="1603047810738">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state x="461" y="167" key="SettingsEditor/0.0.1920.1050@0.0.1920.1050" timestamp="1603047810738" />
-    <state x="616" y="243" key="run.anything.popup" timestamp="1603021747858">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state x="616" y="243" key="run.anything.popup/0.0.1920.1050@0.0.1920.1050" timestamp="1603021747858" />
-    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup" timestamp="1603048096967">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup/0.0.1920.1050@0.0.1920.1050" timestamp="1603048096967" />
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="org.hibernate.TransientPropertyValueException" package="org.hibernate" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

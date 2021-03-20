@@ -1,21 +1,20 @@
-package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
-
+package com.github.PrzeBarCore.springlibraryworkshop.model.projection.Book;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Author;
 
 public class BookAuthorReadModel {
     private String name;
     private String lastName;
 
-    public BookAuthorReadModel(final Author source) {
-        this.name = source.getName();
-        this.lastName = source.getLastName();
+    BookAuthorReadModel(Author source){
+        this.name=source.getName();
+        this.lastName= source.getLastName();
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(final String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -23,7 +22,7 @@ public class BookAuthorReadModel {
         return lastName;
     }
 
-    public void setLastName(final String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 }

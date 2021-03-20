@@ -15,6 +15,12 @@ public interface BookRepository {
 
     Page<Book> findAll(Pageable page);
 
+    Book save(Book source);
+
     List<Book> findBySection_Id(Integer sectionId);
+
+    boolean existsBookById(Integer id);
+
+    void deleteBookById(Integer id);
 
 }

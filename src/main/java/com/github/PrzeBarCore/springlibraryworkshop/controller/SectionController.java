@@ -1,17 +1,15 @@
 package com.github.PrzeBarCore.springlibraryworkshop.controller;
 
 
-import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookSectionReadModel;
+
 import com.github.PrzeBarCore.springlibraryworkshop.service.SectionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -29,11 +27,11 @@ class SectionController {
         logger.warn("Exposing all the sections!");
         return "sections";
     }
-
-    @ModelAttribute("sections")
-    List<BookSectionReadModel> getSections(Optional<Integer> pageNumber, Optional<Integer> pageSize) {
-        return service.findAll(pageNumber,pageSize);
-    }
+//
+//    @ModelAttribute("sections")
+//    List<BookSectionModel> getSections(Optional<Integer> pageNumber, Optional<Integer> pageSize) {
+//        return service.findAll(pageNumber,pageSize);
+//    }
 
 
 }

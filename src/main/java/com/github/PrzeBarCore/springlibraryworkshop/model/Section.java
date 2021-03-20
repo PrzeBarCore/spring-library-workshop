@@ -1,28 +1,32 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "sections")
-public
-class Section {
+public class Section {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank(message = "Name cannot be empty")
+    @NotEmpty(message = "Name cannot be empty")
     private String name;
 
     @OneToMany(mappedBy = "section")
-    private Set<Book> books;
+    private Set<Book> books=new HashSet<>();
 
-    Section(){
-
+    public Section(){
     }
 
-    public int getId() {
+    public Section(String name, Book book) {
+        this.name=name;
+        this.books.add(book);
+    }
+
+    public Integer getId() {
         return id;
     }
 

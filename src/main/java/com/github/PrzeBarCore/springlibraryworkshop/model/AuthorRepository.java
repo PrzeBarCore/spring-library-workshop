@@ -10,7 +10,13 @@ public interface AuthorRepository {
 
     Optional<Author> findById(Integer id);
 
+    boolean existsAuthorById(Integer id);
+
+    boolean existsAuthorByNameAndLastName(String name, String lastName);
+
     Page<Author> findAll(Pageable page);
+
+    Author save(Author source);
 
     List<Author> findAll();
 

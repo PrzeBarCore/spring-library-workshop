@@ -9,4 +9,5 @@ public interface PublisherRepository {
 
     List<Publisher> findAll();
 
+    Publisher save(Publisher toPublisher);
 }
