@@ -23,8 +23,8 @@ class BookController {
         this.service= service;
     }
 
-    @Transactional
     @PostMapping
+    @Transactional
     public ResponseEntity<BookReadModel> createBook(@Valid @RequestBody BookWriteModel toCreate){
 
         return ResponseEntity.ok(service.createBook(toCreate));
@@ -35,25 +35,18 @@ class BookController {
         return ResponseEntity.ok(service.readBook(id));
     }
 
-
+    @PutMapping("/{id}")
     @Transactional
+    public ResponseEntity<BookReadModel> updateBook(@RequestBody BookWriteModel toUpdate, @PathVariable Integer id){
+        return ResponseEntity.ok(service.updateBook(toUpdate,id));
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<BookReadModel> deleteBook(@PathVariable Integer id){
+    @Transactional
+    public ResponseEntity<?> deleteBook(@PathVariable Integer id){
         service.deleteBook(id);
         return ResponseEntity.noContent().build();
 
     }
-
-//    @GetMapping
-//    String readAllBooks(@RequestParam(value = "pageNumber") Optional<Integer> pageNumber, @RequestParam(value = "pageSize")Optional<Integer> pageSize ) {
-//        logger.warn("Exposing all the books!");
-//        return "books";
-//    }
-
-
-//    @ModelAttribute("books")
-//    List<BookReadModel> getBooks(Optional<Integer> pageNumber, Optional<Integer> pageSize) {
-//        return service.findAll(pageNumber,pageSize);
-//    }
 
 }

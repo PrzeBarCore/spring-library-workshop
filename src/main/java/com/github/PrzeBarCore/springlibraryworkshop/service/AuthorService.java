@@ -21,22 +21,15 @@ public class AuthorService {
         return result;
     }
 
-    //Trzeba będzie dodac wyjatek
+
     Author readAuthor(Integer id){
         return repository.findById(id).orElseThrow(()->new IllegalArgumentException("Incorrect author Id"));
     }
 
-//    public AuthorReadModel readAuthor(Integer id) throws IOException {
-//        AuthorReadModel result = repository.findById(id)
-//                .map(AuthorReadModel::new)
-//                .orElseThrow(() -> new IllegalArgumentException("Incorrect author Id"));
-//
-//        return result;
-//    }
-
-//    public List<BookAuthorModel> findAll(Optional<Integer> page, Optional<Integer> numberOfPositions) {
-//
-//        Pageable pageable = PageRequest.of(page.orElse(0), numberOfPositions.orElse(10));
-//        return repository.findAll(pageable).stream().map(BookAuthorModel::new).collect(toList());
-//    }
+    public void deleteAuthor(Integer id) {
+        if(!repository.existsAuthorById(id)){
+            throw new IllegalArgumentException("Author with given ID doesn't exist!");
+        }
+        repository.deleteAuthorById(id);
+    }
 }

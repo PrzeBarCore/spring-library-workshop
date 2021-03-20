@@ -25,9 +25,4 @@ public class SectionService {
         return createdSection.getId();
     }
 
-//    public List<BookSectionModel> findAll(Optional<Integer> page, Optional<Integer> numberOfPositions){
-//
-//        Pageable pageable= PageRequest.of(page.orElse(0), numberOfPositions.orElse(10));
-//        return repository.findAll(pageable).stream().map(BookSectionModel::new).collect(toList());
-//    }
 }

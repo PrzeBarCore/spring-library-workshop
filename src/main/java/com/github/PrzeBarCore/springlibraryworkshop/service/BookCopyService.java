@@ -10,7 +10,7 @@ public class BookCopyService {
     PublisherRepository publisherRepository;
     BookCopyRepository repository;
 
-    public BookCopyService(PublisherRepository publisherRepository, BookCopyRepository bookCopyRepository) {
+    BookCopyService(PublisherRepository publisherRepository, BookCopyRepository bookCopyRepository) {
         this.publisherRepository = publisherRepository;
         this.repository = bookCopyRepository;
     }

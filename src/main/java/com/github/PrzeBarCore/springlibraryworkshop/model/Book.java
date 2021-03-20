@@ -50,7 +50,7 @@ public class Book {
         return title;
     }
 
-    void setTitle(final String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 

@@ -27,32 +27,31 @@ public class BookService {
     }
 
     public BookReadModel createBook(BookWriteModel toCreate) {
-        var book = new Book(toCreate.getTitle());
-
-        BookSectionWriteModel section= toCreate.getSection();
-        if (section.getId() == null) {
-           int id= sectionService.createSectionAndGetId(book, section);
-           section.setId(id);
-        }
-        book.setSection(sectionService.findSection(section.getId()));
-
+        var book = new Book();
+        createOrUpdateBook(toCreate,book);
 
         Set<BookCopy> createdBookCopies= new HashSet<>();
         toCreate.getBookCopies()
-                .forEach(bookCopy -> createdBookCopies.add(bookCopyService.createBookCopy(bookCopy, book)));
+                .forEach(bookCopy -> createdBookCopies.add(bookCopyService.createBookCopy(bookCopy,book)));
         book.setBookCopies(createdBookCopies);
 
-        toCreate.getAuthors().stream()
-                .filter(author -> author.getId() == null)
-                .forEach(author -> {
-                    var newAuthor = authorService.createAuthor(author, book);
-                    author.setId(newAuthor.getId());
-                });
-        book.setAuthors(toCreate.getAuthors().stream()
-                .map(author -> authorService.readAuthor(author.getId()))
-                .collect(Collectors.toSet()));
-        var result=repository.save(book);
-        return new BookReadModel(result);
+        return new BookReadModel(book);
+    }
+
+    public BookReadModel readBook(Integer id) {
+        BookReadModel result= repository.findById(id)
+                .map(BookReadModel::new)
+                .orElseThrow(() ->new IllegalArgumentException("Book with given ID doesn't exist"));
+        return result;
+    }
+
+    public BookReadModel updateBook(BookWriteModel toUpdate, Integer id){
+        Book book=repository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("Book with given ID doesn't exist"));
+
+        createOrUpdateBook(toUpdate,book);
+
+        return new BookReadModel(book);
     }
 
     public void deleteBook(Integer id) {
@@ -63,19 +62,29 @@ public class BookService {
         repository.deleteBookById(id);
     }
 
-    public BookReadModel readBook(Integer id) {
-       BookReadModel result= repository.findById(id)
-               .map(BookReadModel::new)
-               .orElseThrow(() ->new IllegalArgumentException("Book with given ID doesn't exist"));
-       return result;
+
+
+
+    private void createOrUpdateBook(BookWriteModel toCreate, Book book) {
+        book.setTitle(toCreate.getTitle());
+
+        BookSectionWriteModel section= toCreate.getSection();
+        if (section.getId() == null) {
+            int id= sectionService.createSectionAndGetId(book, section);
+            section.setId(id);
+        }
+        book.setSection(sectionService.findSection(section.getId()));
+
+        toCreate.getAuthors().stream()
+                .filter(author -> author.getId() == null)
+                .forEach(author -> {
+                    var newAuthor = authorService.createAuthor(author, book);
+                    author.setId(newAuthor.getId());
+                });
+        book.setAuthors(toCreate.getAuthors().stream()
+                .map(author -> authorService.readAuthor(author.getId()))
+                .collect(Collectors.toSet()));
     }
 
 
-
-
-//    public List<BookReadModel> findAll(Optional<Integer> pageNumber, Optional<Integer> pageSize){
-//
-//        Pageable pageable= PageRequest.of(pageNumber.orElse(0), pageSize.orElse(10));
-//        return repository.findAll(pageable).stream().map(BookReadModel::new).collect(toList());
-//    }
 }
