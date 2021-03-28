@@ -24,12 +24,6 @@ public class BookCopy {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    public BookCopy(int state, int publicationDate, Book book) {
-        this.state=state;
-        this.publicationDate=publicationDate;
-        this.book=book;
-    }
-
     public BookCopy() {
 
     }

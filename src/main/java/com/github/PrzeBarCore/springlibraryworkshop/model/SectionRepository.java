@@ -1,5 +1,6 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model;
 
+import com.github.PrzeBarCore.springlibraryworkshop.model.Section;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

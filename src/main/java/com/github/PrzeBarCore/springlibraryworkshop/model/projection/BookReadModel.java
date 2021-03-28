@@ -1,4 +1,4 @@
-package com.github.PrzeBarCore.springlibraryworkshop.model.projection.Book;
+package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
 
@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 public class BookReadModel {
 
+    private int id;
     private String title;
     private BookSectionReadModel section;
     private Set<BookBookCopyReadModel> bookCopies;
@@ -15,12 +16,14 @@ public class BookReadModel {
     public BookReadModel(){}
 
     public BookReadModel(Book source){
+        this.id=source.getId();
         this.title=source.getTitle();
         this.section= new BookSectionReadModel(source.getSection());
         this.bookCopies= source.getBookCopies().stream().map(BookBookCopyReadModel::new).collect(Collectors.toSet());
         this.authors=source.getAuthors().stream().map(BookAuthorReadModel::new).collect(Collectors.toSet());
     }
 
+    public int getId() {return id;}
     public String getTitle() {
         return title;
     }

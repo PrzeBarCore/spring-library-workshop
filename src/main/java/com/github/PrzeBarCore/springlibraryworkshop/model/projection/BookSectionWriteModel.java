@@ -1,4 +1,4 @@
-package com.github.PrzeBarCore.springlibraryworkshop.model.projection.Book;
+package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Section;

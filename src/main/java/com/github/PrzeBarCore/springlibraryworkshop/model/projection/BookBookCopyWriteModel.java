@@ -1,4 +1,4 @@
-package com.github.PrzeBarCore.springlibraryworkshop.model.projection.Book;
+package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
 import com.github.PrzeBarCore.springlibraryworkshop.model.BookCopy;
@@ -43,7 +43,10 @@ public class BookBookCopyWriteModel {
     }
 
     public BookCopy toBookCopy(Book book){
-        var bookCopy=new BookCopy(state,publicationDate,book);
+        var bookCopy=new BookCopy();
+        bookCopy.setState(state);
+        bookCopy.setPublicationDate(publicationDate);
+        bookCopy.setBook(book);
         bookCopy.setPublisher(publisher.toPublisher(bookCopy));
         return bookCopy;
     }

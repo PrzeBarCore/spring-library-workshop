@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/sections")
 class SectionController {
-    private SectionService service;
-    private static final Logger logger= LoggerFactory.getLogger(AuthorController.class);
+    private final SectionService service;
+    private static final Logger logger= LoggerFactory.getLogger(SectionController.class);
 
     SectionController(final SectionService service) {
         this.service = service;
     }
+
+
 
 }

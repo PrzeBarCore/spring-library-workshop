@@ -1,7 +1,7 @@
-package com.github.PrzeBarCore.springlibraryworkshop.adaptor;
+package com.github.PrzeBarCore.springlibraryworkshop.model.adapter;
 
-import com.github.PrzeBarCore.springlibraryworkshop.model.Publisher;
 import com.github.PrzeBarCore.springlibraryworkshop.model.PublisherRepository;
+import com.github.PrzeBarCore.springlibraryworkshop.model.Publisher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

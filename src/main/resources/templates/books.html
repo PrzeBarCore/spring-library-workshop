@@ -1,91 +1,118 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Library</title>
-    <link rel="stylesheet" href="styles.css">
-	<link rel="stylesheet" href="css/fontello.css" type="text/css"/>
-	<link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="jquery-3.5.1.min.js" ></script>	
-	<script>
-
-		$(document).ready(function() {
-		var NavY = $('.header_menu').offset().top;
-		 
-		var stickyNav = function(){
-		var ScrollY = $(window).scrollTop();
-			  
-		if (ScrollY > NavY) { 
-			$('.header_menu').addClass('sticky');
-		} else {
-			$('.header_menu').removeClass('sticky'); 
-		}
-		};
-		 
-		stickyNav();
-		 
-		$(window).scroll(function() {
-			stickyNav();
-		});
-		});
-		
-		</script>
-
+    <title>Spring-library-workshop: books</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.css">
 </head>
 <body>
+<header >
+    <div th:insert="~{menu::header}">
+    </div>
+</header>
 
-    <header>
-        <div class="header_wrapper">
-			
-			<div class="header_center" >
-				<div class="header_logo">
-					<img src="img/logo.png" height="100" style="float:left; margin-right: 10px"></div>
-				<div>
-					<h1 style="font-size:60px; margin-top:0px; margin-bottom:0px;">LIBRARY</h1>
-					<p style="margin-top:0px; margin-left:180px; letter-spacing:1px;">“A room without books is like a body without a soul.”</p>
-				</div>
-				<div style="clear:both;"></div>
-			
-			</div>
-			<div class="header_menu">
-				<i class="icon-th-list"></i> 
-				<div class="menu_list">
-					<nav>
-						<ul>
-							<li> <a href="#">News</a> </li> 
-							<li> <a href="/authors">Authors</a> </li>
-							<li> <a href="/sections">Sections</a> </li>
-							<li> <a href="#">About us</a></li> 
-							<li> <a href="#">Contact</a> </li> 
-						</ul>
-					</nav>
-				</div>
-				<div style="clear:both;"> </div>
-			</div>
-        </div>
-    </header>
-    <main>
-		<div class="main_body">
-			<article>
-                <dl th:each="book :${books}">
-					<div class="book_item">
-						<h1 th:text="${book.title}"></h1>
-						<ul>
-							<li th:text="${book.publicationDate}"></li>
-							<li th:text="${book.publisher.name}"></li>
-							<li th:text="${book.section.name}"></li>
-						</ul>
-						<div style="clear:both;"></div>
-					</div>
-                </dl>
-        </article>
-		
-		</div>
-    </main>
-	<footer>
-		<div class="footer_body">
-		</div>
-	</footer>
+<main>
+    <section>
+        <table>
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Authors</th>
+                <th>Section</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="book :${books}">
+                <td> <a th:text="${book.getTitle()}"  th:href="@{/books/{bookId}(bookId=${book.getId()})}"></a></td>
+                <td>
+                    <ul th:each="author : ${book.getAuthors()}">
+                        <li>
+                            <p  th:text="${author.getName()}"></p>
+                            <p th:text="${author.getLastName()}"></p>
+                        </li>
+                    </ul>
+                </td>
+                <td th:text="${book.getSection().getName()}"></td>
+                <td>
+                    <form method="post" th:action="@{/books/{bookId}(bookId=${book.getId()})}">
+                        <button type="submit" onClick="return confirm('Book and it\'s all copies will be deleted. \nContinue?')" th:text="Delete"/>
+                    </form>
+                    <form method="get" th:action="@{/books/{bookId}(bookId=${book.getId()})}" >
+                        <button th:text="Edit"/>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <nav>
+            <ul th:if="${pageNumber == 0}">
+                <li th:text="${pageNumber+1}" >
+                </li>
+                <li th:if="${pageNumber+1 < totalPages}" >
+                    <a th:text="${pageNumber+2}" th:href="@{/books?page={page}&size=__${pageSize}__(page=${pageNumber+1})}"></a>
+                </li>
+                <li th:if="${pageNumber+2 < totalPages}" >
+                    <a th:text="${pageNumber+3}" th:href="@{/books?page={page}&size=__${pageSize}__(page=${pageNumber+2})}"></a>
+                </li>
+                <li th:if="${pageNumber+3 < totalPages}" >
+                    <a th:text="${pageNumber+4}" th:href="@{/books?page={page}&size=__${pageSize}__(page=${pageNumber+3})}"></a>
+                </li>
+                <li th:if="${pageNumber+4 < totalPages}" >
+                    <a th:text="${pageNumber+5}" th:href="@{/books?page={page}&size=__${pageSize}__(page=${pageNumber+4})}"></a>
+                </li>
+            </ul>
+            <ul th:if="${pageNumber == 1}">
+                <li>
+                    <a th:text="${pageNumber}"  th:href="@{/books?page={page}&size=__${pageSize}__(page=${pageNumber-1})}"></a>
+                </li>
+                <li th:text="${pageNumber+1}">
+                </li>
+                <li th:if="${pageNumber+1 < totalPages}">
+                    <a th:text="${pageNumber+2}"  th:href="@{/books?page={page}&size=__${pageSize}__(page=${pageNumber+1})}"></a>
+                </li>
+                <li th:if="${pageNumber+2 < totalPages}" >
+                    <a th:text="${pageNumber+3}"  th:href="@{/books?page={page}&size=__${pageSize}__(page=${pageNumber+2})}"></a>
+                </li>
+                <li th:if="${pageNumber+3 < totalPages}" >
+                    <a th:text="${pageNumber+4}"  th:href="@{/books?page={page}&size=__${pageSize}__(page=${pageNumber+3})}"></a>
+                </li>
+            </ul>
+            <ul th:if="${pageNumber != 0 && pageNumber!=1}">
+                <li>
+                    <a th:text="${pageNumber-1}"  th:href="@{/books?page={page}&size=__${pageSize}__(page=${pageNumber-2})}"></a>
+                </li>
+                <li>
+                    <a th:text="${pageNumber}"  th:href="@{/books?page={page}&size=__${pageSize}__(page=${pageNumber-1})}"></a>
+                </li>
+                <li th:text="${pageNumber+1}">
+                </li>
+                <li th:if="${pageNumber+1 < totalPages}">
+                    <a th:text="${pageNumber+2}"  th:href="@{/books?page={page}&size=__${pageSize}__(page=${pageNumber+1})}"></a>
+                </li>
+                <li th:if="${pageNumber+2 < totalPages}">
+                    <a th:text="${pageNumber+3}"  th:href="@{/books?page={page}&size=__${pageSize}__(page=${pageNumber+2})}"></a>
+                </li>
+            </ul>
+
+            <ul>
+                <li>
+                    <a th:if="${pageSize!=5}" th:text="5"  th:href="@{/books?page={page}&size=5(page=${pageNumber})}"></a>
+                    <p th:if="${pageSize==5}">5</p>
+                </li>
+                <li>
+                    <a th:if="${pageSize!=10}" th:text="10"  th:href="@{/books?page={page}&size=10(page=${pageNumber})}"></a>
+                    <p th:if="${pageSize==10}">10</p>
+                </li>
+                <li >
+                    <a th:if="${pageSize!=20}" th:text="20"  th:href="@{/books?page={page}&size=20(page=${pageNumber})}"></a>
+                    <p th:if="${pageSize==20}" >20</p>
+                </li>
+            </ul>
+        </nav>
+    </section>
+</main>
 </body>
 </html>

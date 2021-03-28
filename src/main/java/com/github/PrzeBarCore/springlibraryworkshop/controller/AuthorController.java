@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/authors")
 class AuthorController {
-    private AuthorService service;
+    private final AuthorService service;
     private static final Logger logger= LoggerFactory.getLogger(AuthorController.class);
 
     AuthorController(final AuthorService service) {

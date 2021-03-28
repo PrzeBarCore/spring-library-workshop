@@ -1,31 +1,29 @@
 package com.github.PrzeBarCore.springlibraryworkshop.service;
 
-import com.github.PrzeBarCore.springlibraryworkshop.model.*;
-import com.github.PrzeBarCore.springlibraryworkshop.model.projection.Book.BookBookCopyWriteModel;
+import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
+import com.github.PrzeBarCore.springlibraryworkshop.model.BookCopy;
+import com.github.PrzeBarCore.springlibraryworkshop.model.BookCopyRepository;
+import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookBookCopyWriteModel;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 @Service
 public class BookCopyService {
-    PublisherRepository publisherRepository;
-    BookCopyRepository repository;
+    private final PublisherService publisherService;
+    private final BookCopyRepository repository;
 
-    BookCopyService(PublisherRepository publisherRepository, BookCopyRepository bookCopyRepository) {
-        this.publisherRepository = publisherRepository;
+    BookCopyService(final PublisherService publisherService, final BookCopyRepository bookCopyRepository) {
+        this.publisherService = publisherService;
         this.repository = bookCopyRepository;
     }
 
-    BookCopy createBookCopy(BookBookCopyWriteModel toCreate, Book book) {
+    public BookCopy createBookCopy(BookBookCopyWriteModel toCreate, Book book) {
         BookCopy bookCopy= toCreate.toBookCopy(book);
 
         Integer publisherId = toCreate.getPublisher().getId();
         if(publisherId==null){
             bookCopy.setPublisher(toCreate.getPublisher().toPublisher(bookCopy));
         } else {
-            Optional<Publisher> publisher = publisherRepository.findById(publisherId);
-            bookCopy.setPublisher(Optional.ofNullable(publisher)
-                    .get()
-                    .orElseThrow(() -> new IllegalArgumentException("Publisher with given ID doesnt exist")));
+            bookCopy.setPublisher(publisherService.findPublisherById(publisherId));
         }
        return bookCopy;
     }
