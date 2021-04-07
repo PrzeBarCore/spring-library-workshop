@@ -6,6 +6,16 @@ import com.github.PrzeBarCore.springlibraryworkshop.model.Section;
 public class BookSectionWriteModel {
     private Integer id;
     private String name;
+    private boolean isNewSection;
+
+    public BookSectionWriteModel() {
+        this.id=0;
+        this.isNewSection =false;
+    }
+
+    public boolean isNewSection() { return isNewSection; }
+
+    public void setNewSection(boolean newSection) { this.isNewSection = newSection; }
 
     public Integer getId() {
         return id;

@@ -73,14 +73,14 @@ public class BookService {
         book.setTitle(toCreate.getTitle());
 
         BookSectionWriteModel section= toCreate.getSection();
-        if (section.getId() == null) {
+        if (section.isNewSection()) {
             int id= sectionService.createSectionAndGetId(book, section);
             section.setId(id);
         }
         book.setSection(sectionService.findSection(section.getId()));
 
         toCreate.getAuthors().stream()
-                .filter(author -> author.getId() == null)
+                .filter(author -> author.isNewAuthor())
                 .forEach(author -> {
                     var newAuthor = authorService.createAuthor(author, book);
                     author.setId(newAuthor.getId());
@@ -92,7 +92,8 @@ public class BookService {
     }
 
     public Page<Book> readAllBooks(Pageable pageable) {
-        return repository.findAll(pageable);
+        Page<Book> result= repository.findAll(pageable);
+        return result;
     }
 
     public List<BookReadModel> mapBooks(Page<Book> books) {

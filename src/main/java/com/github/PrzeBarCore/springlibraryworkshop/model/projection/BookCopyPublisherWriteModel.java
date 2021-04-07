@@ -4,7 +4,7 @@ import com.github.PrzeBarCore.springlibraryworkshop.model.BookCopy;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Publisher;
 
 public class BookCopyPublisherWriteModel {
-    private Integer id;
+    private Integer id=0;
     private String name;
 
     public BookCopyPublisherWriteModel(String name) {

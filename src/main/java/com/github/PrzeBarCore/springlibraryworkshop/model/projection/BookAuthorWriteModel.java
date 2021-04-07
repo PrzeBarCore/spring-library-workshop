@@ -7,6 +7,12 @@ public class BookAuthorWriteModel {
     private Integer id;
     private String name;
     private String lastName;
+    private boolean isNewAuthor;
+
+    public BookAuthorWriteModel(){
+        this.id=0;
+        this.isNewAuthor =false;
+    }
 
     BookAuthorWriteModel(String name){
         this(name,null);
@@ -16,6 +22,14 @@ public class BookAuthorWriteModel {
         this.name=name;
         this.lastName=lastName;
     };
+
+    public boolean isNewAuthor() {
+        return isNewAuthor;
+    }
+
+    public void setNewAuthor(boolean newAuthor) {
+        this.isNewAuthor = newAuthor;
+    }
 
     public Integer getId() {
         return id;

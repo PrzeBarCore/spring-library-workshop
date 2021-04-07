@@ -20,7 +20,7 @@ public class BookCopyService {
         BookCopy bookCopy= toCreate.toBookCopy(book);
 
         Integer publisherId = toCreate.getPublisher().getId();
-        if(publisherId==null){
+        if(toCreate.isNewPublisher()){
             bookCopy.setPublisher(toCreate.getPublisher().toPublisher(bookCopy));
         } else {
             bookCopy.setPublisher(publisherService.findPublisherById(publisherId));

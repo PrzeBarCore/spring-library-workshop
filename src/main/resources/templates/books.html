@@ -14,6 +14,9 @@
 
 <main>
     <section>
+        <a th:href = "@{/books/new}"> Add Book </a>
+    </section>
+    <section>
         <table>
             <thead>
             <tr>
@@ -26,7 +29,7 @@
             <tr th:each="book :${books}">
                 <td> <a th:text="${book.getTitle()}"  th:href="@{/books/{bookId}(bookId=${book.getId()})}"></a></td>
                 <td>
-                    <ul th:each="author : ${book.getAuthors()}">
+                    <ul th:each="author : ${authors}">
                         <li>
                             <p  th:text="${author.getName()}"></p>
                             <p th:text="${author.getLastName()}"></p>

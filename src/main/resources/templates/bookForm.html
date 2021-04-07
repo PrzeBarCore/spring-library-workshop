@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="eng" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring-library-workshop: books</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <script th:inline="javascript">
+
+        function loadState() {
+            let checkboxes = document.querySelectorAll('input[type=checkbox]');
+            checkboxes.forEach(checkbox =>
+                changeLabelAndInputFields(checkbox.id));
+        }
+
+        function showOrHide(idOfInputField) {
+            if (document.getElementById(idOfInputField).checked) {
+                document.getElementById('2Input-' + idOfInputField).style.display = "block";
+                document.getElementById('1Input-' + idOfInputField).style.display = "none";
+
+            } else {
+                document.getElementById('1Input-' + idOfInputField).style.display = "block";
+                document.getElementById('2Input-' + idOfInputField).style.display = "none";
+            }
+        }
+
+        function changeLabelAndInputFields(idOfCheckbox) {
+            let idOfLabel = document.getElementById('label-' + idOfCheckbox);
+            let isChecked = document.getElementById(idOfCheckbox).checked;
+            if (idOfCheckbox.toString().includes("publisherCheckbox")) {
+                if (isChecked) {
+                    idOfLabel.innerHTML = "New publisher"
+                } else {
+                    idOfLabel.innerHTML = "Existing publisher";
+                }
+            }
+            if (idOfCheckbox.toString().includes("authorCheckbox")) {
+                if (isChecked) {
+                    idOfLabel.innerHTML = "New author";
+                } else {
+                    idOfLabel.innerHTML = "Existing author";
+                }
+            }
+            if (idOfCheckbox.toString().includes("sectionCheckbox")) {
+                if (isChecked) {
+                    idOfLabel.innerHTML = "New section";
+                } else {
+                    idOfLabel.innerHTML = "Existing section";
+                }
+            }
+            showOrHide(idOfCheckbox);
+        }
+    </script>
+</head>
+<body onload="loadState()">
+<header>
+    <div th:insert="~{menu::header}">
+    </div>
+</header>
+
+<main>
+    <section>
+
+        <form action="#" method="POST" th:action="@{/books}"
+              th:object="${bookToCreate}">
+
+            <fieldset>
+                <legend th:text="'Book\'s title'"></legend>
+                <label>
+                    <input placeholder="Enter title of new book" th:field="*{title}" type="text">
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend th:text="Section"></legend>
+                <label for="sectionCheckbox" id="label-sectionCheckbox">Existing section</label>
+                <label class="switch">
+                    <input id="sectionCheckbox" onchange="changeLabelAndInputFields(this.id)"
+                           th:field="*{section.newSection}"
+                           type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+
+                <div id="1Input-sectionCheckbox">
+                    <label>Section's id number
+                        <input placeholder="Enter id number of existing section" th:field="*{section.id}" type="number">
+                    </label>
+                </div>
+                <div id="2Input-sectionCheckbox" style="display:none">
+                    <label>Section's name
+                        <input placeholder="Enter name for new section" th:field="*{section.name}" type="text">
+                    </label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend th:text="Authors"></legend>
+                <fieldset th:each="author,authorStat : *{authors}">
+                    <label th:for="'authorCheckbox'+${authorStat.index}"
+                           th:id="'label-authorCheckbox'+${authorStat.index}">Existing
+                        author</label>
+                    <label class="switch">
+                        <input onchange="changeLabelAndInputFields(this.id)"
+                               th:field="*{authors[__${authorStat.index}__].newAuthor}"
+                               th:id="'authorCheckbox'+${authorStat.index}"
+                               type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    <div th:id="'1Input-authorCheckbox'+${authorStat.index}">
+                        <label> Author's id number
+                            <input th:field="*{authors[__${authorStat.index}__].id}"
+                                   th:placeholder="'Enter id number of existing author'" type="number">
+                        </label>
+                    </div>
+                    <div style="display:none" th:id="'2Input-authorCheckbox'+${authorStat.index}">
+                        <label> Author's first name
+                            <input th:field="*{authors[__${authorStat.index}__].name}"
+                                   th:placeholder="'Enter fisrt name for new author'" type="text">
+                        </label>
+                        <label> Author's last name
+                            <input th:field="*{authors[__${authorStat.index}__].lastName}"
+                                   th:placeholder="'Enter last name for new author'" type="text">
+                        </label>
+                    </div>
+                    <button name="removeAuthor" th:value="${authorStat.index}" type="submit">Remove author</button>
+                </fieldset>
+                <button name="addAuthor" type="submit"> Add Author</button>
+            </fieldset>
+
+            <fieldset>
+                <legend th:text="'Book\'s copies'"></legend>
+                <fieldset th:each="bookCopy,bookCopyStat : *{bookCopies}">
+                    <label> Year of publication
+                        <input placeholder="Enter publication year"
+                               th:field="*{bookCopies[__${bookCopyStat.index}__].publicationDate}"
+                               type="number">
+                    </label>
+
+                    <label th:for="'publisherCheckbox'+${bookCopyStat.index}"
+                           th:id="'label-publisherCheckbox'+${bookCopyStat.index}">Existing
+                        publisher</label>
+                    <label class="switch">
+                        <input onchange="changeLabelAndInputFields(this.id)"
+                               th:field="*{bookCopies[__${bookCopyStat.index}__].newPublisher}"
+                               th:id="'publisherCheckbox'+${bookCopyStat.index}"
+                               type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+
+                    <div th:id="'1Input-publisherCheckbox'+${bookCopyStat.index}">
+                        <label> Publisher's id number
+                            <input placeholder="Enter existing publisher's id number"
+                                   th:field="*{bookCopies[__${bookCopyStat.index}__].publisher.id}"
+                                   type="number">
+                        </label>
+                    </div>
+                    <div style="display: none" th:id="'2Input-publisherCheckbox'+${bookCopyStat.index}">
+                        <label> Publisher's name
+                            <input placeholder="Enter name for new publisher"
+                                   th:field="*{bookCopies[__${bookCopyStat.index}__].publisher.name}"
+                                   type="text">
+                        </label>
+                    </div>
+
+                    <label>Number of copies
+                        <input placeholder="Enter number of book's copies to add"
+                               th:field="*{bookCopies[__${bookCopyStat.index}__].numberToCreate}"
+                               th:id="'numberOfCopies'+${bookCopyStat.index}"
+                               type="number">
+                    </label>
+                    <button name="removeBookCopy" th:if="${bookCopyStat.size}>1" th:value="${bookCopyStat.index}"
+                            type="submit">Remove copy
+                    </button>
+                </fieldset>
+                <button name="addBookCopy" type="submit">Add next copy</button>
+            </fieldset>
+            <button type="submit">Save Book</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>

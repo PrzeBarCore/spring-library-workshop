@@ -5,7 +5,8 @@ import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class BookWriteModel {
@@ -15,10 +16,38 @@ public class BookWriteModel {
     @NotNull(message = "Section cannot be empty")
     private BookSectionWriteModel section;
 
-    private Set<BookBookCopyWriteModel> bookCopies;
+    private List<BookBookCopyWriteModel> bookCopies;
 
-    private Set<BookAuthorWriteModel> authors;
+    private List<BookAuthorWriteModel> authors;
 
+
+    public BookWriteModel() {
+
+
+        this.bookCopies= new ArrayList<>();
+        this.bookCopies.add(new BookBookCopyWriteModel());
+        this.authors= new ArrayList<>();
+
+    }
+
+    public void addAuthor(){
+        this.authors.add(new BookAuthorWriteModel());
+    }
+
+    public void removeAuthor(int index){
+        this.authors.remove(index);
+
+    }
+
+    public void addBookCopy(){
+        this.bookCopies.add(new BookBookCopyWriteModel());
+
+    }
+
+    public void removeBookCopy(int index){
+        this.bookCopies.remove(index);
+
+    }
 
     public String getTitle() {
         return title;
@@ -36,21 +65,22 @@ public class BookWriteModel {
         this.section = section;
     }
 
-    public Set<BookBookCopyWriteModel> getBookCopies() {
+    public List<BookBookCopyWriteModel> getBookCopies() {
         return bookCopies;
     }
 
-    public void setBookCopies(Set<BookBookCopyWriteModel> bookCopies) {
+    public void setBookCopies(List<BookBookCopyWriteModel> bookCopies) {
         this.bookCopies = bookCopies;
     }
 
-    public Set<BookAuthorWriteModel> getAuthors() {
+    public List<BookAuthorWriteModel> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(Set<BookAuthorWriteModel> authors) {
+    public void setAuthors(List<BookAuthorWriteModel> authors) {
         this.authors = authors;
     }
+
 
     public Book toBook(){
         var book= new Book(title);
@@ -60,4 +90,25 @@ public class BookWriteModel {
 
         return book;
     }
+
+    public class BookCopyCheckBox{
+        private boolean state;
+
+        public BookCopyCheckBox(boolean state) {
+            this.state = state;
+        }
+
+        public BookCopyCheckBox() {
+            this.state = false;
+        }
+
+        public boolean getState() {
+            return state;
+        }
+
+        public void setState(boolean state) {
+            this.state = state;
+        }
+    }
+
 }
