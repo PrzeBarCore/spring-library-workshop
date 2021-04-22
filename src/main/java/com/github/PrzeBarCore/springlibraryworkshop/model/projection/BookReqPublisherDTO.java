@@ -1,17 +1,17 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
-import com.github.PrzeBarCore.springlibraryworkshop.model.BookCopy;
+import com.github.PrzeBarCore.springlibraryworkshop.model.BookEdition;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Publisher;
 
-public class BookCopyPublisherWriteModel {
+public class BookReqPublisherDTO {
     private Integer id=0;
     private String name;
 
-    public BookCopyPublisherWriteModel(String name) {
+    public BookReqPublisherDTO(String name) {
         this.name = name;
     }
 
-    public BookCopyPublisherWriteModel() {
+    public BookReqPublisherDTO() {
     }
 
     public Integer getId() {
@@ -30,7 +30,7 @@ public class BookCopyPublisherWriteModel {
         this.name = name;
     }
 
-    public Publisher toPublisher(BookCopy bookCopy){
+    public Publisher toPublisher(BookEdition bookCopy){
         return new Publisher(name,bookCopy);
     }
 }

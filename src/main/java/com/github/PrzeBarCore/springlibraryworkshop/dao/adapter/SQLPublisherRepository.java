@@ -1,6 +1,6 @@
-package com.github.PrzeBarCore.springlibraryworkshop.model.adapter;
+package com.github.PrzeBarCore.springlibraryworkshop.dao.adapter;
 
-import com.github.PrzeBarCore.springlibraryworkshop.model.PublisherRepository;
+import com.github.PrzeBarCore.springlibraryworkshop.dao.PublisherRepository;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Publisher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

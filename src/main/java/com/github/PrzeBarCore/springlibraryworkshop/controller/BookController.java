@@ -1,8 +1,7 @@
 package com.github.PrzeBarCore.springlibraryworkshop.controller;
 
-import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
-import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookReadModel;
-import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookWriteModel;
+import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookRespBookDTO;
+import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookReqBookDTO;
 import com.github.PrzeBarCore.springlibraryworkshop.service.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,62 +33,77 @@ class BookController {
 
     @PostMapping
     @Transactional
-    public String createBook(@ModelAttribute("bookToCreate") BookWriteModel toCreate){
+    String createBook(@ModelAttribute("bookToCreate") BookReqBookDTO toCreate){
         service.createBook(toCreate).getId();
         return "books";
     }
 
     @PostMapping(params = "addAuthor")
-    public String addAuthor(@ModelAttribute("bookToCreate") BookWriteModel current){
+    String addAuthor(@ModelAttribute("bookToCreate") BookReqBookDTO current){
         current.addAuthor();
         return "bookForm";
     }
 
     @PostMapping(params="removeAuthor")
-    public String removeAuthor(@ModelAttribute("bookToCreate") BookWriteModel current, @RequestParam("removeAuthor") int authorIndexToRemove ){
+    String removeAuthor(@ModelAttribute("bookToCreate") BookReqBookDTO current, @RequestParam("removeAuthor") int authorIndexToRemove ){
         current.removeAuthor(authorIndexToRemove);
         return "bookForm";
     }
 
     @PostMapping(params = "addBookCopy")
-    public String addBookCopy(@ModelAttribute("bookToCreate") BookWriteModel current){
-        current.addBookCopy();
+    String addBookEdition(@ModelAttribute("bookToCreate") BookReqBookDTO current){
+        current.addBookEdition();
         return "bookForm";
     }
 
     @PostMapping(params="removeBookCopy")
-    public String removeBookCopy(@ModelAttribute("bookToCreate") BookWriteModel current, @RequestParam("removeBookCopy") int copyIndexToRemove ){
-        current.removeBookCopy(copyIndexToRemove);
+    String removeBookEdition(@ModelAttribute("bookToCreate") BookReqBookDTO current, @RequestParam("removeBookCopy") int copyIndexToRemove ){
+        current.removeBookEdition(copyIndexToRemove);
         return "bookForm";
     }
 
     @GetMapping
-    public String readAllBooks(){
+    String readAllBooks(){
         return "books";
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookReadModel> readBook(@PathVariable Integer id){
-        return ResponseEntity.ok(service.readBook(id));
+    String readBook(@PathVariable Integer id, Model model){
+        BookRespBookDTO book= service.getBookReadModelById(id);
+        model.addAttribute("book", book);
+        return "bookDisplay";
+    }
+
+    @PostMapping("/reserve/{id}")
+    String reserveBookCopy(@PathVariable Integer id, @ModelAttribute("book") BookRespBookDTO current) {
+        service.reserveBookCopy(id);
+        return "bookDisplay";
     }
 
     @GetMapping("/new")
-    public String showBookForm(Model model){
-        BookWriteModel book= new BookWriteModel();
+    String showBookForm(Model model){
+        BookReqBookDTO book= new BookReqBookDTO();
+        model.addAttribute("bookToCreate",book);
+        return "bookForm";
+    }
+
+    @GetMapping("/update/{id}")
+    String showBookForm(@PathVariable int id, Model model){
+        BookRespBookDTO book= service.getBookReadModelById(id);
         model.addAttribute("bookToCreate",book);
         return "bookForm";
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<BookReadModel> updateBook(@RequestBody BookWriteModel toUpdate, @PathVariable Integer id){
+    ResponseEntity<BookRespBookDTO> updateBook(@RequestBody BookReqBookDTO toUpdate, @PathVariable Integer id){
         return ResponseEntity.ok(service.updateBook(toUpdate,id));
     }
 
     @PostMapping("/{id}")
     @Transactional
-    public String deleteBook(@PathVariable Integer id){
+    String deleteBook(@PathVariable Integer id){
         service.deleteBook(id);
         return "books";
 
@@ -97,17 +111,19 @@ class BookController {
 
     @ModelAttribute
     void getAllBooks( @PageableDefault(size=10) Pageable pageable, Model model){
-        Page<Book> result=service.readAllBooks(pageable);
+        Page<BookRespBookDTO> result=service.readAllBooks(pageable);
 
-        if(pageable.getPageNumber()>=result.getTotalPages()){
-            result=service.readAllBooks(pageable.first());
+        int pageNumber=pageable.getPageNumber();
+        int totalPages=result.getTotalPages();
+
+        if(pageNumber>=totalPages){
             model.addAttribute("pageNumber", 0);
         } else {
-            model.addAttribute("pageNumber", pageable.getPageNumber());
+            model.addAttribute("pageNumber", pageNumber);
         }
         model.addAttribute("pageSize", pageable.getPageSize());
-        model.addAttribute("books",service.mapBooks(result));
-        model.addAttribute("totalPages", result.getTotalPages());
+        model.addAttribute("books",result);
+        model.addAttribute("totalPages", totalPages);
     }
 
 }

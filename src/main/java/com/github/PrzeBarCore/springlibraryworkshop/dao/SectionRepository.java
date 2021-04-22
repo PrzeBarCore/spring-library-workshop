@@ -1,4 +1,4 @@
-package com.github.PrzeBarCore.springlibraryworkshop.model;
+package com.github.PrzeBarCore.springlibraryworkshop.dao;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.Section;
 import org.springframework.data.domain.Page;

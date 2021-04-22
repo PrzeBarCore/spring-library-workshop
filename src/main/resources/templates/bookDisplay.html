@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring-library-workshop: books</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.css">
+</head>
+<body>
+<header >
+    <div th:insert="~{menu::header}">
+    </div>
+</header>
+
+    <main style="background-color: #072B4F">
+    <section style="margin-left: 10px;">
+        <h1 th:text="${book.title}"></h1>
+        <div th:each="author: ${book.authors}">
+            <p th:text="${author.name}+' '+${author.lastName}"></p>
+        </div>
+        <br><br>
+        <h3>Available book editions</h3>
+        <div th:each="bookEdition,bookEditionStat: ${book.bookEditions}">
+            <details >
+                <summary th:text="${bookEditionStat.index+1}+'. Publisher:  '+ ${bookEdition.publisher.name} + ', Date of publication:  ' +${bookEdition.publicationDate}"></summary>
+                <br>
+                <table style="width:550px;">
+                    <thead >
+                    <tr>
+                        <th>No.</th>
+                        <th>State</th>
+                        <th>Date of return</th>
+                        <th>Reserved until</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="bookCopy: ${bookEdition.bookCopies}">
+                            <td th:text="${bookCopyStat.index+1}"></td>
+                            <td th:text="${bookCopy.state}"></td>
+                            <td th:text="${bookCopy.borrowedUntil}"></td>
+                            <td th:text="${bookCopy.reservedUntil}"></td>
+                            <td>
+                                <form method="post" th:action="@{/books/reserve/{bookCopyId}(bookCopyId=${bookCopy.id})}">
+                                    <button style="text-align: center; width: auto" type="submit">Book&nbsp;it!</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </details>
+        </div>
+    </section>
+    </main>
+</body>
+</html>

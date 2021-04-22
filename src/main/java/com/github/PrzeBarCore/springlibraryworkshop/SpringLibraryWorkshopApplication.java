@@ -18,6 +18,7 @@ public class SpringLibraryWorkshopApplication implements RepositoryRestConfigure
 		SpringApplication.run(SpringLibraryWorkshopApplication.class, args);
 	}
 
+
 	@Bean
 	Validator validator(){
 		return new LocalValidatorFactoryBean();

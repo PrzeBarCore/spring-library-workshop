@@ -1,0 +1,1 @@
+alter table book_copies rename to book_editions;

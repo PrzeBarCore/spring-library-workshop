@@ -1,6 +1,6 @@
-package com.github.PrzeBarCore.springlibraryworkshop.model.adapter;
+package com.github.PrzeBarCore.springlibraryworkshop.dao.adapter;
 
-import com.github.PrzeBarCore.springlibraryworkshop.model.AuthorRepository;
+import com.github.PrzeBarCore.springlibraryworkshop.dao.AuthorRepository;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

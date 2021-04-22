@@ -3,12 +3,12 @@ package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Section;
 
-public class BookSectionWriteModel {
+public class BookReqSectionDTO {
     private Integer id;
     private String name;
     private boolean isNewSection;
 
-    public BookSectionWriteModel() {
+    public BookReqSectionDTO() {
         this.id=0;
         this.isNewSection =false;
     }

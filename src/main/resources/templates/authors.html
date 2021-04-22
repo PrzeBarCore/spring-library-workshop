@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring-library-workshop: books</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.css">
+    <style>
+        tr:nth-child(even){background-color: #072B4F}
+    </style>
+</head>
+<body>
+<header >
+    <div th:insert="~{menu::header}">
+    </div>
+</header>
+
+<main>
+
+    <section>
+        <h2>Authors of books:</h2>
+        <br>
+        <ul th:each="author :${authors}" style="list-style-type:none">
+            <li> <a th:text="${author.name}+' '+ ${author.lastName}"  th:href="@{/authors/{authorId}(authorId=${author.getId()})}"></a> </li>
+        </ul>
+    </section>
+    <section>
+        <nav>
+            <ul th:if="${pageNumber == 0}">
+                <li th:text="${pageNumber+1}" >
+                </li>
+                <li th:if="${pageNumber+1 < totalPages}" >
+                    <a th:text="${pageNumber+2}" th:href="@{/authors?page={page}&size=__${pageSize}__(page=${pageNumber+1})}"></a>
+                </li>
+                <li th:if="${pageNumber+2 < totalPages}" >
+                    <a th:text="${pageNumber+3}" th:href="@{/authors?page={page}&size=__${pageSize}__(page=${pageNumber+2})}"></a>
+                </li>
+                <li th:if="${pageNumber+3 < totalPages}" >
+                    <a th:text="${pageNumber+4}" th:href="@{/authors?page={page}&size=__${pageSize}__(page=${pageNumber+3})}"></a>
+                </li>
+                <li th:if="${pageNumber+4 < totalPages}" >
+                    <a th:text="${pageNumber+5}" th:href="@{/authors?page={page}&size=__${pageSize}__(page=${pageNumber+4})}"></a>
+                </li>
+            </ul>
+            <ul th:if="${pageNumber == 1}">
+                <li>
+                    <a th:text="${pageNumber}"  th:href="@{/authors?page={page}&size=__${pageSize}__(page=${pageNumber-1})}"></a>
+                </li>
+                <li th:text="${pageNumber+1}">
+                </li>
+                <li th:if="${pageNumber+1 < totalPages}">
+                    <a th:text="${pageNumber+2}"  th:href="@{/authors?page={page}&size=__${pageSize}__(page=${pageNumber+1})}"></a>
+                </li>
+                <li th:if="${pageNumber+2 < totalPages}" >
+                    <a th:text="${pageNumber+3}"  th:href="@{/authors?page={page}&size=__${pageSize}__(page=${pageNumber+2})}"></a>
+                </li>
+                <li th:if="${pageNumber+3 < totalPages}" >
+                    <a th:text="${pageNumber+4}"  th:href="@{/authors?page={page}&size=__${pageSize}__(page=${pageNumber+3})}"></a>
+                </li>
+            </ul>
+            <ul th:if="${pageNumber != 0 && pageNumber!=1}">
+                <li>
+                    <a th:text="${pageNumber-1}"  th:href="@{/authors?page={page}&size=__${pageSize}__(page=${pageNumber-2})}"></a>
+                </li>
+                <li>
+                    <a th:text="${pageNumber}"  th:href="@{/authors?page={page}&size=__${pageSize}__(page=${pageNumber-1})}"></a>
+                </li>
+                <li th:text="${pageNumber+1}">
+                </li>
+                <li th:if="${pageNumber+1 < totalPages}">
+                    <a th:text="${pageNumber+2}"  th:href="@{/authors?page={page}&size=__${pageSize}__(page=${pageNumber+1})}"></a>
+                </li>
+                <li th:if="${pageNumber+2 < totalPages}">
+                    <a th:text="${pageNumber+3}"  th:href="@{/authors?page={page}&size=__${pageSize}__(page=${pageNumber+2})}"></a>
+                </li>
+            </ul>
+
+            <ul>
+                <li>
+                    <a th:if="${pageSize!=5}" th:text="5"  th:href="@{/authors?page={page}&size=5(page=${pageNumber})}"></a>
+                    <p th:if="${pageSize==5}">5</p>
+                </li>
+                <li>
+                    <a th:if="${pageSize!=10}" th:text="10"  th:href="@{/authors?page={page}&size=10(page=${pageNumber})}"></a>
+                    <p th:if="${pageSize==10}">10</p>
+                </li>
+                <li >
+                    <a th:if="${pageSize!=20}" th:text="20"  th:href="@{/authors?page={page}&size=20(page=${pageNumber})}"></a>
+                    <p th:if="${pageSize==20}" >20</p>
+                </li>
+            </ul>
+        </nav>
+    </section>
+</main>
+</body>
+</html>

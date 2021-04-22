@@ -16,15 +16,15 @@ public class Publisher {
     private String name;
 
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.REMOVE)
-    private Set<BookCopy> bookCopies=new HashSet<>();
+    private Set<BookEdition> bookEditions =new HashSet<>();
 
     public Publisher(){
 
     }
 
-    public Publisher(String name, BookCopy bookCopy) {
+    public Publisher(String name, BookEdition bookEdition) {
         this.name=name;
-        this.bookCopies.add(bookCopy);
+        this.bookEditions.add(bookEdition);
     }
 
     public int getId() {
@@ -43,11 +43,13 @@ public class Publisher {
         this.name = name;
     }
 
-    public Set<BookCopy> getBookCopies() {
-        return bookCopies;
+    public Set<BookEdition> getBookEditions() {
+        return bookEditions;
     }
 
-    void setBookCopies(final Set<BookCopy> books) {
-        this.bookCopies = books;
+    void setBookEditions(final Set<BookEdition> books) {
+        this.bookEditions = books;
     }
+
+
 }

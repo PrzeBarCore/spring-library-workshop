@@ -20,9 +20,8 @@ import java.util.Set;
     @JoinColumn(name= "section_id")
     private Section section;
 
-
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    private Set<BookCopy> bookCopies;
+    private Set<BookEdition> bookEditions;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "books_authors",
@@ -62,12 +61,12 @@ import java.util.Set;
         this.section = section;
     }
 
-    public Set<BookCopy> getBookCopies() {
-        return bookCopies;
+    public Set<BookEdition> getBookEditions() {
+        return bookEditions;
     }
 
-    public void setBookCopies(final Set<BookCopy> bookCopies) {
-        this.bookCopies = bookCopies;
+    public void setBookEditions(final Set<BookEdition> bookEditions) {
+        this.bookEditions = bookEditions;
     }
 
     public Set<Author> getAuthors() {

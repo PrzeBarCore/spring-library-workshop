@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring-library-workshop: books</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.css">
+</head>
+<body>
+<header >
+    <div th:insert="~{menu::header}">
+    </div>
+</header>
+
+<main style="background-color: #072B4F">
+    <section style="margin-left: 10px;">
+        <h1 th:text="${author.name}+' '+ ${author.lastName}"></h1>
+        <br>
+        <h3>Author of books:</h3>
+        <div th:each="book: ${author.books}">
+            <p><a th:text="${book.title}" th:href="@{/books/{bookId}(bookId=${book.id})}"></a>
+            </p>
+        </div>
+        <br><br>
+    </section>
+</main>
+</body>
+</html>

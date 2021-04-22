@@ -1,11 +1,11 @@
 package com.github.PrzeBarCore.springlibraryworkshop.service;
 
-import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
-import com.github.PrzeBarCore.springlibraryworkshop.model.BookCopy;
-import com.github.PrzeBarCore.springlibraryworkshop.model.BookRepository;
-import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookReadModel;
-import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookSectionWriteModel;
-import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookWriteModel;
+import com.github.PrzeBarCore.springlibraryworkshop.dao.BookCopyRepository;
+import com.github.PrzeBarCore.springlibraryworkshop.dao.BookRepository;
+import com.github.PrzeBarCore.springlibraryworkshop.model.*;
+import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookRespBookDTO;
+import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookReqSectionDTO;
+import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookReqBookDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -13,8 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,41 +24,46 @@ public class BookService {
     private final SectionService sectionService;
     private final BookRepository repository;
     private final AuthorService authorService;
-    private final BookCopyService bookCopyService;
+    private final BookEditionService bookEditionService;
+    private final BookCopyRepository bookCopyRepository;
+
     public BookService(final BookRepository repository, final AuthorService authorService,
-                       final BookCopyService bookCopyService, final SectionService sectionService) {
+                       final BookEditionService bookEditionService, final SectionService sectionService,
+                        final BookCopyRepository bookCopyRepository) {
         this.sectionService = sectionService;
-        this.bookCopyService= bookCopyService;
+        this.bookEditionService = bookEditionService;
         this.authorService = authorService;
         this.repository = repository;
+        this.bookCopyRepository=bookCopyRepository;
     }
     @Transactional
-    public BookReadModel createBook(BookWriteModel toCreate) {
+    public BookRespBookDTO createBook(BookReqBookDTO toCreate) {
         var book = new Book();
         createOrUpdateBook(toCreate,book);
 
-        Set<BookCopy> createdBookCopies= new HashSet<>();
-        toCreate.getBookCopies()
-                .forEach(bookCopy -> createdBookCopies.add(bookCopyService.createBookCopy(bookCopy,book)));
-        book.setBookCopies(createdBookCopies);
+        Set<BookEdition> bookEditions= new HashSet<>();
+        toCreate.getBookEditions()
+                .forEach(bookCopy -> bookEditions.add(bookEditionService.createBookEdition(bookCopy,book)));
+        book.setBookEditions(bookEditions);
 
-        return new BookReadModel(book);
+        return new BookRespBookDTO(book);
     }
 
-    public BookReadModel readBook(Integer id) {
-        BookReadModel result= repository.findById(id)
-                .map(BookReadModel::new)
+    public BookRespBookDTO getBookReadModelById(Integer id) {
+        BookRespBookDTO result= repository.findById(id)
+                .map(BookRespBookDTO::new)
                 .orElseThrow(() ->new IllegalArgumentException("Book with given ID doesn't exist"));
+
         return result;
     }
 
-    public BookReadModel updateBook(BookWriteModel toUpdate, Integer id){
+    public BookRespBookDTO updateBook(BookReqBookDTO toUpdate, Integer id){
         Book book=repository.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("Book with given ID doesn't exist"));
 
         createOrUpdateBook(toUpdate,book);
 
-        return new BookReadModel(book);
+        return new BookRespBookDTO(book);
     }
 
     public void deleteBook(Integer id) {
@@ -69,15 +74,15 @@ public class BookService {
         repository.deleteBookById(id);
     }
 
-    private void createOrUpdateBook(BookWriteModel toCreate, Book book) {
+    private void createOrUpdateBook(BookReqBookDTO toCreate, Book book) {
         book.setTitle(toCreate.getTitle());
 
-        BookSectionWriteModel section= toCreate.getSection();
+        BookReqSectionDTO section= toCreate.getSection();
         if (section.isNewSection()) {
             int id= sectionService.createSectionAndGetId(book, section);
             section.setId(id);
         }
-        book.setSection(sectionService.findSection(section.getId()));
+        book.setSection(sectionService.readSectionById(section.getId()));
 
         toCreate.getAuthors().stream()
                 .filter(author -> author.isNewAuthor())
@@ -86,21 +91,31 @@ public class BookService {
                     author.setId(newAuthor.getId());
                 });
         book.setAuthors(toCreate.getAuthors().stream()
-                .map(author -> authorService.readAuthor(author.getId()))
+                .map(author -> authorService.readAuthorById(author.getId()))
                 .collect(Collectors.toSet()));
         repository.save(book);
     }
 
-    public Page<Book> readAllBooks(Pageable pageable) {
+    ///Should it be here?
+    public void reserveBookCopy(Integer id){
+
+        BookCopy result=bookCopyRepository.findBookCopyById(id).orElseThrow(()->new IllegalArgumentException("Book Copy doesn't exist"));
+        LocalDateTime borrowedUntil=result.getBorrowedUntil();
+        if(borrowedUntil==null){
+            result.setReservedUntil(LocalDateTime.now().plusMonths(1));
+            result.setState(2);
+        } else {
+            result.setReservedUntil(borrowedUntil.plusMonths(1));
+        }
+        bookCopyRepository.save(result);
+    }
+    public Page<BookRespBookDTO> readAllBooks(Pageable pageable) {
         Page<Book> result= repository.findAll(pageable);
-        return result;
+
+        if(pageable.getPageNumber()>=result.getTotalPages()){
+            result=repository.findAll(pageable.first());
+        }
+        return result.map(BookRespBookDTO::new);
     }
 
-    public List<BookReadModel> mapBooks(Page<Book> books) {
-        List<BookReadModel> result=books
-                .stream()
-                .map(BookReadModel::new)
-                .collect(Collectors.toList());
-        return result;
-    }
 }
