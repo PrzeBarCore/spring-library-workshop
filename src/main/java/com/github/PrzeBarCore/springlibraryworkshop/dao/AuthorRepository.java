@@ -14,7 +14,7 @@ public interface AuthorRepository {
 
     Author save(Author source);
 
-    void deleteAuthorById(Integer id);
-
     Page<Author> findAll(Pageable pageable);
+
+    void deleteAuthorByIdAndBooksEmpty(int id);
 }

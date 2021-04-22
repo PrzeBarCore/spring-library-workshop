@@ -25,7 +25,7 @@ public class BookEdition {
     private Publisher publisher;
 
     @NotNull(message = "Book cannot be empty")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "book_id")
     private Book book;
 
@@ -72,4 +72,6 @@ public class BookEdition {
     public void setBook(Book book) {
         this.book = book;
     }
+
+
 }

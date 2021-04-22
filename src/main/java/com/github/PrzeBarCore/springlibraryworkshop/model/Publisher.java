@@ -15,7 +15,7 @@ public class Publisher {
     @NotEmpty(message = "Name cannot be empty")
     private String name;
 
-    @OneToMany(mappedBy = "publisher", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "publisher")
     private Set<BookEdition> bookEditions =new HashSet<>();
 
     public Publisher(){

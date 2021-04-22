@@ -9,4 +9,6 @@ public interface BookEditionRepository {
     BookEdition save(BookEdition source);
 
     Optional<BookEdition> findById(int id);
+
+    void deleteById(int id);
 }

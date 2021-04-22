@@ -36,4 +36,12 @@ public class BookReqSectionDTO {
     public Section toSection(Book book){
         return new Section(name, book);
     }
+
+    public static BookReqSectionDTO fromSection(Section source) {
+        var sectionWriteModel= new BookReqSectionDTO();
+        sectionWriteModel.id=source.getId();
+        sectionWriteModel.name= source.getName();
+        sectionWriteModel.isNewSection=false;
+        return sectionWriteModel;
+    }
 }

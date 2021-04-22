@@ -8,11 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/authors")
@@ -33,13 +34,6 @@ class AuthorController {
     String readAuthor(@PathVariable int id, Model model){
         model.addAttribute("author",service.getAuthorReadModelById(id));
         return "authorDisplay";
-    }
-
-    @DeleteMapping("/{id}")
-    @Transactional
-     ResponseEntity<?> deleteAuthor(Integer id){
-        service.deleteAuthor(id);
-        return ResponseEntity.noContent().build();
     }
 
     @ModelAttribute

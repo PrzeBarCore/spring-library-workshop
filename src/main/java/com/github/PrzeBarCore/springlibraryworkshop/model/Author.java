@@ -17,7 +17,7 @@ public class Author {
 
     private String lastName;
 
-    @ManyToMany(mappedBy = "authors", cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "authors")
     private Set<Book> books= new HashSet<>();
 
     public Author(){};

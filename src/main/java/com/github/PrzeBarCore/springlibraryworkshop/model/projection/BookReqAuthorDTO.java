@@ -14,16 +14,6 @@ public class BookReqAuthorDTO {
         this.isNewAuthor =false;
     }
 
-    BookReqAuthorDTO(String name){
-        this(name,null);
-    };
-
-    BookReqAuthorDTO(String name, String lastName){
-        this.name=name;
-        this.lastName=lastName;
-    };
-
-
 
     public boolean isNewAuthor() {
         return isNewAuthor;
@@ -59,5 +49,14 @@ public class BookReqAuthorDTO {
 
     public Author toAuthor(final Book book){
         return new Author(name,lastName,book);
+    }
+
+    public static BookReqAuthorDTO fromAuthor(Author source) {
+        var authorWriteModel= new BookReqAuthorDTO();
+        authorWriteModel.id= source.getId();
+        authorWriteModel.name= source.getName();
+        authorWriteModel.lastName= source.getLastName();
+        authorWriteModel.isNewAuthor=false;
+        return authorWriteModel;
     }
 }

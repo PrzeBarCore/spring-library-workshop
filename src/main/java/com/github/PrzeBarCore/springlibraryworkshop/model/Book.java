@@ -23,7 +23,7 @@ import java.util.Set;
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private Set<BookEdition> bookEditions;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(name = "books_authors",
     joinColumns = @JoinColumn(name="book_id"),
     inverseJoinColumns = @JoinColumn(name = "author_id"))

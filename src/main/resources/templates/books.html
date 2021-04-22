@@ -37,14 +37,6 @@
                     </ul>
                 </td>
                 <td th:text="${book.getSection().getName()}"></td>
-                <td>
-                    <form method="post" th:action="@{/books/{bookId}(bookId=${book.getId()})}">
-                        <button type="submit" onClick="return confirm('Book and it\'s all copies will be deleted. \nContinue?')" th:text="Delete"/>
-                    </form>
-                    <form method="get" th:action="@{/books/{bookId}(bookId=${book.getId()})}" >
-                        <button th:text="Edit"/>
-                    </form>
-                </td>
             </tr>
             </tbody>
         </table>

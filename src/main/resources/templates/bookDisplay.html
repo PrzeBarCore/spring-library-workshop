@@ -14,7 +14,16 @@
 
     <main style="background-color: #072B4F">
     <section style="margin-left: 10px;">
-        <h1 th:text="${book.title}"></h1>
+       <h1 th:text="${book.title}"></h1>
+        <form>
+            <button  type="submit">
+            <a th:href="@{/books/update/{bookId}(bookId=${book.id})}"> Edit Book </a>
+            </button>
+        </form>
+        <form method="post" th:action="@{/books/delete/{bookId}(bookId=${book.id})}">
+            <button type="submit" onClick="return confirm('Book and it\'s all copies will be deleted. \nContinue?')">Delete Book</button>
+        </form>
+        <br><br>
         <div th:each="author: ${book.authors}">
             <p th:text="${author.name}+' '+${author.lastName}"></p>
         </div>
@@ -41,8 +50,11 @@
                             <td th:text="${bookCopy.borrowedUntil}"></td>
                             <td th:text="${bookCopy.reservedUntil}"></td>
                             <td>
-                                <form method="post" th:action="@{/books/reserve/{bookCopyId}(bookCopyId=${bookCopy.id})}">
-                                    <button style="text-align: center; width: auto" type="submit">Book&nbsp;it!</button>
+                                <form method="post" th:action="@{/books/__${book.id}__/changeStatus/__${bookCopy.id}__}">
+                                    <button th:if="${bookCopy.reservedUntil}==''" type="submit" name="state" value="reserve">Book&nbsp;it!</button>
+                                    <button th:if="${bookCopy.state}!='Borrowed'" type="submit" name="state" value="lend">Lend&nbsp;book</button>
+                                    <button th:if="${bookCopy.state} =='Borrowed'" type="submit" name="state" value="return">Return&nbsp;book</button>
+                                    <button th:if="${bookCopy.reservedUntil}!= ''" type="submit" name="state" value="cancelReservation">Cancel&nbsp;reservation</button>
                                 </form>
                             </td>
                         </tr>

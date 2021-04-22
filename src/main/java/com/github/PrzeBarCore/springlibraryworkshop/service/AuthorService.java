@@ -52,7 +52,7 @@ public class AuthorService {
         if(!repository.existsAuthorById(id)){
             throw new IllegalArgumentException("Author with given ID doesn't exist!");
         }
-        repository.deleteAuthorById(id);
+        repository.deleteAuthorByIdAndBooksEmpty(id);
     }
 
 }

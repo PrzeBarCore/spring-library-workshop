@@ -16,4 +16,8 @@ public interface PublisherRepository {
     Publisher save(Publisher toPublisher);
 
     Page<Publisher> findAll(Pageable pageable);
+
+    void deletePublisherByIdAndBookEditionsEmpty(int id);
+
+    boolean existsPublisherById(Integer id);
 }

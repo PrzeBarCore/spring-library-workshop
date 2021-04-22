@@ -57,21 +57,43 @@ public class BookService {
         return result;
     }
 
+    public BookReqBookDTO getBookWriteModelById(Integer id) {
+        BookReqBookDTO result= repository.findById(id)
+                .map(BookReqBookDTO::fromBook)
+                .orElseThrow(() ->new IllegalArgumentException("Book with given ID doesn't exist"));
+        return result;
+    }
+
     public BookRespBookDTO updateBook(BookReqBookDTO toUpdate, Integer id){
         Book book=repository.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("Book with given ID doesn't exist"));
 
         createOrUpdateBook(toUpdate,book);
-
+        logger.info("Updating book");
         return new BookRespBookDTO(book);
     }
 
+    ///TODO
+    @Transactional
     public void deleteBook(Integer id) {
-        if(!repository.existsBookById(id)){
-            throw new IllegalArgumentException("Book with given ID doesn't exist");
-        }
+        Book bookToDelete= repository.findById(id).
+                orElseThrow(()->new IllegalArgumentException("Book with given ID doesn't exist"));
+
+        bookToDelete.getBookEditions()
+                        .forEach(bookEdition -> bookEdition.getBookCopies()
+                                .forEach(bookCopy -> {
+                                    if(bookCopy.getState()!=0)
+                                        throw new IllegalArgumentException("Not every book copy is available. Removal is impossible.");
+                                })
+                        );
+
+        bookToDelete.getBookEditions().forEach(bookEditionService::deleteBookEdition);
 
         repository.deleteBookById(id);
+        logger.info("deleted book");
+        bookToDelete.getAuthors()
+                .forEach(author->authorService.deleteAuthor(author.getId()));
+        logger.info("deleted authors");
     }
 
     private void createOrUpdateBook(BookReqBookDTO toCreate, Book book) {
@@ -93,22 +115,11 @@ public class BookService {
         book.setAuthors(toCreate.getAuthors().stream()
                 .map(author -> authorService.readAuthorById(author.getId()))
                 .collect(Collectors.toSet()));
+        logger.info("Creating or updating book. FROM"+this.getClass().getSimpleName());
         repository.save(book);
     }
 
-    ///Should it be here?
-    public void reserveBookCopy(Integer id){
 
-        BookCopy result=bookCopyRepository.findBookCopyById(id).orElseThrow(()->new IllegalArgumentException("Book Copy doesn't exist"));
-        LocalDateTime borrowedUntil=result.getBorrowedUntil();
-        if(borrowedUntil==null){
-            result.setReservedUntil(LocalDateTime.now().plusMonths(1));
-            result.setState(2);
-        } else {
-            result.setReservedUntil(borrowedUntil.plusMonths(1));
-        }
-        bookCopyRepository.save(result);
-    }
     public Page<BookRespBookDTO> readAllBooks(Pageable pageable) {
         Page<Book> result= repository.findAll(pageable);
 
@@ -118,4 +129,73 @@ public class BookService {
         return result.map(BookRespBookDTO::new);
     }
 
+    public void changeStatus(Integer id, String state) {
+        if(state.equals("reserve")){
+            reserveBookCopy(id);
+        } else if(state.equals("lend")){
+            lendBookCopy(id);
+        } else if(state.equals("return")){
+            returnBookCopy(id);
+        } else {
+            cancelReservationOfBookCopy(id);
+        }
+    }
+    private BookCopy readBookCopy(Integer id){
+        return bookCopyRepository.findBookCopyById(id).orElseThrow(()->new IllegalArgumentException("Book Copy doesn't exist"));
+    }
+    ///Should it be here?
+    private void cancelReservationOfBookCopy(Integer id) {
+        BookCopy result=readBookCopy(id);
+        if(result.getReservedUntil()!=null){
+            result.setReservedUntil(null);
+            if(result.getState()==2){
+                result.setState(0);
+            }
+            bookCopyRepository.save(result);
+        }
+    }
+
+    private void returnBookCopy(Integer id) {
+        BookCopy result=readBookCopy(id);
+        if(result.getState()==1){
+            if(result.getReservedUntil()!=null){
+                result.setState(2);
+            } else {
+                result.setState(0);
+            }
+            result.setBorrowedUntil(null);
+            bookCopyRepository.save(result);
+
+        } else {
+            throw new IllegalArgumentException("Book have to be on loan at first to be returned");
+        }
+    }
+
+    private void reserveBookCopy(Integer id){
+
+        BookCopy result=readBookCopy(id);
+        LocalDateTime borrowedUntil=result.getBorrowedUntil();
+        if(result.getReservedUntil()==null){
+            if(borrowedUntil==null){
+                result.setReservedUntil(LocalDateTime.now().plusMonths(1));
+                result.setState(2);
+            } else {
+                result.setReservedUntil(borrowedUntil.plusMonths(1));
+            }
+            bookCopyRepository.save(result);
+        } else {
+            throw new IllegalArgumentException("Book cannot be reserved twice!");
+        }
+
+    }
+    private void lendBookCopy(Integer id) {
+        BookCopy result=readBookCopy(id);
+        if(result.getState()==1){
+            throw new IllegalArgumentException("Book have to be reserved or available to lend it");
+        }
+        result.setState(1);
+        result.setReservedUntil(null);
+        result.setBorrowedUntil(LocalDateTime.now().plusMonths(1));
+        bookCopyRepository.save(result);
+    }
 }

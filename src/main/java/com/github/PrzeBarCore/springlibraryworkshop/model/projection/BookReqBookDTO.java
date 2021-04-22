@@ -82,6 +82,17 @@ public class BookReqBookDTO {
     }
 
 
+    public static BookReqBookDTO fromBook(Book source){
+        var bookWriteModel= new BookReqBookDTO();
+        bookWriteModel.title=source.getTitle();
+        bookWriteModel.section=BookReqSectionDTO.fromSection(source.getSection());
+        bookWriteModel.authors=source.getAuthors()
+                .stream()
+                .map(BookReqAuthorDTO::fromAuthor)
+                .collect(Collectors.toList());
+        return bookWriteModel;
+    }
+
     public Book toBook(){
         var book= new Book(title);
         book.setSection(section.toSection(book));

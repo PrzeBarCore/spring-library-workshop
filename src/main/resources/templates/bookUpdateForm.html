@@ -62,8 +62,8 @@
 <main>
     <section>
 
-        <form method="POST" th:action="@{/books}"
-              th:object="${bookToCreate}">
+        <form action="#" method="POST" th:action="@{/books/update/{bookId}(bookId=${id})}"
+              th:object="${bookToUpdate}">
 
             <fieldset>
                 <legend th:text="'Book\'s title'"></legend>
@@ -127,55 +127,7 @@
                 </fieldset>
                 <button name="addAuthor" type="submit"> Add&nbsp;Author</button>
             </fieldset>
-
-            <fieldset>
-                <legend th:text="'Book\'s copies'"></legend>
-                <fieldset th:each="bookEdition,bookEditionStat : *{bookEditions}">
-                    <label> Year of publication
-                        <input placeholder="Enter publication year"
-                               th:field="*{bookEditions[__${bookEditionStat.index}__].publicationDate}"
-                               type="number">
-                    </label>
-
-                    <label th:for="'publisherCheckbox'+${bookEditionStat.index}"
-                           th:id="'label-publisherCheckbox'+${bookEditionStat.index}">Existing
-                        publisher</label>
-                    <label class="switch">
-                        <input onchange="changeLabelAndInputFields(this.id)"
-                               th:field="*{bookEditions[__${bookEditionStat.index}__].newPublisher}"
-                               th:id="'publisherCheckbox'+${bookEditionStat.index}"
-                               type="checkbox">
-                        <span class="slider round"></span>
-                    </label>
-
-                    <div th:id="'1Input-publisherCheckbox'+${bookEditionStat.index}">
-                        <label> Publisher's id number
-                            <input placeholder="Enter existing publisher's id number"
-                                   th:field="*{bookEditions[__${bookEditionStat.index}__].publisher.id}"
-                                   type="number">
-                        </label>
-                    </div>
-                    <div style="display: none" th:id="'2Input-publisherCheckbox'+${bookEditionStat.index}">
-                        <label> Publisher's name
-                            <input placeholder="Enter name for new publisher"
-                                   th:field="*{bookEditions[__${bookEditionStat.index}__].publisher.name}"
-                                   type="text">
-                        </label>
-                    </div>
-
-                    <label>Number of copies
-                        <input placeholder="Enter number of book's copies to add"
-                               th:field="*{bookEditions[__${bookEditionStat.index}__].numberOfCopies}"
-                               th:id="'numberOfCopies'+${bookEditionStat.index}"
-                               type="number">
-                    </label>
-                    <button name="removeBookCopy" th:if="${bookEditionStat.size}>1" th:value="${bookEditionStat.index}"
-                            type="submit">Remove&nbsp;copy
-                    </button>
-                </fieldset>
-                <button name="addBookCopy" type="submit">Add&nbsp;next&nbsp;copy</button>
-            </fieldset>
-            <button type="submit">Save Book</button>
+            <button type="submit">Save Changes</button>
         </form>
     </section>
 </main>

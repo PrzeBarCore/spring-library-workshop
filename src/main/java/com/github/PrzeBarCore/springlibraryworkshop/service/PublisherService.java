@@ -38,4 +38,11 @@ public class PublisherService {
                 .orElseThrow(()->new IllegalArgumentException("Publisher with given ID doesn't exist!"));
         return result;
     }
+
+    public void deletePublisher(Integer id) {
+        if(!repository.existsPublisherById(id)){
+            throw new IllegalArgumentException("Author with given ID doesn't exist!");
+        }
+        repository.deletePublisherByIdAndBookEditionsEmpty(id);
+    }
 }
