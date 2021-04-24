@@ -3,38 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Spring-library-workshop: books</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.css">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.css" rel="stylesheet">
 </head>
 <body>
-<header >
+<header>
     <div th:insert="~{menu::header}">
     </div>
 </header>
 
-    <main style="background-color: #072B4F">
+<main style="background-color: #072B4F">
     <section style="margin-left: 10px;">
-       <h1 th:text="${book.title}"></h1>
-        <form>
-            <button  type="submit">
-            <a th:href="@{/books/update/{bookId}(bookId=${book.id})}"> Edit Book </a>
-            </button>
-        </form>
-        <form method="post" th:action="@{/books/delete/{bookId}(bookId=${book.id})}">
-            <button type="submit" onClick="return confirm('Book and it\'s all copies will be deleted. \nContinue?')">Delete Book</button>
-        </form>
-        <br><br>
+        <h1 th:text="${book.title}"></h1>
         <div th:each="author: ${book.authors}">
             <p th:text="${author.name}+' '+${author.lastName}"></p>
         </div>
+        <div style="margin-top: 30px; margin-bottom: 30px">
+            <a  th:href="@{/books/update/{bookId}(bookId=${book.id})}" style="margin-left: 5px">
+                <button>  Edit Book </button>
+            </a>
+            <form method="post" style=" margin-left: 5px" th:action="@{/books/delete/{bookId}(bookId=${book.id})}">
+                <button onClick="return confirm('Book and it\'s all copies will be deleted. \nContinue?')"
+                        type="submit">Delete Book
+                </button>
+            </form>
+        </div>
+
         <br><br>
         <h3>Available book editions</h3>
+
         <div th:each="bookEdition,bookEditionStat: ${book.bookEditions}">
-            <details >
-                <summary th:text="${bookEditionStat.index+1}+'. Publisher:  '+ ${bookEdition.publisher.name} + ', Date of publication:  ' +${bookEdition.publicationDate}"></summary>
+            <details open>
+                <summary
+                        th:text="${bookEditionStat.index+1}+'. Publisher:  '+ ${bookEdition.publisher.name} + ', Date of publication:  ' +${bookEdition.publicationDate}"></summary>
+                <a th:href="@{/books/__${book.id}__/editionUpdate/__${bookEdition.id}__}" style="margin-left: 10px">
+                    <button >Edit Book's Edition</button>
+                </a>
                 <br>
                 <table style="width:550px;">
-                    <thead >
+                    <thead>
                     <tr>
                         <th>No.</th>
                         <th>State</th>
@@ -44,25 +51,33 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="bookCopy: ${bookEdition.bookCopies}">
-                            <td th:text="${bookCopyStat.index+1}"></td>
-                            <td th:text="${bookCopy.state}"></td>
-                            <td th:text="${bookCopy.borrowedUntil}"></td>
-                            <td th:text="${bookCopy.reservedUntil}"></td>
-                            <td>
-                                <form method="post" th:action="@{/books/__${book.id}__/changeStatus/__${bookCopy.id}__}">
-                                    <button th:if="${bookCopy.reservedUntil}==''" type="submit" name="state" value="reserve">Book&nbsp;it!</button>
-                                    <button th:if="${bookCopy.state}!='Borrowed'" type="submit" name="state" value="lend">Lend&nbsp;book</button>
-                                    <button th:if="${bookCopy.state} =='Borrowed'" type="submit" name="state" value="return">Return&nbsp;book</button>
-                                    <button th:if="${bookCopy.reservedUntil}!= ''" type="submit" name="state" value="cancelReservation">Cancel&nbsp;reservation</button>
-                                </form>
-                            </td>
-                        </tr>
+                    <tr th:each="bookCopy: ${bookEdition.bookCopies}">
+                        <td th:text="${bookCopyStat.index+1}"></td>
+                        <td th:text="${bookCopy.state}"></td>
+                        <td th:text="${bookCopy.borrowedUntil}"></td>
+                        <td th:text="${bookCopy.reservedUntil}"></td>
+                        <td>
+                            <form method="post" th:action="@{/books/__${book.id}__/changeStatus/__${bookCopy.id}__}">
+                                <button name="state" th:if="${bookCopy.reservedUntil}==''" type="submit"
+                                        value="reserve">Book&nbsp;it!
+                                </button>
+                                <button name="state" th:if="${bookCopy.state}!='Borrowed'" type="submit" value="lend">
+                                    Lend&nbsp;book
+                                </button>
+                                <button name="state" th:if="${bookCopy.state} =='Borrowed'" type="submit"
+                                        value="return">Return&nbsp;book
+                                </button>
+                                <button name="state" th:if="${bookCopy.reservedUntil}!= ''" type="submit"
+                                        value="cancelReservation">Cancel&nbsp;reservation
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </details>
         </div>
     </section>
-    </main>
+</main>
 </body>
 </html>

@@ -28,13 +28,6 @@
         function changeLabelAndInputFields(idOfCheckbox) {
             let idOfLabel = document.getElementById('label-' + idOfCheckbox);
             let isChecked = document.getElementById(idOfCheckbox).checked;
-            if (idOfCheckbox.toString().includes("publisherCheckbox")) {
-                if (isChecked) {
-                    idOfLabel.innerHTML = "New publisher"
-                } else {
-                    idOfLabel.innerHTML = "Existing publisher";
-                }
-            }
             if (idOfCheckbox.toString().includes("authorCheckbox")) {
                 if (isChecked) {
                     idOfLabel.innerHTML = "New author";
@@ -64,7 +57,10 @@
 
         <form action="#" method="POST" th:action="@{/books/update/{bookId}(bookId=${id})}"
               th:object="${bookToUpdate}">
-
+            <span th:each="authorToRemove, authorToRemoveStat : *{authorsToRemove}">
+            <input type="number" th:field="*{authorsToRemove[__${authorToRemoveStat.index}__].id}"
+                   style="display: none" th:value="${authorToRemove.id}">
+            </span>
             <fieldset>
                 <legend th:text="'Book\'s title'"></legend>
                 <label>
@@ -127,7 +123,10 @@
                 </fieldset>
                 <button name="addAuthor" type="submit"> Add&nbsp;Author</button>
             </fieldset>
-            <button type="submit">Save Changes</button>
+            <button type="submit">Save</button>
+            <a th:href="@{/books/__${id}__}">
+                <button>Cancel</button>
+            </a>
         </form>
     </section>
 </main>

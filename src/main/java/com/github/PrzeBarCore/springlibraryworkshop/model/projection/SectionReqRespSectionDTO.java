@@ -1,29 +1,27 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
-import com.github.PrzeBarCore.springlibraryworkshop.model.Publisher;
+import com.github.PrzeBarCore.springlibraryworkshop.model.Section;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PublisherRespPublisherDTO {
+public class SectionReqRespSectionDTO {
     private int id;
     private String name;
     private List<AuthorSectionPublisherRespBookDTO> books;
-
-
 
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
@@ -38,21 +36,20 @@ public class PublisherRespPublisherDTO {
         this.books = books;
     }
 
-    public static PublisherRespPublisherDTO fromPublisher(Publisher publisher){
-        var publisherDTO= new PublisherRespPublisherDTO();
-        publisherDTO.id=publisher.getId();
-        publisherDTO.name = publisher.getName();
-        publisherDTO.books = publisher.getBookEditions()
+    public static SectionReqRespSectionDTO fromSection(Section section){
+        var sectionDTO= new SectionReqRespSectionDTO();
+        sectionDTO.id=section.getId();
+        sectionDTO.name = section.getName();
+        sectionDTO.books = section.getBooks()
                 .stream()
-                .map(bookEdition -> bookEdition.getBook())
                 .sorted(Comparator.comparing(Book::getTitle))
                 .map(AuthorSectionPublisherRespBookDTO::new)
                 .collect(Collectors.toList());
-        return publisherDTO;
+        return sectionDTO;
     }
 
-    public Publisher updatePublisherFromDTO(Publisher publisher){
-        publisher.setName(this.name);
-        return publisher;
+    public Section updateSectionFromDTO(Section section){
+      section.setName(this.name);
+      return section;
     }
 }

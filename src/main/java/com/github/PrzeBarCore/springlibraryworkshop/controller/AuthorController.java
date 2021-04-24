@@ -1,6 +1,7 @@
 package com.github.PrzeBarCore.springlibraryworkshop.controller;
 
 
+import com.github.PrzeBarCore.springlibraryworkshop.model.projection.AuthorReqRespAuthorDTO;
 import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookAuthorsRespAuthorDTO;
 import com.github.PrzeBarCore.springlibraryworkshop.service.AuthorService;
 import org.slf4j.Logger;
@@ -10,10 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/authors")
@@ -33,6 +31,18 @@ class AuthorController {
     @GetMapping("/{id}")
     String readAuthor(@PathVariable int id, Model model){
         model.addAttribute("author",service.getAuthorReadModelById(id));
+        return "authorDisplay";
+    }
+
+    @GetMapping("/update/{id}")
+    String getAuthorUpdateForm(@PathVariable int id, Model model){
+        model.addAttribute("authorToUpdate",service.getAuthorWriteModelById(id));
+        return "authorUpdateForm";
+    }
+
+    @PostMapping("/update/{id}")
+    String updateAuthor(@PathVariable int id, Model model, @ModelAttribute AuthorReqRespAuthorDTO authorToUpdate){
+        model.addAttribute("author",service.updateAuthor(authorToUpdate));
         return "authorDisplay";
     }
 

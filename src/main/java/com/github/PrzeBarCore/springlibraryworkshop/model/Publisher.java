@@ -27,6 +27,8 @@ public class Publisher {
         this.bookEditions.add(bookEdition);
     }
 
+
+
     public int getId() {
         return id;
     }
@@ -35,11 +37,12 @@ public class Publisher {
         this.id = id;
     }
 
+
     public String getName() {
         return name;
     }
 
-    void setName(final String name) {
+    public void setName(String name) {
         this.name = name;
     }
 

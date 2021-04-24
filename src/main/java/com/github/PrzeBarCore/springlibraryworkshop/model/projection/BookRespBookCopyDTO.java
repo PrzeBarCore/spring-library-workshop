@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class BookRespBookCopyDTO {
-    private int id;
+        private int id;
         private String state;
         private String borrowedUntil;
         private String reservedUntil;

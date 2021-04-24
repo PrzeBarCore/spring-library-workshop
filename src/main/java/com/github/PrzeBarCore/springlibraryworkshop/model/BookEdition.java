@@ -30,7 +30,6 @@ public class BookEdition {
     private Book book;
 
     public BookEdition() {
-
     }
 
     public Set<BookCopy> getBookCopies() {

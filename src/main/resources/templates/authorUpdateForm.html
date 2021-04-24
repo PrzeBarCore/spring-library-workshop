@@ -14,13 +14,20 @@
 
 <main style="background-color: #072B4F">
     <section style="margin-left: 10px;">
-        <h1 th:text="${author.name}+' '+ ${author.lastName}"></h1>
-        <a th:href="@{/authors/update/__${author.id}__}">
-            <button>Edit author</button>
-        </a>
-        <br>
+        <form method="POST" th:action="@{/authors/update/__${authorToUpdate.id}__}" th:object="${authorToUpdate}">
+            <h3>Edit author:</h3>
+            <fieldset>
+                <input th:field="*{name}" type="text">
+                <input th:field="*{lastName}" type="text">
+            </fieldset>
+            <button type="submit">Save</button>
+            <a th:href="@{/authors/__${authorToUpdate.id}__}">
+                <button >Cancel</button>
+            </a>
+        </form>
+
         <h3>Author of books:</h3>
-        <div th:each="book: ${author.books}">
+        <div th:each="book: ${authorToUpdate.books}">
             <p><a th:href="@{/books/{bookId}(bookId=${book.id})}" th:text="${book.title}"></a>
             </p>
         </div>

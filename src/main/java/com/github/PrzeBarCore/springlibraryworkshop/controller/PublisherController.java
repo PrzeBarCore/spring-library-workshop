@@ -1,16 +1,14 @@
 package com.github.PrzeBarCore.springlibraryworkshop.controller;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookPublishersRespPublisherDTO;
+import com.github.PrzeBarCore.springlibraryworkshop.model.projection.PublisherRespPublisherDTO;
 import com.github.PrzeBarCore.springlibraryworkshop.service.PublisherService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/publishers")
@@ -29,6 +27,17 @@ class PublisherController {
     @GetMapping("/{id}")
     String readPublisher(@PathVariable int id, Model model){
         model.addAttribute("publisher",service.getPublisherReadModelById(id));
+        return "publisherDisplay";
+    }
+    @GetMapping("/update/{id}")
+    String getPublisherUpdateForm(@PathVariable int id, Model model){
+        model.addAttribute("publisherToUpdate",service.getPublisherReadModelById(id));
+        return "publisherUpdate";
+    }
+
+    @PostMapping("/update/{id}")
+    String updatePublisher(@PathVariable int id, Model model, @ModelAttribute PublisherRespPublisherDTO toUpdate){
+        model.addAttribute("publisher",service.updatePublisher(toUpdate));
         return "publisherDisplay";
     }
 

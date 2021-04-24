@@ -1,11 +1,13 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
 
+import com.github.PrzeBarCore.springlibraryworkshop.model.Author;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,13 +21,14 @@ public class BookReqBookDTO {
     private List<BookReqBookEditionDTO> bookEditions;
 
     private List<BookReqAuthorDTO> authors;
+    private List<BookReqAuthorDTO> authorsToRemove;
 
 
     public BookReqBookDTO() {
         this.bookEditions = new ArrayList<>();
         this.bookEditions.add(new BookReqBookEditionDTO());
         this.authors= new ArrayList<>();
-
+        this.authorsToRemove=new ArrayList<>();
     }
 
 
@@ -35,6 +38,7 @@ public class BookReqBookDTO {
     }
 
     public void removeAuthor(int index){
+        this.authorsToRemove.add(this.authors.get(index));
         this.authors.remove(index);
 
     }
@@ -47,6 +51,14 @@ public class BookReqBookDTO {
     public void removeBookEdition(int index){
         this.bookEditions.remove(index);
 
+    }
+
+    public List<BookReqAuthorDTO> getAuthorsToRemove() {
+        return authorsToRemove;
+    }
+
+    public void setAuthorsToRemove(List<BookReqAuthorDTO> authorsToRemove) {
+        this.authorsToRemove = authorsToRemove;
     }
 
     public String getTitle() {
@@ -88,18 +100,10 @@ public class BookReqBookDTO {
         bookWriteModel.section=BookReqSectionDTO.fromSection(source.getSection());
         bookWriteModel.authors=source.getAuthors()
                 .stream()
+                .sorted(Comparator.comparing(Author::getLastName))
                 .map(BookReqAuthorDTO::fromAuthor)
                 .collect(Collectors.toList());
         return bookWriteModel;
-    }
-
-    public Book toBook(){
-        var book= new Book(title);
-        book.setSection(section.toSection(book));
-        book.setBookEditions(bookEditions.stream().map(bookCopy-> bookCopy.toBookEdition(book)).collect(Collectors.toUnmodifiableSet()));
-        book.setAuthors(authors.stream().map(author -> author.toAuthor(book)).collect(Collectors.toUnmodifiableSet()));
-
-        return book;
     }
 
 }

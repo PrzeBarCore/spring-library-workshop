@@ -8,4 +8,6 @@ public interface BookCopyRepository {
     Optional<BookCopy> findBookCopyById(int id);
 
     BookCopy save(BookCopy result);
+
+    void deleteBookCopyById(int id);
 }

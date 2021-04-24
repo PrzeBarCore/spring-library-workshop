@@ -6,7 +6,7 @@ spring:
       path: '/console'
 
   datasource:
-    url: 'jdbc:h2:file:C:\Users\Administrator\Documents\Work\Projects\spring-library-workshop\library'
+#    url: 'jdbc:h2:file:C:\Users\Administrator\Documents\Work\Projects\spring-library-workshop\library'
 
 
   jpa:

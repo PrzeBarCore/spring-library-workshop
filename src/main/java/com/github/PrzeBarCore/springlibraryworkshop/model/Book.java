@@ -16,7 +16,7 @@ import java.util.Set;
     private String title;
 
     @NotNull(message = "Section cannot be empty")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name= "section_id")
     private Section section;
 

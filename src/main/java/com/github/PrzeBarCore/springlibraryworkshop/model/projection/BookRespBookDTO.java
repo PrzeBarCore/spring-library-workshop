@@ -1,7 +1,10 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
+import com.github.PrzeBarCore.springlibraryworkshop.model.Author;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
+import com.github.PrzeBarCore.springlibraryworkshop.model.BookEdition;
 
+import java.util.Comparator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,8 +22,16 @@ public class BookRespBookDTO {
         this.id=source.getId();
         this.title=source.getTitle();
         this.section= new BookSectionsRespSectionDTO(source.getSection());
-        this.bookEditions = source.getBookEditions().stream().map(BookRespBookEditionDTO::new).collect(Collectors.toSet());
-        this.authors=source.getAuthors().stream().map(BookAuthorsRespAuthorDTO::new).collect(Collectors.toSet());
+        this.bookEditions = source.getBookEditions()
+                .stream()
+                .sorted(Comparator.comparing(BookEdition::getId))
+                .map(BookRespBookEditionDTO::new)
+                .collect(Collectors.toSet());
+        this.authors=source.getAuthors()
+                .stream()
+                .sorted(Comparator.comparing(Author::getLastName))
+                .map(BookAuthorsRespAuthorDTO::new)
+                .collect(Collectors.toSet());
     }
 
     public int getId() {return id;}

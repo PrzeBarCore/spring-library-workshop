@@ -2,6 +2,7 @@ package com.github.PrzeBarCore.springlibraryworkshop.controller;
 
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookSectionsRespSectionDTO;
+import com.github.PrzeBarCore.springlibraryworkshop.model.projection.SectionReqRespSectionDTO;
 import com.github.PrzeBarCore.springlibraryworkshop.service.SectionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/sections")
@@ -25,16 +23,27 @@ class SectionController {
         this.service = service;
     }
 
+    @GetMapping
+    String readAllSections(){
+        return "sections";
+    }
 
     @GetMapping("/{id}")
     String readSection(@PathVariable int id, Model model){
         model.addAttribute("section",service.getSectionReadModelById(id));
-        return "sectionDisplay";
+        return "sectionDisplayForm";
     }
 
-    @GetMapping
-    String readAllSections(){
-        return "sections";
+    @GetMapping("/update/{id}")
+    String getSectionUpdateForm(@PathVariable int id, Model model){
+        model.addAttribute("sectionToUpdate",service.getSectionReadModelById(id));
+        return "sectionUpdateForm";
+    }
+
+    @PostMapping("/update/{id}")
+    String updateSection(@PathVariable int id, Model model, @ModelAttribute SectionReqRespSectionDTO toUpdate){
+        model.addAttribute("section",service.updateSection(toUpdate));
+        return "sectionDisplayForm";
     }
 
     @ModelAttribute

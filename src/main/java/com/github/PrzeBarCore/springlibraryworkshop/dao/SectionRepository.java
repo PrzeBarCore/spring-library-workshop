@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface SectionRepository {
 
-    Optional<Section> findById(Integer id);
+    Optional<Section> findSectionById(Integer id);
 
     Page<Section> findAll(Pageable page);
 
@@ -17,4 +17,7 @@ public interface SectionRepository {
 
     List<Section> findAll();
 
+    void deleteSectionByIdAndBooksEmpty(Integer id);
+
+    boolean existsSectionById(Integer id);
 }

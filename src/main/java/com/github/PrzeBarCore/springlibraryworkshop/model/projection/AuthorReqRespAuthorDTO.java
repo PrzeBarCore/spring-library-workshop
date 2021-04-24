@@ -1,33 +1,40 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
+import com.github.PrzeBarCore.springlibraryworkshop.model.Author;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
-import com.github.PrzeBarCore.springlibraryworkshop.model.Publisher;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PublisherRespPublisherDTO {
+public class AuthorReqRespAuthorDTO {
     private int id;
     private String name;
+    private String lastName;
     private List<AuthorSectionPublisherRespBookDTO> books;
-
-
 
     public int getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public List<AuthorSectionPublisherRespBookDTO> getBooks() {
@@ -38,21 +45,22 @@ public class PublisherRespPublisherDTO {
         this.books = books;
     }
 
-    public static PublisherRespPublisherDTO fromPublisher(Publisher publisher){
-        var publisherDTO= new PublisherRespPublisherDTO();
-        publisherDTO.id=publisher.getId();
-        publisherDTO.name = publisher.getName();
-        publisherDTO.books = publisher.getBookEditions()
+    public static AuthorReqRespAuthorDTO fromAuthor(Author author){
+        var authorDTO= new AuthorReqRespAuthorDTO();
+        authorDTO.id= author.getId();
+        authorDTO.name= author.getName();
+        authorDTO.lastName= author.getLastName();
+        authorDTO.books=author.getBooks()
                 .stream()
-                .map(bookEdition -> bookEdition.getBook())
                 .sorted(Comparator.comparing(Book::getTitle))
                 .map(AuthorSectionPublisherRespBookDTO::new)
                 .collect(Collectors.toList());
-        return publisherDTO;
+        return authorDTO;
     }
 
-    public Publisher updatePublisherFromDTO(Publisher publisher){
-        publisher.setName(this.name);
-        return publisher;
+    public Author updateAuthorFromDTO(Author author){
+        author.setName(this.name);
+        author.setLastName(this.lastName);
+        return author;
     }
 }

@@ -1,7 +1,9 @@
 package com.github.PrzeBarCore.springlibraryworkshop.controller;
 
+import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookEditionReqBookEditionDTO;
 import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookReqBookDTO;
 import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookRespBookDTO;
+import com.github.PrzeBarCore.springlibraryworkshop.service.BookEditionService;
 import com.github.PrzeBarCore.springlibraryworkshop.service.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,20 +19,22 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/books")
 class BookController {
     private final BookService service;
+    private final BookEditionService editionService;
     private static final Logger logger = LoggerFactory.getLogger(BookController.class);
     private final String className;
 
-    BookController(final BookService service) {
+    BookController(final BookService service, final BookEditionService editionService) {
         this.service= service;
+        this.editionService=editionService;
         this.className= this.getClass().getSimpleName();
     }
 
     @PostMapping
     @Transactional
-    String createBook(@ModelAttribute("bookToCreate") BookReqBookDTO toCreate){
+    String createBook(@ModelAttribute("bookToCreate") BookReqBookDTO toCreate, Model model){
         logger.info("Creating book. FROM"+className);
-        service.createBook(toCreate);
-        return "books";
+        model.addAttribute("book",service.createBook(toCreate));
+        return "bookDisplay";
     }
 
     @PostMapping(params = "addAuthor")
@@ -77,13 +81,11 @@ class BookController {
     }
 
     @PostMapping(value="{bookId}/changeStatus/{bookCopyId}" ,params="state")
-    String reserveBookCopy(@PathVariable("bookCopyId") Integer bookCopyId,
+    void reserveBookCopy(@PathVariable("bookCopyId") Integer bookCopyId,
                            @PathVariable("bookId") Integer bookId,
                            Model model, @RequestParam("state") String state) {
         service.changeStatus(bookCopyId, state);
-        BookRespBookDTO book= service.getBookReadModelById(bookId);
-        model.addAttribute("book", book);
-        return "bookDisplay";
+        readBook(bookId,model);
     }
 
 
@@ -101,10 +103,10 @@ class BookController {
     }
 
     @PostMapping("/update/{id}")
+    @Transactional
     String updateBook(@PathVariable int id, @ModelAttribute("bookToUpdate") BookReqBookDTO bookToUpdate, Model model){
         logger.info("Updating book. FROM "+className);
-        service.updateBook(bookToUpdate,id);
-        model.addAttribute("book", service.getBookReadModelById(id));
+        model.addAttribute("book", service.updateBook(bookToUpdate,id));
         return "bookDisplay";
     }
 
@@ -116,10 +118,54 @@ class BookController {
     }
 
     @PostMapping(value="/update/{id}",params="removeAuthor")
-    String removeAuthorOfBookToUpdate(@ModelAttribute("bookToUpdate") BookReqBookDTO current, @RequestParam("removeAuthor") int authorIndexToRemove, @PathVariable int id ){
+    String removeAuthorOfBookToUpdate(@ModelAttribute("bookToUpdate") BookReqBookDTO current,
+                                      @RequestParam("removeAuthor") int authorIndexToRemove){
+
         logger.info("Removing author in book to update. FROM "+className);
         current.removeAuthor(authorIndexToRemove);
         return "bookUpdateForm";
+    }
+
+
+    @GetMapping("/{bookId}/editionUpdate/{editionId}")
+    String showBookEditionUpdateForm(Model model, @PathVariable int editionId,
+                                     @PathVariable int bookId){
+        model.addAttribute("bookEditionToUpdate",editionService.getBookEditionWriteModelById(editionId));
+        model.addAttribute("sourceBookId", bookId);
+        return "bookEditionUpdateForm";
+    }
+
+
+    @PostMapping("/{bookId}/editionUpdate/{editionId}")
+    @Transactional
+    String updateBookEdition(Model model,@ModelAttribute("bookEditionToUpdate") BookEditionReqBookEditionDTO current,
+                             @PathVariable int bookId,
+                             @PathVariable int editionId){
+        editionService.updateEdition(current, editionId);
+        return readBook(bookId,model);
+    }
+
+    @PostMapping(value="/{bookId}/editionUpdate/{editionId}", params="addBookCopy")
+    String bookEditionUpdateFormAddCopy(@ModelAttribute("bookEditionToUpdate") BookEditionReqBookEditionDTO current,
+                                        @PathVariable int bookId,
+                                        Model model
+                                        ){
+        current.addBookCopy();
+        model.addAttribute("bookEditionToUpdate",current);
+        model.addAttribute("sourceBookId", bookId);
+        return "bookEditionUpdateForm";
+    }
+
+    @PostMapping(value="/{bookId}/editionUpdate/{editionId}", params="removeBookCopy")
+    String bookEditionUpdateFormRemoveCopy(@ModelAttribute("bookEditionToUpdate") BookEditionReqBookEditionDTO current,
+                                           @PathVariable int bookId,
+                                           @RequestParam("removeBookCopy") int copyToRemove,
+                                           Model model
+                                            ){
+        current.removeBookCopy(copyToRemove);
+        model.addAttribute("bookEditionToUpdate",current);
+        model.addAttribute("sourceBookId", bookId);
+        return "bookEditionUpdateForm";
     }
 
 

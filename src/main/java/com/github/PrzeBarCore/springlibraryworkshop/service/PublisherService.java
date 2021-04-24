@@ -34,15 +34,21 @@ public class PublisherService {
 
     public PublisherRespPublisherDTO getPublisherReadModelById(int id) {
         PublisherRespPublisherDTO result=repository.findById(id)
-                .map(PublisherRespPublisherDTO::new)
+                .map(PublisherRespPublisherDTO::fromPublisher)
                 .orElseThrow(()->new IllegalArgumentException("Publisher with given ID doesn't exist!"));
         return result;
     }
 
-    public void deletePublisher(Integer id) {
+    public void deletePublisherIfBookEditionsIsEmpty(Integer id) {
         if(!repository.existsPublisherById(id)){
             throw new IllegalArgumentException("Author with given ID doesn't exist!");
         }
         repository.deletePublisherByIdAndBookEditionsEmpty(id);
+    }
+
+    public PublisherRespPublisherDTO updatePublisher(PublisherRespPublisherDTO publisherToUpdate) {
+        Publisher publisher=readPublisherById(publisherToUpdate.getId());
+        repository.save(publisherToUpdate.updatePublisherFromDTO(publisher));
+        return PublisherRespPublisherDTO.fromPublisher(publisher);
     }
 }

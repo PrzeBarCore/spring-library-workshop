@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="eng" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring-library-workshop: books</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <script th:inline="javascript">
+
+        function loadState() {
+            let checkboxes = document.querySelectorAll('input[type=checkbox]');
+            checkboxes.forEach(checkbox =>
+                changeLabelAndInputFields(checkbox.id));
+        }
+
+        function showOrHide(idOfInputField) {
+            if (document.getElementById(idOfInputField).checked) {
+                document.getElementById('2Input-' + idOfInputField).style.display = "block";
+                document.getElementById('1Input-' + idOfInputField).style.display = "none";
+
+            } else {
+                document.getElementById('1Input-' + idOfInputField).style.display = "block";
+                document.getElementById('2Input-' + idOfInputField).style.display = "none";
+            }
+        }
+
+        function changeLabelAndInputFields(idOfCheckbox) {
+            let idOfLabel = document.getElementById('label-' + idOfCheckbox);
+            let isChecked = document.getElementById(idOfCheckbox).checked;
+            if (idOfCheckbox.toString().includes("publisherCheckbox")) {
+                if (isChecked) {
+                    idOfLabel.innerHTML = "New publisher"
+                } else {
+                    idOfLabel.innerHTML = "Existing publisher";
+                }
+            }
+            showOrHide(idOfCheckbox);
+        }
+    </script>
+</head>
+<body onload="loadState()">
+<header>
+    <div th:insert="~{menu::header}">
+    </div>
+</header>
+<main>
+    <section>
+        <form method="POST" th:action="@{/books/__${sourceBookId}__/editionUpdate/__${bookEditionToUpdate.id}__}"
+              th:object="${bookEditionToUpdate}">
+
+            <input type="number" th:field="*{id}" style="display: none" th:value="${bookEditionToUpdate.id}">
+            <label th:each="bookCopyToRemove, bookCopyToRemoveStat : *{bookCopiesToRemove}">
+                <input type="number" th:field="*{bookCopiesToRemove[__${bookCopyToRemoveStat.index}__].id}" th:value="${bookCopyToRemove.id}"
+                       style="display: none" >
+            </label>
+
+
+            <fieldset>
+                <legend th:text="'Book Edition'"></legend>
+                    <label> Year of publication
+                        <input placeholder="Enter publication year"
+                               th:field="*{publicationDate}"
+                               type="number">
+                    </label>
+
+                    <label th:for="'publisherCheckbox'"
+                           th:id="'label-publisherCheckbox'">Existing
+                        publisher</label>
+                    <label class="switch">
+                        <input onchange="changeLabelAndInputFields(this.id)"
+                               th:field="*{newPublisher}"
+                               th:id="'publisherCheckbox'"
+                               type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+
+                    <div th:id="'1Input-publisherCheckbox'">
+                        <label> Publisher's id number
+                            <input placeholder="Enter existing publisher's id number"
+                                   th:field="*{publisher.id}"
+                                   type="number">
+                        </label>
+                    </div>
+                    <div style="display: none" th:id="'2Input-publisherCheckbox'">
+                        <label> Publisher's name
+                            <input placeholder="Enter name for new publisher"
+                                   th:field="*{publisher.name}"
+                                   type="text">
+                        </label>
+                    </div>
+
+                    <h3>Copies of book's edition </h3>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="bookCopy, bookCopyStat : *{bookCopies}">
+                                <td>
+                                    <span th:if="${bookCopy.id}!=-1" th:text="${bookCopy.id}"></span>
+                                    <span th:if="${bookCopy.id}==-1" th:text="'-'"></span>
+                                    <input th:field="*{bookCopies[__${bookCopyStat.index}__].id}"
+                                           type="number" th:value="${bookCopy.id}" style="display: none">
+
+                                </td>
+                                <td>
+                                        <span th:if="${bookCopy.id}!=-1" th:text="${bookCopy.state}"></span>
+                                        <span th:if="${bookCopy.id}==-1" th:text="'New'"></span>
+
+                                    <input th:field="*{bookCopies[__${bookCopyStat.index}__].state}"
+                                           type="text" th:value="${bookCopy.state}"  style="display: none">
+
+                                    <input th:field="*{bookCopies[__${bookCopyStat.index}__].newCopy}"
+                                           type="checkbox"  style="display: none">
+                                </td>
+                                <td>
+                                        <button th:value="${bookCopyStat.index}" name="removeBookCopy" type="submit">X</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                <button name="addBookCopy" type="submit">Add&nbsp;next&nbsp;copy</button>
+                </fieldset>
+            <button type="submit">Save</button>
+            <a th:href="@{/books/__${sourceBookId}__}">
+                <button>Cancel</button>
+            </a>
+        </form>
+    </section>
+</main>
+
+</body>
+</html>

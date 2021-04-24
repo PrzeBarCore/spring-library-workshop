@@ -7,10 +7,6 @@ public class BookReqPublisherDTO {
     private Integer id=0;
     private String name;
 
-    public BookReqPublisherDTO(String name) {
-        this.name = name;
-    }
-
     public BookReqPublisherDTO() {
     }
 
@@ -32,5 +28,12 @@ public class BookReqPublisherDTO {
 
     public Publisher toPublisher(BookEdition bookCopy){
         return new Publisher(name,bookCopy);
+    }
+
+    public static BookReqPublisherDTO fromPublisher(Publisher source){
+        var result=new BookReqPublisherDTO();
+        result.id=source.getId();
+        result.name= source.getName();
+        return result;
     }
 }
