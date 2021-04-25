@@ -18,8 +18,7 @@ public class Section {
     @OneToMany(mappedBy = "section")
     private Set<Book> books=new HashSet<>();
 
-    public Section(){
-    }
+    public Section(){}
 
     public Section(String name, Book book) {
         this.name=name;

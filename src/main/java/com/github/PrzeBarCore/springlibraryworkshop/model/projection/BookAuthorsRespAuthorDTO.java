@@ -1,8 +1,14 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Author;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class BookAuthorsRespAuthorDTO {
+
+    @NotNull(message = "Author's id cannot be null")
     private int id;
+    @NotEmpty(message = "Author's name cannot be empty")
     private String name;
     private String lastName;
 

@@ -6,51 +6,8 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <link href="https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/styles.css}"/>
-    <script th:inline="javascript">
-
-        function loadState() {
-            let checkboxes = document.querySelectorAll('input[type=checkbox]');
-            checkboxes.forEach(checkbox =>
-                changeLabelAndInputFields(checkbox.id));
-        }
-
-        function showOrHide(idOfInputField) {
-            if (document.getElementById(idOfInputField).checked) {
-                document.getElementById('2Input-' + idOfInputField).style.display = "block";
-                document.getElementById('1Input-' + idOfInputField).style.display = "none";
-
-            } else {
-                document.getElementById('1Input-' + idOfInputField).style.display = "block";
-                document.getElementById('2Input-' + idOfInputField).style.display = "none";
-            }
-        }
-
-        function changeLabelAndInputFields(idOfCheckbox) {
-            let idOfLabel = document.getElementById('label-' + idOfCheckbox);
-            let isChecked = document.getElementById(idOfCheckbox).checked;
-            if (idOfCheckbox.toString().includes("publisherCheckbox")) {
-                if (isChecked) {
-                    idOfLabel.innerHTML = "New publisher"
-                } else {
-                    idOfLabel.innerHTML = "Existing publisher";
-                }
-            }
-            if (idOfCheckbox.toString().includes("authorCheckbox")) {
-                if (isChecked) {
-                    idOfLabel.innerHTML = "New author";
-                } else {
-                    idOfLabel.innerHTML = "Existing author";
-                }
-            }
-            if (idOfCheckbox.toString().includes("sectionCheckbox")) {
-                if (isChecked) {
-                    idOfLabel.innerHTML = "New section";
-                } else {
-                    idOfLabel.innerHTML = "Existing section";
-                }
-            }
-            showOrHide(idOfCheckbox);
-        }
+    <script type="text/javascript"
+            th:src="@{/scripts.js}" >
     </script>
 </head>
 <body onload="loadState()">
@@ -62,7 +19,7 @@
 <main>
     <section>
 
-        <form method="POST" th:action="@{/books}"
+        <form id="form" method="POST" th:action="@{/books}" onsubmit="return validateIdValueIfObjectIsNew()"
               th:object="${bookToCreate}">
 
             <fieldset>
@@ -77,14 +34,14 @@
                 <label for="sectionCheckbox" id="label-sectionCheckbox">Existing section</label>
                 <label class="switch">
                     <input id="sectionCheckbox" onchange="changeLabelAndInputFields(this.id)"
-                           th:field="*{section.newSection}"
-                           type="checkbox">
+                           th:field="*{section.newSection}" type="checkbox">
                     <span class="slider round"></span>
                 </label>
 
                 <div id="1Input-sectionCheckbox">
                     <label>Section's id number
-                        <input placeholder="Enter id number of existing section" th:field="*{section.id}" type="number">
+                        <input id="id-sectionCheckbox" placeholder="Enter id number of existing section"
+                               th:field="*{section.id}" type="number">
                     </label>
                 </div>
                 <div id="2Input-sectionCheckbox" style="display:none">
@@ -109,7 +66,8 @@
                     </label>
                     <div th:id="'1Input-authorCheckbox'+${authorStat.index}">
                         <label> Author's id number
-                            <input th:field="*{authors[__${authorStat.index}__].id}"
+                            <input th:id="'id-authorCheckbox'+${authorStat.index}"
+                                    th:field="*{authors[__${authorStat.index}__].id}"
                                    th:placeholder="'Enter id number of existing author'" type="number">
                         </label>
                     </div>
@@ -150,7 +108,8 @@
 
                     <div th:id="'1Input-publisherCheckbox'+${bookEditionStat.index}">
                         <label> Publisher's id number
-                            <input placeholder="Enter existing publisher's id number"
+                            <input th:id="'id-publisherCheckbox'+${bookEditionStat.index}"
+                                    placeholder="Enter existing publisher's id number"
                                    th:field="*{bookEditions[__${bookEditionStat.index}__].publisher.id}"
                                    type="number">
                         </label>

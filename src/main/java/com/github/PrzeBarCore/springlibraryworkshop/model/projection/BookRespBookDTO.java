@@ -1,11 +1,9 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
-import com.github.PrzeBarCore.springlibraryworkshop.model.Author;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
-import com.github.PrzeBarCore.springlibraryworkshop.model.BookEdition;
 
 import java.util.Comparator;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class BookRespBookDTO {
@@ -13,10 +11,8 @@ public class BookRespBookDTO {
     private int id;
     private String title;
     private BookSectionsRespSectionDTO section;
-    private Set<BookRespBookEditionDTO> bookEditions;
-    private Set<BookAuthorsRespAuthorDTO> authors;
-
-    public BookRespBookDTO(){}
+    private List<BookRespBookEditionDTO> bookEditions;
+    private List<BookAuthorsRespAuthorDTO> authors;
 
     public BookRespBookDTO(Book source){
         this.id=source.getId();
@@ -24,14 +20,14 @@ public class BookRespBookDTO {
         this.section= new BookSectionsRespSectionDTO(source.getSection());
         this.bookEditions = source.getBookEditions()
                 .stream()
-                .sorted(Comparator.comparing(BookEdition::getId))
                 .map(BookRespBookEditionDTO::new)
-                .collect(Collectors.toSet());
+                .sorted(Comparator.comparing(BookRespBookEditionDTO::getId))
+                .collect(Collectors.toList());
         this.authors=source.getAuthors()
                 .stream()
-                .sorted(Comparator.comparing(Author::getLastName))
                 .map(BookAuthorsRespAuthorDTO::new)
-                .collect(Collectors.toSet());
+                .sorted(Comparator.comparing(BookAuthorsRespAuthorDTO::getLastName))
+                .collect(Collectors.toList());
     }
 
     public int getId() {return id;}
@@ -51,19 +47,19 @@ public class BookRespBookDTO {
         this.section = section;
     }
 
-    public Set<BookRespBookEditionDTO> getBookEditions() {
+    public List<BookRespBookEditionDTO> getBookEditions() {
         return bookEditions;
     }
 
-    public void setBookEditions(Set<BookRespBookEditionDTO> bookEditions) {
+    public void setBookEditions(List<BookRespBookEditionDTO> bookEditions) {
         this.bookEditions = bookEditions;
     }
 
-    public Set<BookAuthorsRespAuthorDTO> getAuthors() {
+    public List<BookAuthorsRespAuthorDTO> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(Set<BookAuthorsRespAuthorDTO> authors) {
+    public void setAuthors(List<BookAuthorsRespAuthorDTO> authors) {
         this.authors = authors;
     }
 }

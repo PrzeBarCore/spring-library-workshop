@@ -2,22 +2,22 @@ package com.github.PrzeBarCore.springlibraryworkshop.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "book_editions")
 public class BookEdition {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
     private int publicationDate;
 
-    @NotNull
+
     @OneToMany(mappedBy = "bookEdition", cascade = CascadeType.ALL)
-    private Set<BookCopy> bookCopies;
+    private Set<BookCopy> bookCopies= new HashSet<>();
 
     @NotNull(message = "Publisher cannot be empty")
     @ManyToOne(cascade = CascadeType.PERSIST)
@@ -25,12 +25,11 @@ public class BookEdition {
     private Publisher publisher;
 
     @NotNull(message = "Book cannot be empty")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
 
-    public BookEdition() {
-    }
+    public BookEdition() {}
 
     public Set<BookCopy> getBookCopies() {
         return bookCopies;

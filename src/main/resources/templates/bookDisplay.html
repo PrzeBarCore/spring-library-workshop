@@ -19,27 +19,32 @@
             <p th:text="${author.name}+' '+${author.lastName}"></p>
         </div>
         <div style="margin-top: 30px; margin-bottom: 30px">
-            <a  th:href="@{/books/update/{bookId}(bookId=${book.id})}" style="margin-left: 5px">
-                <button>  Edit Book </button>
-            </a>
-            <form method="post" style=" margin-left: 5px" th:action="@{/books/delete/{bookId}(bookId=${book.id})}">
+            <form method="post" style=" margin-left: 5px" th:action="@{/books/delete/__${book.id}__}">
                 <button onClick="return confirm('Book and it\'s all copies will be deleted. \nContinue?')"
                         type="submit">Delete Book
                 </button>
+
+                <a  th:href="@{/books/update/__${book.id}__}" style="margin-left: 5px">
+                    <button type="button"> Edit Book </button>
+                </a>
+
+                <a  th:href="@{/books/__${book.id}__/addEdition}" style="margin-left: 5px">
+                    <button type="button"> Add Edition </button>
+                </a>
             </form>
         </div>
 
-        <br><br>
         <h3>Available book editions</h3>
 
         <div th:each="bookEdition,bookEditionStat: ${book.bookEditions}">
             <details open>
-                <summary
-                        th:text="${bookEditionStat.index+1}+'. Publisher:  '+ ${bookEdition.publisher.name} + ', Date of publication:  ' +${bookEdition.publicationDate}"></summary>
-                <a th:href="@{/books/__${book.id}__/editionUpdate/__${bookEdition.id}__}" style="margin-left: 10px">
+                <summary th:text="${bookEditionStat.index+1}+'. Publisher:  '+ ${bookEdition.publisher.name}
+                + ', Date of publication:  ' +${bookEdition.publicationDate}"></summary>
+                <br> <br>
+                <a th:href="@{/books/__${book.id}__/editionUpdate/__${bookEdition.getId()}__}">
                     <button >Edit Book's Edition</button>
                 </a>
-                <br>
+                <br><br>
                 <table style="width:550px;">
                     <thead>
                     <tr>
@@ -76,6 +81,11 @@
                     </tbody>
                 </table>
             </details>
+            <form method="post" th:action="@{/books/__${book.id}__/deleteEdition/__${bookEdition.id}__}">
+                <button onClick="return confirm('Edition and all it's copies will be deleted. \nContinue?')"
+                        type="submit"> Delete Edition
+                </button>
+            </form>
         </div>
     </section>
 </main>

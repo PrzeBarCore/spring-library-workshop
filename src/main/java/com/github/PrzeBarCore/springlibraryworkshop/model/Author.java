@@ -1,7 +1,8 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,15 +13,16 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotEmpty(message = "Name cannot be empty")
+    @NotBlank(message = "Name cannot be empty")
+    @Size(min = 1, max = 40)
     private String name;
-
+    @Size(max = 40)
     private String lastName;
 
     @ManyToMany(mappedBy = "authors")
     private Set<Book> books= new HashSet<>();
 
-    public Author(){};
+    public Author(){}
 
     public Author(String name, String lastName, Book book) {
         this.name=name;

@@ -17,7 +17,5 @@ public interface SectionRepository {
 
     List<Section> findAll();
 
-    void deleteSectionByIdAndBooksEmpty(Integer id);
-
-    boolean existsSectionById(Integer id);
+    void deleteSectionById(Integer id);
 }

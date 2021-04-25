@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/publishers")
 class PublisherController {
@@ -26,25 +28,28 @@ class PublisherController {
 
     @GetMapping("/{id}")
     String readPublisher(@PathVariable int id, Model model){
+
         model.addAttribute("publisher",service.getPublisherReadModelById(id));
         return "publisherDisplay";
     }
     @GetMapping("/update/{id}")
     String getPublisherUpdateForm(@PathVariable int id, Model model){
+
         model.addAttribute("publisherToUpdate",service.getPublisherReadModelById(id));
         return "publisherUpdate";
     }
 
     @PostMapping("/update/{id}")
-    String updatePublisher(@PathVariable int id, Model model, @ModelAttribute PublisherRespPublisherDTO toUpdate){
+    String updatePublisher(@Valid @ModelAttribute PublisherRespPublisherDTO toUpdate, @PathVariable int id, Model model){
+
         model.addAttribute("publisher",service.updatePublisher(toUpdate));
         return "publisherDisplay";
     }
 
     @ModelAttribute
     void getAllPublishers(@PageableDefault(size=10) Pageable pageable, Model model) {
-        Page<BookPublishersRespPublisherDTO> result = service.readAllPublishers(pageable);
 
+        Page<BookPublishersRespPublisherDTO> result = service.readAllPublishers(pageable);
         int pageNumber = pageable.getPageNumber();
         int totalPages = result.getTotalPages();
 
@@ -57,5 +62,4 @@ class PublisherController {
         model.addAttribute("publishers", result);
         model.addAttribute("totalPages", totalPages);
     }
-
 }

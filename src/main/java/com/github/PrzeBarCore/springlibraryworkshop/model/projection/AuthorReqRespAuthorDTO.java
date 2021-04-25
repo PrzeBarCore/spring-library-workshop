@@ -3,14 +3,20 @@ package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Author;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AuthorReqRespAuthorDTO {
+
+    @NotNull(message = "Author's id cannot be null")
     private int id;
+    @NotEmpty(message = "Author's name cannot be empty")
     private String name;
     private String lastName;
+    @NotNull(message = "Author's books cannot be null")
     private List<AuthorSectionPublisherRespBookDTO> books;
 
     public int getId() {

@@ -17,12 +17,10 @@ public class BookReqBookDTO {
 
     @NotNull(message = "Section cannot be empty")
     private BookReqSectionDTO section;
-
+    @NotNull(message = "Section cannot be empty")
     private List<BookReqBookEditionDTO> bookEditions;
-
     private List<BookReqAuthorDTO> authors;
     private List<BookReqAuthorDTO> authorsToRemove;
-
 
     public BookReqBookDTO() {
         this.bookEditions = new ArrayList<>();
@@ -30,7 +28,6 @@ public class BookReqBookDTO {
         this.authors= new ArrayList<>();
         this.authorsToRemove=new ArrayList<>();
     }
-
 
     public void addAuthor(){
 
@@ -92,7 +89,6 @@ public class BookReqBookDTO {
     public void setAuthors(List<BookReqAuthorDTO> authors) {
         this.authors = authors;
     }
-
 
     public static BookReqBookDTO fromBook(Book source){
         var bookWriteModel= new BookReqBookDTO();

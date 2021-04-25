@@ -22,8 +22,6 @@ public class BookReqBookEditionDTO {
         this.numberOfCopies =1;
     }
 
-
-
     public int getNumberOfCopies() {
         return numberOfCopies;
     }
@@ -76,8 +74,7 @@ public class BookReqBookEditionDTO {
         var bookEdition=new BookEdition();
         bookEdition.setPublicationDate(publicationDate);
         bookEdition.setBook(book);
-        bookEdition.setBookCopies(
-                createSetOfBookCopies(this.numberOfCopies, bookEdition));
+        bookEdition.setBookCopies(createSetOfBookCopies(this.numberOfCopies, bookEdition));
         return bookEdition;
     }
 }

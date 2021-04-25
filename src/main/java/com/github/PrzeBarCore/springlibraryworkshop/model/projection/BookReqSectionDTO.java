@@ -13,6 +13,12 @@ public class BookReqSectionDTO {
         this.isNewSection =false;
     }
 
+    public BookReqSectionDTO(Integer id, String name, boolean isNewSection) {
+        this.id = id;
+        this.name = name;
+        this.isNewSection = isNewSection;
+    }
+
     public boolean isNewSection() { return isNewSection; }
 
     public void setNewSection(boolean newSection) { this.isNewSection = newSection; }

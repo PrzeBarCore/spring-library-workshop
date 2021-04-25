@@ -20,7 +20,7 @@ import java.util.Set;
     @JoinColumn(name= "section_id")
     private Section section;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade ={CascadeType.PERSIST, CascadeType.MERGE})
     private Set<BookEdition> bookEditions;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
@@ -29,9 +29,7 @@ import java.util.Set;
     inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors;
 
-    public Book(){
-
-    }
+    public Book(){}
 
     public Book(String title) {
         this.title=title;

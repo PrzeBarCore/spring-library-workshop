@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/authors")
 class AuthorController {
@@ -30,26 +32,29 @@ class AuthorController {
 
     @GetMapping("/{id}")
     String readAuthor(@PathVariable int id, Model model){
+
         model.addAttribute("author",service.getAuthorReadModelById(id));
         return "authorDisplay";
     }
 
     @GetMapping("/update/{id}")
     String getAuthorUpdateForm(@PathVariable int id, Model model){
+
         model.addAttribute("authorToUpdate",service.getAuthorWriteModelById(id));
         return "authorUpdateForm";
     }
 
     @PostMapping("/update/{id}")
-    String updateAuthor(@PathVariable int id, Model model, @ModelAttribute AuthorReqRespAuthorDTO authorToUpdate){
+    String updateAuthor(@Valid @ModelAttribute AuthorReqRespAuthorDTO authorToUpdate, @PathVariable int id, Model model){
+
         model.addAttribute("author",service.updateAuthor(authorToUpdate));
         return "authorDisplay";
     }
 
     @ModelAttribute
     void getAllAuthors(@PageableDefault(size=10) Pageable pageable, Model model){
-        Page<BookAuthorsRespAuthorDTO> result=service.readAllAuthors(pageable);
 
+        Page<BookAuthorsRespAuthorDTO> result=service.readAllAuthors(pageable);
         int pageNumber= pageable.getPageNumber();
         int totalPages= result.getTotalPages();
 

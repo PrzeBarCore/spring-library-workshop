@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="eng" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring-library-workshop: books</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <script type="text/javascript"
+            th:src="@{/scripts.js}" >
+    </script>
+</head>
+<body onload="loadState()">
+<header>
+    <div th:insert="~{menu::header}">
+    </div>
+</header>
+<main>
+    <section>
+        <h1>New book's edition</h1>
+        <br>
+        <form id="form" method="POST" th:action="@{/books/__${sourceBookId}__/addEdition}" onsubmit="return validateIdValueIfObjectIsNew()"
+              th:object="${editionToCreate}">
+
+                <fieldset>
+                    <label> Year of publication
+                        <input placeholder="Enter publication year"
+                               th:field="*{publicationDate}"
+                               type="number">
+                    </label>
+
+                    <label th:for="publisherCheckbox"
+                           th:id="label-publisherCheckbox">Existing
+                        publisher</label>
+                    <label class="switch">
+                        <input onchange="changeLabelAndInputFields(this.id)"
+                               th:field="*{newPublisher}"
+                               th:id="publisherCheckbox"
+                               type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+
+                    <div th:id="'1Input-publisherCheckbox'">
+                        <label> Publisher's id number
+                            <input th:id="'id-publisherCheckbox'"
+                                   placeholder="Enter existing publisher's id number"
+                                   th:field="*{publisher.id}"
+                                   type="number">
+                        </label>
+                    </div>
+                    <div style="display: none" th:id="'2Input-publisherCheckbox'">
+                        <label> Publisher's name
+                            <input placeholder="Enter name for new publisher"
+                                   th:field="*{publisher.name}"
+                                   type="text">
+                        </label>
+                    </div>
+
+                    <label>Number of copies
+                        <input placeholder="Enter number of book's copies to add"
+                               th:field="*{numberOfCopies}"
+                               th:id="'numberOfCopies'"
+                               type="number">
+                    </label>
+                </fieldset>
+            <button type="submit">Save Edition</button>
+            <a th:href="@{/books/__${sourceBookId}__}">
+                <button type="button">Cancel</button>
+            </a>
+        </form>
+    </section>
+</main>
+</body>
+</html>
