@@ -46,7 +46,8 @@
                 </div>
                 <div id="2Input-sectionCheckbox" style="display:none">
                     <label>Section's name
-                        <input placeholder="Enter name for new section" th:field="*{section.name}" type="text">
+                        <input placeholder="Enter name for new section" th:field="*{section.name}"
+                               type="text">
                     </label>
                 </div>
             </fieldset>
@@ -87,7 +88,7 @@
             </fieldset>
 
             <fieldset>
-                <legend th:text="'Book\'s copies'"></legend>
+                <legend th:text="'Book\'s Edition'"></legend>
                 <fieldset th:each="bookEdition,bookEditionStat : *{bookEditions}">
                     <label> Year of publication
                         <input placeholder="Enter publication year"
@@ -100,7 +101,7 @@
                         publisher</label>
                     <label class="switch">
                         <input onchange="changeLabelAndInputFields(this.id)"
-                               th:field="*{bookEditions[__${bookEditionStat.index}__].newPublisher}"
+                               th:field="*{bookEditions[__${bookEditionStat.index}__].publisher.newPublisher}"
                                th:id="'publisherCheckbox'+${bookEditionStat.index}"
                                type="checkbox">
                         <span class="slider round"></span>
@@ -117,8 +118,7 @@
                     <div style="display: none" th:id="'2Input-publisherCheckbox'+${bookEditionStat.index}">
                         <label> Publisher's name
                             <input placeholder="Enter name for new publisher"
-                                   th:field="*{bookEditions[__${bookEditionStat.index}__].publisher.name}"
-                                   type="text">
+                                   th:field="*{bookEditions[__${bookEditionStat.index}__].publisher.name}" type="text">
                         </label>
                     </div>
 
@@ -129,10 +129,10 @@
                                type="number">
                     </label>
                     <button name="removeBookCopy" th:if="${bookEditionStat.size}>1" th:value="${bookEditionStat.index}"
-                            type="submit">Remove&nbsp;copy
+                            type="submit">Remove&nbsp;edition
                     </button>
                 </fieldset>
-                <button name="addBookCopy" type="submit">Add&nbsp;next&nbsp;copy</button>
+                <button name="addBookCopy" type="submit">Add&nbsp;next&nbsp;edition</button>
             </fieldset>
             <button type="submit">Save Book</button>
             <a href="/books">

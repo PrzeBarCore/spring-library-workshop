@@ -11,9 +11,9 @@ import java.util.Set;
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @NotBlank(message = "Name cannot be empty")
+    @NotBlank(message = "Author's name cannot be empty")
     @Size(min = 1, max = 40)
     private String name;
     @Size(max = 40)
@@ -30,11 +30,11 @@ public class Author {
         this.books.add(book);
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(final int id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 

@@ -2,66 +2,68 @@ package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.BookCopy;
 
+import javax.validation.constraints.NotNull;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class BookRespBookCopyDTO {
-        private int id;
-        private String state;
-        private String borrowedUntil;
-        private String reservedUntil;
+    @NotNull(message = "Copy's id cannot be null")
+    private Integer id;
+    private String state;
+    private String borrowedUntil;
+    private String reservedUntil;
 
-        public BookRespBookCopyDTO(BookCopy source){
-            this.id=source.getId();
-            int stateOfBookCopy=source.getState();
-            if(stateOfBookCopy==0){
-                this.state="Available";
-            } else if(stateOfBookCopy==1){
-                this.state="Borrowed";
-            } else{
-                this.state="Reserved";
-            }
-            this.borrowedUntil=Optional.ofNullable(
-                    source.getBorrowedUntil())
-                    .map(date -> date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                    .orElse("");
-            this.reservedUntil=Optional.ofNullable(
-                    source.getReservedUntil())
-                    .map(date -> date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                    .orElse("");
+    public BookRespBookCopyDTO(BookCopy source) {
+        this.id = source.getId();
+        int stateOfBookCopy = source.getState();
+        if (stateOfBookCopy == 0) {
+            this.state = "Available";
+        } else if (stateOfBookCopy == 1) {
+            this.state = "Borrowed";
+        } else {
+            this.state = "Reserved";
         }
+        this.borrowedUntil = Optional.ofNullable(
+                source.getBorrowedUntil())
+                .map(date -> date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .orElse("");
+        this.reservedUntil = Optional.ofNullable(
+                source.getReservedUntil())
+                .map(date -> date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .orElse("");
+    }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
     public String getState() {
-            return state;
-        }
+        return state;
+    }
 
-        public void setState(String state) {
-            this.state = state;
-        }
+    public void setState(String state) {
+        this.state = state;
+    }
 
-        public String getBorrowedUntil() {
-            return borrowedUntil;
-        }
+    public String getBorrowedUntil() {
+        return borrowedUntil;
+    }
 
-        public void setBorrowedUntil(String borrowedUntil) {
-            this.borrowedUntil = borrowedUntil;
-        }
+    public void setBorrowedUntil(String borrowedUntil) {
+        this.borrowedUntil = borrowedUntil;
+    }
 
-        public String getReservedUntil() {
-            return reservedUntil;
-        }
+    public String getReservedUntil() {
+        return reservedUntil;
+    }
 
-        public void setReservedUntil(String reservedUntil) {
-            this.reservedUntil = reservedUntil;
-        }
+    public void setReservedUntil(String reservedUntil) {
+        this.reservedUntil = reservedUntil;
+    }
 }
 
 

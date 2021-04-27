@@ -8,6 +8,7 @@ import com.github.PrzeBarCore.springlibraryworkshop.model.BookEdition;
 import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookEditionReqBookCopyDTO;
 import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookEditionReqBookEditionDTO;
 import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookReqBookEditionDTO;
+import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookReqPublisherDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,10 +30,12 @@ public class BookEditionService {
 
     BookEdition createBookEdition(BookReqBookEditionDTO toCreate, Book book) {
         BookEdition bookEdition = toCreate.toBookEdition(book);
-
         Integer publisherId = toCreate.getPublisher().getId();
-        if (toCreate.isNewPublisher()) {
-            bookEdition.setPublisher(toCreate.getPublisher().toPublisher(bookEdition));
+        BookReqPublisherDTO publisherOfToCreate=toCreate.getPublisher();
+
+        if (publisherOfToCreate.isNewPublisher()) {
+            publisherService.throwExceptionIfPublisherNameIsTaken(publisherOfToCreate.getName(), publisherId);
+            bookEdition.setPublisher(publisherOfToCreate.toPublisher(bookEdition));
         } else {
             bookEdition.setPublisher(publisherService.readPublisherById(publisherId));
         }
@@ -40,7 +43,7 @@ public class BookEditionService {
     }
 
     public BookEditionReqBookEditionDTO getBookEditionWriteModelById(int id) {
-        return BookEditionReqBookEditionDTO.fromBookEdition(
+        return new BookEditionReqBookEditionDTO(
                 repository.findById(id)
                         .orElseThrow(() -> new IllegalArgumentException("Book editions with given id doesn't exist")));
     }
@@ -57,13 +60,16 @@ public class BookEditionService {
 
         editionToUpdate.setPublicationDate(current.getPublicationDate());
 
-        var newPublisher = current.getPublisher();
-        var previousPublisherId = editionToUpdate.getPublisher().getId();
-        if (current.isNewPublisher()) {
+        BookReqPublisherDTO newPublisher = current.getPublisher();
+        Integer newPublisherId= newPublisher.getId();
+        Integer previousPublisherId = editionToUpdate.getPublisher().getId();
+
+        if (newPublisher.isNewPublisher()) {
+            publisherService.throwExceptionIfPublisherNameIsTaken(newPublisher.getName(), newPublisherId);
             editionToUpdate.setPublisher(newPublisher.toPublisher(editionToUpdate));
         } else {
-            if (editionToUpdate.getPublisher().getId() != newPublisher.getId()) {
-                editionToUpdate.setPublisher(publisherService.readPublisherById(newPublisher.getId()));
+            if (!previousPublisherId.equals(newPublisherId)) {
+                editionToUpdate.setPublisher(publisherService.readPublisherById(newPublisherId));
             }
         }
 

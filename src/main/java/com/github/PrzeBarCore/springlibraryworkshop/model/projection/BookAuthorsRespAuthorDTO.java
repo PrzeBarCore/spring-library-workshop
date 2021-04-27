@@ -5,9 +5,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class BookAuthorsRespAuthorDTO {
-
     @NotNull(message = "Author's id cannot be null")
-    private int id;
+    private Integer id;
     @NotEmpty(message = "Author's name cannot be empty")
     private String name;
     private String lastName;
@@ -18,11 +17,11 @@ public class BookAuthorsRespAuthorDTO {
         this.lastName= source.getLastName();
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

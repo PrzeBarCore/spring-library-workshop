@@ -34,7 +34,7 @@ class BookController {
 
     @PostMapping
     @Transactional
-    String createBook(@Valid @ModelAttribute("bookToCreate") BookReqBookDTO toCreate, Model model){
+    String createBook(@ModelAttribute("bookToCreate") @Valid BookReqBookDTO toCreate, Model model){
 
         logger.info("Creating book. FROM"+className);
         model.addAttribute("book",service.createBook(toCreate));
@@ -127,7 +127,7 @@ class BookController {
     }
 
     @PostMapping(value="/update/{id}",params = "addAuthor")
-    String addAuthorOfBookToUpdate(@Valid @ModelAttribute("bookToUpdate") BookReqBookDTO current, @PathVariable int id){
+    String addAuthorOfBookToUpdate( @ModelAttribute("bookToUpdate") BookReqBookDTO current, @PathVariable int id){
 
         logger.info("Adding author in book to update. FROM "+className);
         current.addAuthor();

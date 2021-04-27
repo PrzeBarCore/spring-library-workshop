@@ -10,9 +10,9 @@ import java.util.Set;
 public class Section {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @NotEmpty(message = "Name cannot be empty")
+    @NotEmpty(message = "Section's name cannot be empty")
     private String name;
 
     @OneToMany(mappedBy = "section")
@@ -29,7 +29,7 @@ public class Section {
         return id;
     }
 
-    void setId(final int id) {
+    void setId(final Integer id) {
         this.id = id;
     }
 

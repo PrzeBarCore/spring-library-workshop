@@ -2,6 +2,8 @@ package com.github.PrzeBarCore.springlibraryworkshop.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.Year;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,21 +12,22 @@ import java.util.Set;
 public class BookEdition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
+    @Column(columnDefinition = "smallint")
+    @Convert(converter = YearAttributeConverter.class)
+    private Year publicationDate;
 
-    private int publicationDate;
-
-
+    @Size(max = 12)
     @OneToMany(mappedBy = "bookEdition", cascade = CascadeType.ALL)
     private Set<BookCopy> bookCopies= new HashSet<>();
 
-    @NotNull(message = "Publisher cannot be empty")
+    @NotNull(message = "Edition's publisher cannot be empty")
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "publisher_id")
     private Publisher publisher;
 
-    @NotNull(message = "Book cannot be empty")
+    @NotNull(message = "Edition's book cannot be empty")
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
@@ -39,19 +42,25 @@ public class BookEdition {
         this.bookCopies = bookCopies;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getPublicationDate() {
+
+    public Year getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(int publicationDate) {
+    public void setPublicationDate(Year publicationDate) {
+        if(publicationDate.isAfter(Year.now())){
+            throw new IllegalStateException("Publication year cannot be after current year");
+        } else if(publicationDate.isBefore(Year.of(1900))){
+            throw new IllegalStateException("Cannot add book which was published before 1900");
+        }
         this.publicationDate = publicationDate;
     }
 

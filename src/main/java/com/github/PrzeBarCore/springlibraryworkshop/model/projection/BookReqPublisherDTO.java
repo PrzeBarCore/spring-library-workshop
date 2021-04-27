@@ -3,18 +3,27 @@ package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 import com.github.PrzeBarCore.springlibraryworkshop.model.BookEdition;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Publisher;
 
+import javax.validation.constraints.NotNull;
+
 public class BookReqPublisherDTO {
+    @NotNull(message = "Publisher's id cannot be blank")
     private Integer id=0;
     private String name;
+    private Boolean isNewPublisher;
 
     public BookReqPublisherDTO() {
+        this.isNewPublisher =false;
     }
 
-    public Integer getId() {
-        return id;
+    public BookReqPublisherDTO(Publisher source){
+        this.id=source.getId();
+        this.name=source.getName();
+        this.isNewPublisher=false;
     }
 
-    public void setId(int id) {
+    public Integer getId() { return id; }
+
+    public void setId( Integer id) {
         this.id = id;
     }
 
@@ -26,14 +35,17 @@ public class BookReqPublisherDTO {
         this.name = name;
     }
 
-    public Publisher toPublisher(BookEdition bookCopy){
-        return new Publisher(name,bookCopy);
+    public boolean isNewPublisher() {return isNewPublisher;}
+
+    public void setNewPublisher(boolean newPublisher) {
+        this.isNewPublisher = newPublisher;
     }
 
-    public static BookReqPublisherDTO fromPublisher(Publisher source){
-        var result=new BookReqPublisherDTO();
-        result.id=source.getId();
-        result.name= source.getName();
-        return result;
+    public Publisher toPublisher(BookEdition bookCopy){
+        String trimmedName=name.trim();
+        if(isNewPublisher && trimmedName.isBlank()){
+            throw new IllegalArgumentException("Publisher's name cannot be blank");
+        }
+        return new Publisher(trimmedName,bookCopy);
     }
 }

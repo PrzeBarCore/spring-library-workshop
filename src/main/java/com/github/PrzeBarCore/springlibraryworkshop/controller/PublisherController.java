@@ -1,7 +1,7 @@
 package com.github.PrzeBarCore.springlibraryworkshop.controller;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookPublishersRespPublisherDTO;
-import com.github.PrzeBarCore.springlibraryworkshop.model.projection.PublisherRespPublisherDTO;
+import com.github.PrzeBarCore.springlibraryworkshop.model.projection.PublisherReqRespPublisherDTO;
 import com.github.PrzeBarCore.springlibraryworkshop.service.PublisherService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +17,7 @@ import javax.validation.Valid;
 class PublisherController {
     private final PublisherService service;
 
-     PublisherController(PublisherService service) {
+     PublisherController(final PublisherService service) {
         this.service = service;
     }
 
@@ -40,7 +40,7 @@ class PublisherController {
     }
 
     @PostMapping("/update/{id}")
-    String updatePublisher(@Valid @ModelAttribute PublisherRespPublisherDTO toUpdate, @PathVariable int id, Model model){
+    String updatePublisher(@Valid @ModelAttribute PublisherReqRespPublisherDTO toUpdate, @PathVariable int id, Model model){
 
         model.addAttribute("publisher",service.updatePublisher(toUpdate));
         return "publisherDisplay";

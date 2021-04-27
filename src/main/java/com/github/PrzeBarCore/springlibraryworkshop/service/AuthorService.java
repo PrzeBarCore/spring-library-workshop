@@ -44,13 +44,13 @@ public class AuthorService {
 
     public AuthorReqRespAuthorDTO getAuthorReadModelById(Integer id) {
         return repository.findById(id)
-                .map(AuthorReqRespAuthorDTO::fromAuthor)
+                .map(AuthorReqRespAuthorDTO::new)
                 .orElseThrow(() -> new IllegalArgumentException("Author with given ID doesn't exist!"));
 
     }
 
     public AuthorReqRespAuthorDTO getAuthorWriteModelById(Integer id) {
-        return repository.findById(id).map(AuthorReqRespAuthorDTO::fromAuthor)
+        return repository.findById(id).map(AuthorReqRespAuthorDTO::new)
                 .orElseThrow(() -> new IllegalArgumentException("Author with given ID doesn't exist!"));
 
     }
@@ -66,6 +66,6 @@ public class AuthorService {
     public AuthorReqRespAuthorDTO updateAuthor(AuthorReqRespAuthorDTO authorToUpdate) {
         Author author = readAuthorById(authorToUpdate.getId());
         repository.save(authorToUpdate.updateAuthorFromDTO(author));
-        return AuthorReqRespAuthorDTO.fromAuthor(author);
+        return new AuthorReqRespAuthorDTO(author);
     }
 }

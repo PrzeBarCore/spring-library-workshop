@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 public class BookCopy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @NotNull
-    private int state;
+    private Integer state;
 
     @NotNull
     @ManyToOne
@@ -30,19 +30,19 @@ public class BookCopy {
         this.bookEdition=bookEdition;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 

@@ -2,13 +2,13 @@ package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class AuthorSectionPublisherRespBookDTO {
-    @NotNull(message = "Book id cannot be null")
-    private int id;
-    @NotEmpty(message = "Book title cannot be empty")
+    @NotNull(message = "Book's id cannot be null")
+    private Integer id;
+    @NotBlank(message = "Book's title cannot be empty")
     private String title;
 
     public AuthorSectionPublisherRespBookDTO(Book source){
@@ -16,11 +16,11 @@ public class AuthorSectionPublisherRespBookDTO {
         this.title= source.getTitle();
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

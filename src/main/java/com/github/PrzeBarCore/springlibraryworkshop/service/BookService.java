@@ -44,7 +44,7 @@ public class BookService {
 
     public BookReqBookDTO getBookWriteModelById(Integer id) {
         return repository.findById(id)
-                .map(BookReqBookDTO::fromBook)
+                .map(BookReqBookDTO::new)
                 .orElseThrow(() ->new IllegalArgumentException("Book with given ID doesn't exist"));
     }
 
@@ -63,11 +63,13 @@ public class BookService {
         book.setTitle(toCreate.getTitle());
 
         BookReqSectionDTO newSection= toCreate.getSection();
+        Integer sectionId= newSection.getId();
         if (newSection.isNewSection()) {
+            sectionService.throwExceptionIfSectionNameIsTaken(newSection.getName(), sectionId);
             book.setSection(newSection.toSection(book));
         } else {
             book.setSection(sectionService.
-                    readSectionById(newSection.getId()));
+                    readSectionById(sectionId));
         }
 
         createAndAddBookAuthors(toCreate, book);
@@ -96,14 +98,16 @@ public class BookService {
 
         book.setTitle(toUpdate.getTitle());
 
+        Integer previousSectionId= book.getSection().getId();
         BookReqSectionDTO newSection= toUpdate.getSection();
-        int previousSectionId= book.getSection().getId();
+        Integer newSectionId=newSection.getId();
+
         if (newSection.isNewSection()) {
+            sectionService.throwExceptionIfSectionNameIsTaken(newSection.getName(), newSectionId);
             book.setSection(newSection.toSection(book));
         } else {
-
-            if(newSection.getId()!=previousSectionId){
-                book.setSection(sectionService.readSectionById(newSection.getId()));
+            if(!newSectionId.equals(previousSectionId)){
+                book.setSection(sectionService.readSectionById(newSectionId));
             }
         }
         createAndAddBookAuthors(toUpdate, book);

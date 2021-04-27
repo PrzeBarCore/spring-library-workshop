@@ -8,14 +8,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SectionRepository {
-
-    Optional<Section> findSectionById(Integer id);
+    List<Section> findAll();
 
     Page<Section> findAll(Pageable page);
 
-    Section save(Section toCreate);
+    Optional<Section> findSectionById(Integer id);
 
-    List<Section> findAll();
+    Optional<Section> findSectionByName(String trim);
 
     void deleteSectionById(Integer id);
+
+    Section save(Section toCreate);
 }

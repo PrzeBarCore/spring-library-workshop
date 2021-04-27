@@ -34,7 +34,7 @@
                         publisher</label>
                     <label class="switch">
                         <input onchange="changeLabelAndInputFields(this.id)"
-                               th:field="*{newPublisher}"
+                               th:field="*{publisher.newPublisher}"
                                th:id="publisherCheckbox"
                                type="checkbox">
                         <span class="slider round"></span>
@@ -50,7 +50,8 @@
                     </div>
                     <div style="display: none" th:id="'2Input-publisherCheckbox'">
                         <label> Publisher's name
-                            <input placeholder="Enter name for new publisher"
+                            <input th:id="'name-publisherCheckbox'"
+                                    placeholder="Enter name for new publisher"
                                    th:field="*{publisher.name}"
                                    type="text">
                         </label>

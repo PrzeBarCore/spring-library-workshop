@@ -21,7 +21,7 @@ class ExceptionsController {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
     @ExceptionHandler(ConstraintViolationException.class)
-    ResponseEntity<?> handleHibernateException(ConstraintViolationException e){
+    ResponseEntity<?> handleJavaxException(ConstraintViolationException e){
         return ResponseEntity.badRequest().body(e.getConstraintViolations()
                 .stream()
                 .map(ConstraintViolation::getMessage));

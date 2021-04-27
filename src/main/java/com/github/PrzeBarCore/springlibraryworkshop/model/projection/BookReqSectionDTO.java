@@ -3,32 +3,39 @@ package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Section;
 
+import javax.validation.constraints.NotNull;
+
 public class BookReqSectionDTO {
+    @NotNull(message = "Section's id cannot be null")
     private Integer id;
+    private Boolean isNewSection;
     private String name;
-    private boolean isNewSection;
 
     public BookReqSectionDTO() {
-        this.id=0;
-        this.isNewSection =false;
+        this.id = 0;
+        this.isNewSection = false;
     }
 
-    public BookReqSectionDTO(Integer id, String name, boolean isNewSection) {
-        this.id = id;
-        this.name = name;
-        this.isNewSection = isNewSection;
+    public BookReqSectionDTO(Section source) {
+        this.id = source.getId();
+        this.name = source.getName();
+        this.isNewSection = false;
     }
-
-    public boolean isNewSection() { return isNewSection; }
-
-    public void setNewSection(boolean newSection) { this.isNewSection = newSection; }
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public boolean isNewSection() {
+        return isNewSection;
+    }
+
+    public void setNewSection(boolean newSection) {
+        this.isNewSection = newSection;
     }
 
     public String getName() {
@@ -39,15 +46,11 @@ public class BookReqSectionDTO {
         this.name = name;
     }
 
-    public Section toSection(Book book){
-        return new Section(name, book);
-    }
-
-    public static BookReqSectionDTO fromSection(Section source) {
-        var sectionWriteModel= new BookReqSectionDTO();
-        sectionWriteModel.id=source.getId();
-        sectionWriteModel.name= source.getName();
-        sectionWriteModel.isNewSection=false;
-        return sectionWriteModel;
+    public Section toSection(Book book) {
+        String trimmedName = name.trim();
+        if(isNewSection && trimmedName.isBlank()) {
+            throw new IllegalArgumentException("Section name cannot be blank");
+        }
+        return new Section(trimmedName, book);
     }
 }

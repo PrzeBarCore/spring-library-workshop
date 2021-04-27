@@ -10,9 +10,9 @@ import java.util.Set;
 public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @NotEmpty(message = "Name cannot be empty")
+    @NotEmpty(message = "Publisher's name cannot be empty")
     private String name;
 
     @OneToMany(mappedBy = "publisher")
@@ -25,16 +25,13 @@ public class Publisher {
         this.bookEditions.add(bookEdition);
     }
 
-
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    void setId(final int id) {
+    void setId(final Integer id) {
         this.id = id;
     }
-
 
     public String getName() {
         return name;

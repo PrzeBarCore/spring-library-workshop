@@ -3,42 +3,59 @@ package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 import com.github.PrzeBarCore.springlibraryworkshop.model.BookCopy;
 import com.github.PrzeBarCore.springlibraryworkshop.model.BookEdition;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class BookEditionReqBookEditionDTO {
-    private int id;
-    private int publicationDate;
+    @NotNull(message = "Edition's id cannot be null")
+    private Integer id;
+    private Year publicationDate;
+
+    @NotNull(message = "Edition's publisher cannot be null")
+    @Valid
     private BookReqPublisherDTO publisher;
-    private boolean isNewPublisher;
-    private List<BookEditionReqBookCopyDTO> bookCopies=new ArrayList<>();
+
+    @NotEmpty(message = "Edition's copies cannot be empty")
+    private List<@Valid BookEditionReqBookCopyDTO> bookCopies=new ArrayList<>();
     private List<BookEditionReqBookCopyDTO> bookCopiesToRemove =new ArrayList<>();
 
     public BookEditionReqBookEditionDTO(){}
 
-    public List<BookEditionReqBookCopyDTO> getBookCopiesToRemove() {
-        return bookCopiesToRemove;
+    public BookEditionReqBookEditionDTO(BookEdition source){
+        this.id=source.getId();
+        this.publicationDate=source.getPublicationDate();
+        this.publisher=new BookReqPublisherDTO(source.getPublisher());
+        this.bookCopies=source.getBookCopies()
+                .stream()
+                .sorted(Comparator.comparing(BookCopy::getId))
+                .map(BookEditionReqBookCopyDTO::new)
+                .collect(Collectors.toList());
     }
 
-    public void setBookCopiesToRemove(List<BookEditionReqBookCopyDTO> bookCopiesToRemove) {
-        this.bookCopiesToRemove = bookCopiesToRemove;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId( Integer id) {
         this.id = id;
     }
 
-    public int getPublicationDate() {
+    public Year getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(int publicationDate) {
+    public void setPublicationDate(Year publicationDate) {
+        if(publicationDate.isAfter(Year.now())){
+            throw new IllegalStateException("Publication year cannot be after current year");
+        } else if(publicationDate.isBefore(Year.of(1900))){
+            throw new IllegalStateException("Cannot add book which was published before 1900");
+        }
         this.publicationDate = publicationDate;
     }
 
@@ -49,35 +66,19 @@ public class BookEditionReqBookEditionDTO {
     public void setPublisher(BookReqPublisherDTO publisher) {
         this.publisher = publisher;
     }
-
-    public boolean isNewPublisher() {
-        return isNewPublisher;
-    }
-
-    public void setNewPublisher(boolean newPublisher) {
-        isNewPublisher = newPublisher;
-    }
-
     public List<BookEditionReqBookCopyDTO> getBookCopies() {
         return bookCopies;
     }
 
-    public void setBookCopies(List<BookEditionReqBookCopyDTO> bookCopies) {
+    public void setBookCopies( List<BookEditionReqBookCopyDTO> bookCopies) {
         this.bookCopies = bookCopies;
     }
+    public List<BookEditionReqBookCopyDTO> getBookCopiesToRemove() {
+        return bookCopiesToRemove;
+    }
 
-    public static BookEditionReqBookEditionDTO fromBookEdition(BookEdition source){
-        var result=new BookEditionReqBookEditionDTO();
-        result.id= source.getId();
-        result.publicationDate= source.getPublicationDate();
-        result.publisher=BookReqPublisherDTO.fromPublisher(source.getPublisher());
-        result.isNewPublisher=false;
-        result.bookCopies=source.getBookCopies()
-                .stream()
-                .sorted(Comparator.comparing(BookCopy::getId))
-                .map(BookEditionReqBookCopyDTO::fromBookCopy)
-                .collect(Collectors.toList());
-        return result;
+    public void setBookCopiesToRemove(List<BookEditionReqBookCopyDTO> bookCopiesToRemove) {
+        this.bookCopiesToRemove = bookCopiesToRemove;
     }
 
     public void removeBookCopy(int copyToRemove) {

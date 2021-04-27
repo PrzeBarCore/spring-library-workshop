@@ -2,17 +2,24 @@ package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class BookRespBookDTO {
-
-    private int id;
+    @NotNull(message = "Book's id cannot be null")
+    private Integer id;
+    @NotBlank(message = "Book's name cannot be blank")
     private String title;
+    @Valid
+    @NotNull(message = "Book's section cannot be null")
     private BookSectionsRespSectionDTO section;
-    private List<BookRespBookEditionDTO> bookEditions;
-    private List<BookAuthorsRespAuthorDTO> authors;
+    @NotNull(message = "Book's editions cannot be null")
+    private List<@Valid BookRespBookEditionDTO> bookEditions;
+    private List<@Valid BookAuthorsRespAuthorDTO> authors;
 
     public BookRespBookDTO(Book source){
         this.id=source.getId();
@@ -30,7 +37,10 @@ public class BookRespBookDTO {
                 .collect(Collectors.toList());
     }
 
-    public int getId() {return id;}
+    public void setId(Integer id) {this.id = id; }
+
+    public Integer getId() {return id;}
+
     public String getTitle() {
         return title;
     }

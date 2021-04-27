@@ -4,53 +4,43 @@ import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
 import com.github.PrzeBarCore.springlibraryworkshop.model.BookCopy;
 import com.github.PrzeBarCore.springlibraryworkshop.model.BookEdition;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.time.Year;
 import java.util.HashSet;
 import java.util.Set;
 
 public class BookReqBookEditionDTO {
-
-    private int id;
-    private int publicationDate;
+    private Integer id;
+    private Year publicationDate;
+    @NotNull(message = "Edition's publisher cannot be null")
+    @Valid
     private BookReqPublisherDTO publisher;
-    private boolean isNewPublisher;
-    private int numberOfCopies;
+    @Min(value = 1, message = "Copies count must be positive")
+    @Max(value = 12, message = "Cannot add more than 12 copies")
+    private Integer numberOfCopies;
 
     public BookReqBookEditionDTO() {
         this.publisher= new BookReqPublisherDTO();
-        this.publicationDate=2000;
-        this.isNewPublisher =false;
+        this.publicationDate=Year.now();
         this.numberOfCopies =1;
     }
 
-    public int getNumberOfCopies() {
-        return numberOfCopies;
-    }
-
-    public void setNumberOfCopies(int numberOfCopies) {
-        this.numberOfCopies = numberOfCopies;
-    }
-
-    public boolean isNewPublisher() {
-        return isNewPublisher;
-    }
-
-    public void setNewPublisher(boolean newPublisher) {
-        this.isNewPublisher = newPublisher;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getPublicationDate() {
+    public Year getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(int publicationDate) {
+    public void setPublicationDate(Year publicationDate) {
         this.publicationDate = publicationDate;
     }
 
@@ -62,6 +52,14 @@ public class BookReqBookEditionDTO {
         this.publisher = publisher;
     }
 
+    public Integer getNumberOfCopies() {
+        return numberOfCopies;
+    }
+
+    public void setNumberOfCopies(Integer numberOfCopies) {
+        this.numberOfCopies = numberOfCopies;
+    }
+
     private Set<BookCopy> createSetOfBookCopies(int numberOfCopies, BookEdition bookEdition){
         Set<BookCopy> bookCopies=new HashSet<>();
         for(int i=0; i<numberOfCopies; i++){
@@ -71,6 +69,12 @@ public class BookReqBookEditionDTO {
     }
 
     public BookEdition toBookEdition(Book book){
+        if(publicationDate.isAfter(Year.now())){
+            throw new IllegalStateException("Publication year cannot be after current year");
+        } else if(publicationDate.isBefore(Year.of(1900))){
+            throw new IllegalStateException("Cannot add book which was published before 1900");
+        }
+
         var bookEdition=new BookEdition();
         bookEdition.setPublicationDate(publicationDate);
         bookEdition.setBook(book);

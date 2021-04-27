@@ -1,7 +1,8 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
-import com.github.PrzeBarCore.springlibraryworkshop.model.Author;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
+import com.github.PrzeBarCore.springlibraryworkshop.model.BookEdition;
+import com.github.PrzeBarCore.springlibraryworkshop.model.Publisher;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -9,25 +10,24 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AuthorReqRespAuthorDTO {
-    @NotNull(message = "Author's id cannot be null")
+public class PublisherReqRespPublisherDTO {
+    @NotNull(message = "Publisher's name cannot be null")
     private Integer id;
-    @NotBlank(message = "Author's name cannot be empty")
+    @NotBlank(message = "Publisher's name cannot be blank")
     private String name;
-    private String lastName;
     private List<AuthorSectionPublisherRespBookDTO> books;
 
-    public AuthorReqRespAuthorDTO(){}
+    public PublisherReqRespPublisherDTO(){}
 
-    public AuthorReqRespAuthorDTO (Author author){
-        this.id=author.getId();
-        this.name=author.getName();
-        this.lastName=author.getLastName();
-        this.books=author.getBooks()
+    public PublisherReqRespPublisherDTO(Publisher source){
+        this.id=source.getId();
+        this.name=source.getName();
+        this.books=source.getBookEditions()
                 .stream()
+                .map(BookEdition::getBook)
                 .sorted(Comparator.comparing(Book::getTitle))
                 .map(AuthorSectionPublisherRespBookDTO::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());;
     }
 
     public Integer getId() {
@@ -46,25 +46,16 @@ public class AuthorReqRespAuthorDTO {
         this.name = name.trim();
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName.trim();
-    }
-
     public List<AuthorSectionPublisherRespBookDTO> getBooks() {
         return books;
     }
 
-    public void setBooks( List<AuthorSectionPublisherRespBookDTO> books) {
+    public void setBooks(List<AuthorSectionPublisherRespBookDTO> books) {
         this.books = books;
     }
 
-    public Author updateAuthorFromDTO(Author author){
-        author.setName(this.name);
-        author.setLastName(this.lastName);
-        return author;
+    public Publisher updatePublisherFromDTO(Publisher publisher){
+        publisher.setName(this.name);
+        return publisher;
     }
 }

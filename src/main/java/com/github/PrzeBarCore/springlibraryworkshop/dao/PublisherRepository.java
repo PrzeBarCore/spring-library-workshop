@@ -9,13 +9,15 @@ import java.util.Optional;
 
 public interface PublisherRepository {
 
-    Optional<Publisher> findById(Integer id);
-
     List<Publisher> findAll();
-
-    Publisher save(Publisher toPublisher);
 
     Page<Publisher> findAll(Pageable pageable);
 
+    Optional<Publisher> findById(Integer id);
+
+    Optional<Publisher> findPublisherByName(String name);
+
     void deletePublisherById(Integer id);
+
+    Publisher save(Publisher toPublisher);
 }

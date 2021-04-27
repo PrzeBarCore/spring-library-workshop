@@ -50,7 +50,8 @@
                 </div>
                 <div id="2Input-sectionCheckbox" style="display:none">
                     <label>Section's name
-                        <input placeholder="Enter name for new section" th:field="*{section.name}" type="text">
+                        <input placeholder="Enter name for new section" th:field="*{section.name}" type="text"
+                               id="name-sectionCheckbox">
                     </label>
                 </div>
             </fieldset>
@@ -91,7 +92,7 @@
             </fieldset>
             <button type="submit">Save</button>
             <a th:href="@{/books/__${id}__}">
-                <button>Cancel</button>
+                <button type="button">Cancel</button>
             </a>
         </form>
     </section>

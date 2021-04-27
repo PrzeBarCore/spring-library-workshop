@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class SectionService {
     private final SectionRepository repository;
@@ -35,7 +37,7 @@ public class SectionService {
 
     public SectionReqRespSectionDTO getSectionReadModelById(int id) {
         return repository.findSectionById(id)
-                .map(SectionReqRespSectionDTO::fromSection)
+                .map(SectionReqRespSectionDTO::new)
                 .orElseThrow(()->new IllegalArgumentException("Section with given id doesn't exist"));
     }
 
@@ -47,9 +49,18 @@ public class SectionService {
         }
     }
 
+    public void throwExceptionIfSectionNameIsTaken(String name, Integer idOfSectionToCheck){
+        Optional<Section> section=repository.findSectionByName(name.trim());
+        if(section.isPresent()){
+            if(!section.get().getId().equals(idOfSectionToCheck))
+                throw new IllegalArgumentException("Section with given name already exists");
+        }
+    }
+
     public SectionReqRespSectionDTO updateSection(SectionReqRespSectionDTO toUpdate) {
+        throwExceptionIfSectionNameIsTaken(toUpdate.getName(), toUpdate.getId());
         Section section=readSectionById(toUpdate.getId());
         repository.save(toUpdate.updateSectionFromDTO(section));
-        return SectionReqRespSectionDTO.fromSection(section);
+        return new SectionReqRespSectionDTO(section);
     }
 }

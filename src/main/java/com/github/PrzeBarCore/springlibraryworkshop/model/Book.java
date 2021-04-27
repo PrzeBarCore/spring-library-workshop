@@ -10,12 +10,12 @@ import java.util.Set;
     public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @NotEmpty(message = "Title cannot be empty")
+    @NotEmpty(message = "Book's title cannot be empty")
     private String title;
 
-    @NotNull(message = "Section cannot be empty")
+    @NotNull(message = "Book's section cannot be empty")
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name= "section_id")
     private Section section;
@@ -35,11 +35,11 @@ import java.util.Set;
         this.title=title;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    void setId(final int id) {
+    void setId(final Integer id) {
         this.id = id;
     }
 
