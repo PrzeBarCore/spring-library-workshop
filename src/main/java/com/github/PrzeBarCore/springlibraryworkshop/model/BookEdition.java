@@ -1,7 +1,10 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model;
 
+import com.github.PrzeBarCore.springlibraryworkshop.utils.YearAttributeConverter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import java.time.Year;
 import java.util.HashSet;
@@ -16,6 +19,7 @@ public class BookEdition {
 
     @Column(columnDefinition = "smallint")
     @Convert(converter = YearAttributeConverter.class)
+    @PastOrPresent
     private Year publicationDate;
 
     @Size(max = 12)
@@ -49,7 +53,6 @@ public class BookEdition {
     public void setId(Integer id) {
         this.id = id;
     }
-
 
     public Year getPublicationDate() {
         return publicationDate;

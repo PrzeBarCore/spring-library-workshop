@@ -2,12 +2,14 @@ package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Section;
+import com.github.PrzeBarCore.springlibraryworkshop.utils.EntitiesStringsPatterns;
 
 import javax.validation.constraints.NotNull;
 
 public class BookReqSectionDTO {
     @NotNull(message = "Section's id cannot be null")
     private Integer id;
+
     private Boolean isNewSection;
     private String name;
 
@@ -49,7 +51,10 @@ public class BookReqSectionDTO {
     public Section toSection(Book book) {
         String trimmedName = name.trim();
         if(isNewSection && trimmedName.isBlank()) {
-            throw new IllegalArgumentException("Section name cannot be blank");
+            throw new IllegalArgumentException("Section's name cannot be blank");
+        }
+        if(!trimmedName.matches(EntitiesStringsPatterns.forSectionName)){
+            throw new IllegalArgumentException("Section's name is invalid ");
         }
         return new Section(trimmedName, book);
     }

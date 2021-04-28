@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 public class BookEditionReqBookCopyDTO {
     @NotNull(message = "Copy's id cannot be null")
     private Integer id;
+
     private String state;
     private Boolean isNewCopy;
 

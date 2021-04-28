@@ -2,12 +2,14 @@ package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.BookEdition;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Publisher;
+import com.github.PrzeBarCore.springlibraryworkshop.utils.EntitiesStringsPatterns;
 
 import javax.validation.constraints.NotNull;
 
 public class BookReqPublisherDTO {
     @NotNull(message = "Publisher's id cannot be blank")
     private Integer id=0;
+
     private String name;
     private Boolean isNewPublisher;
 
@@ -46,6 +48,11 @@ public class BookReqPublisherDTO {
         if(isNewPublisher && trimmedName.isBlank()){
             throw new IllegalArgumentException("Publisher's name cannot be blank");
         }
-        return new Publisher(trimmedName,bookCopy);
+        if(trimmedName.matches(EntitiesStringsPatterns.forPublisherName)){
+            return new Publisher(trimmedName,bookCopy);
+        }
+        else{
+            throw new IllegalArgumentException("Publisher's name is invalid");
+        }
     }
 }

@@ -3,12 +3,23 @@ import com.github.PrzeBarCore.springlibraryworkshop.model.Author;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import static com.github.PrzeBarCore.springlibraryworkshop.utils.EntitiesStringsPatterns.forAuthorLastName;
+import static com.github.PrzeBarCore.springlibraryworkshop.utils.EntitiesStringsPatterns.forAuthorName;
 
 public class BookAuthorsRespAuthorDTO {
     @NotNull(message = "Author's id cannot be null")
     private Integer id;
+
     @NotEmpty(message = "Author's name cannot be empty")
+    @Size(min = 1, max = 40)
+    @Pattern(regexp = forAuthorName, message = "Author's name is invalid")
     private String name;
+
+    @Size(max = 40)
+    @Pattern(regexp = forAuthorLastName, message = "Author's last name is invalid")
     private String lastName;
 
     public BookAuthorsRespAuthorDTO(Author source){

@@ -4,11 +4,16 @@ import com.github.PrzeBarCore.springlibraryworkshop.model.Section;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import static com.github.PrzeBarCore.springlibraryworkshop.utils.EntitiesStringsPatterns.forSectionName;
 
 public class BookSectionsRespSectionDTO {
     @NotNull(message = "Section's id cannot be null")
     Integer id;
+
     @NotBlank(message = "Section's name cannot be blank")
+    @Pattern(regexp = forSectionName, message = "Section's name is invalid")
     String name;
 
     public BookSectionsRespSectionDTO(Section source){

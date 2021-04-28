@@ -3,7 +3,10 @@ package com.github.PrzeBarCore.springlibraryworkshop.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Set;
+
+import static com.github.PrzeBarCore.springlibraryworkshop.utils.EntitiesStringsPatterns.forBookTitle;
 
 @Entity
 @Table(name="books")
@@ -13,6 +16,7 @@ import java.util.Set;
     private Integer id;
 
     @NotEmpty(message = "Book's title cannot be empty")
+    @Pattern(regexp = forBookTitle, message = "Book's title is invalid")
     private String title;
 
     @NotNull(message = "Book's section cannot be empty")

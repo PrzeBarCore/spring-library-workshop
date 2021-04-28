@@ -1,4 +1,4 @@
-package com.github.PrzeBarCore.springlibraryworkshop.model;
+package com.github.PrzeBarCore.springlibraryworkshop.utils;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

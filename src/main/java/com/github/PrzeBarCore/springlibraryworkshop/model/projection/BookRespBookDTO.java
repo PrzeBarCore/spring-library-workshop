@@ -1,24 +1,33 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
+import com.github.PrzeBarCore.springlibraryworkshop.utils.EntitiesStringsPatterns;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.github.PrzeBarCore.springlibraryworkshop.utils.EntitiesStringsPatterns.*;
+
 public class BookRespBookDTO {
     @NotNull(message = "Book's id cannot be null")
     private Integer id;
+
     @NotBlank(message = "Book's name cannot be blank")
+    @Pattern(regexp = forBookTitle, message = "Book's title is invalid")
     private String title;
+
     @Valid
     @NotNull(message = "Book's section cannot be null")
     private BookSectionsRespSectionDTO section;
+
     @NotNull(message = "Book's editions cannot be null")
     private List<@Valid BookRespBookEditionDTO> bookEditions;
+
     private List<@Valid BookAuthorsRespAuthorDTO> authors;
 
     public BookRespBookDTO(Book source){

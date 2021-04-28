@@ -4,11 +4,16 @@ import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import static com.github.PrzeBarCore.springlibraryworkshop.utils.EntitiesStringsPatterns.forBookTitle;
 
 public class AuthorSectionPublisherRespBookDTO {
     @NotNull(message = "Book's id cannot be null")
     private Integer id;
+
     @NotBlank(message = "Book's title cannot be empty")
+    @Pattern(regexp = forBookTitle, message = "Book's title is invalid")
     private String title;
 
     public AuthorSectionPublisherRespBookDTO(Book source){

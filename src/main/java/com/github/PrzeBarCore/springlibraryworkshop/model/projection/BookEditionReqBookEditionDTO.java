@@ -6,6 +6,7 @@ import com.github.PrzeBarCore.springlibraryworkshop.model.BookEdition;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,8 +14,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BookEditionReqBookEditionDTO {
-    @NotNull(message = "Edition's id cannot be null")
     private Integer id;
+
+    @PastOrPresent
     private Year publicationDate;
 
     @NotNull(message = "Edition's publisher cannot be null")

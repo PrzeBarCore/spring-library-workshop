@@ -76,7 +76,7 @@ public class BookService {
 
         Set<BookEdition> bookEditions= new HashSet<>();
         toCreate.getBookEditions()
-                .forEach(bookEdition -> bookEditions.add(editionService.createBookEdition(bookEdition,book)));
+                .forEach(bookEdition -> bookEditions.add(editionService.createBookEdition(bookEdition,book,true)));
         book.setBookEditions(bookEditions);
 
         return new BookRespBookDTO(repository.save(book));
@@ -86,8 +86,7 @@ public class BookService {
         Book book=repository.findById(bookId)
                 .orElseThrow(()->new IllegalArgumentException("Book with given ID doesn't exist"));
         book.getBookEditions().add(
-                editionService.createBookEdition(editionToCreate,book));
-
+                editionService.createBookEdition(editionToCreate,book,false));
         return new BookRespBookDTO(repository.save(book));
     }
 

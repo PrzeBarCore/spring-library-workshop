@@ -2,8 +2,11 @@ package com.github.PrzeBarCore.springlibraryworkshop.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.github.PrzeBarCore.springlibraryworkshop.utils.EntitiesStringsPatterns.forSectionName;
 
 @Entity
 @Table(name = "sections")
@@ -13,6 +16,7 @@ public class Section {
     private Integer id;
 
     @NotEmpty(message = "Section's name cannot be empty")
+    @Pattern(regexp = forSectionName, message = "Section's name is invalid")
     private String name;
 
     @OneToMany(mappedBy = "section")

@@ -14,10 +14,13 @@ import java.util.stream.Collectors;
 public class BookRespBookEditionDTO {
     @NotNull(message = "Edition's id cannot be null")
     private Integer id;
+
     private Year publicationDate;
+
     @Valid
     @NotNull(message = "Edition's publisher cannot be null")
     private BookPublishersRespPublisherDTO publisher;
+
     @NotEmpty(message = "Edition's copies cannot be empty")
     private List<@Valid BookRespBookCopyDTO> bookCopies;
 

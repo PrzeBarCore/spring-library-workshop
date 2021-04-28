@@ -9,6 +9,7 @@ import java.util.Optional;
 public class BookRespBookCopyDTO {
     @NotNull(message = "Copy's id cannot be null")
     private Integer id;
+
     private String state;
     private String borrowedUntil;
     private String reservedUntil;

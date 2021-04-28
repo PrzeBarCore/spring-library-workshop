@@ -2,12 +2,14 @@ package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.Author;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
+import com.github.PrzeBarCore.springlibraryworkshop.utils.EntitiesStringsPatterns;
 
 import javax.validation.constraints.NotNull;
 
 public class BookReqAuthorDTO {
     @NotNull(message = "Author's id cannot be null")
     private Integer id;
+
     private String name;
     private String lastName;
     private Boolean isNewAuthor;
@@ -58,9 +60,16 @@ public class BookReqAuthorDTO {
 
     public Author toAuthor(final Book book){
         String trimmedName=name.trim();
+        String trimmedLastName=lastName.trim();
         if(isNewAuthor && trimmedName.isBlank()){
             throw new IllegalArgumentException("Author's name cannot be blank");
         }
-        return new Author(trimmedName,lastName.trim(),book);
+        if(!trimmedName.matches(EntitiesStringsPatterns.forAuthorName)){
+            throw new IllegalArgumentException("Author's name is invalid");
+        }
+        if(!trimmedLastName.matches(EntitiesStringsPatterns.forAuthorLastName)){
+            throw new IllegalArgumentException("Author's last name is invalid");
+        }
+        return new Author(trimmedName,trimmedLastName,book);
     }
 }

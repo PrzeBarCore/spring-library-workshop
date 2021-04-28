@@ -6,15 +6,21 @@ import com.github.PrzeBarCore.springlibraryworkshop.model.Publisher;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.github.PrzeBarCore.springlibraryworkshop.utils.EntitiesStringsPatterns.forPublisherName;
+
 public class PublisherReqRespPublisherDTO {
     @NotNull(message = "Publisher's name cannot be null")
     private Integer id;
+
     @NotBlank(message = "Publisher's name cannot be blank")
+    @Pattern(regexp = forPublisherName, message = "Publisher's name is invalid")
     private String name;
+
     private List<AuthorSectionPublisherRespBookDTO> books;
 
     public PublisherReqRespPublisherDTO(){}

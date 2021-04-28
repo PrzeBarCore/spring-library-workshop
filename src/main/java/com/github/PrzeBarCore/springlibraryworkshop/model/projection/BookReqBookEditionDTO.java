@@ -5,24 +5,28 @@ import com.github.PrzeBarCore.springlibraryworkshop.model.BookCopy;
 import com.github.PrzeBarCore.springlibraryworkshop.model.BookEdition;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.Year;
 import java.util.HashSet;
 import java.util.Set;
 
 public class BookReqBookEditionDTO {
+    @NotNull
     private Integer id;
+
+    @PastOrPresent
     private Year publicationDate;
+
     @NotNull(message = "Edition's publisher cannot be null")
     @Valid
     private BookReqPublisherDTO publisher;
-    @Min(value = 1, message = "Copies count must be positive")
+
+    @Positive(message = "Copies count must be positive")
     @Max(value = 12, message = "Cannot add more than 12 copies")
     private Integer numberOfCopies;
 
     public BookReqBookEditionDTO() {
+        this.id=0;
         this.publisher= new BookReqPublisherDTO();
         this.publicationDate=Year.now();
         this.numberOfCopies =1;
