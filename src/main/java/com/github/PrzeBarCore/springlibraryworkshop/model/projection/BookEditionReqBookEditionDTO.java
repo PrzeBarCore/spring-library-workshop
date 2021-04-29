@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class BookEditionReqBookEditionDTO {
     private Integer id;
 
-    @PastOrPresent
+    @PastOrPresent(message = "The date of issue cannot be later than the current one")
     private Year publicationDate;
 
     @NotNull(message = "Edition's publisher cannot be null")
@@ -52,12 +52,7 @@ public class BookEditionReqBookEditionDTO {
         return publicationDate;
     }
 
-    public void setPublicationDate(Year publicationDate) {
-        if(publicationDate.isAfter(Year.now())){
-            throw new IllegalStateException("Publication year cannot be after current year");
-        } else if(publicationDate.isBefore(Year.of(1900))){
-            throw new IllegalStateException("Cannot add book which was published before 1900");
-        }
+    public void setPublicationDate(Year publicationDate){
         this.publicationDate = publicationDate;
     }
 
@@ -84,11 +79,25 @@ public class BookEditionReqBookEditionDTO {
     }
 
     public void removeBookCopy(int copyToRemove) {
-        bookCopiesToRemove.add(bookCopies.get(copyToRemove));
-        bookCopies.remove(copyToRemove);
+        if(bookCopies.stream().count()<2){
+            throw new IllegalArgumentException("Cannot delete last copy of edition");
+        } else {
+            if(!bookCopies.get(copyToRemove).isNewCopy()){
+                bookCopiesToRemove.add(bookCopies.get(copyToRemove));
+            }
+            bookCopies.remove(copyToRemove);
+        }
     }
 
     public void addBookCopy(){
         this.bookCopies.add(new BookEditionReqBookCopyDTO());
+    }
+
+    public void verify(){
+        if(publicationDate.isAfter(Year.now())){
+            throw new IllegalArgumentException("The date of issue cannot be later than the current one");
+        } else if(publicationDate.isBefore(Year.of(1900))){
+            throw new IllegalArgumentException("Cannot add book which was published before 1900");
+        }
     }
 }

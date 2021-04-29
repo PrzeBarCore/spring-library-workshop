@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,12 +37,18 @@ class PublisherController {
     String getPublisherUpdateForm(@PathVariable int id, Model model){
 
         model.addAttribute("publisherToUpdate",service.getPublisherReadModelById(id));
-        return "publisherUpdate";
+        return "publisherUpdateForm";
     }
 
     @PostMapping("/update/{id}")
-    String updatePublisher(@Valid @ModelAttribute PublisherReqRespPublisherDTO toUpdate, @PathVariable int id, Model model){
-
+    String updatePublisher(@ModelAttribute("publisherToUpdate") @Valid PublisherReqRespPublisherDTO toUpdate,
+                           BindingResult bindingResult,
+                           @PathVariable int id, Model model){
+        if (bindingResult.hasErrors()){
+            model.addAttribute("publisherToUpdate",toUpdate);
+            model.addAttribute(bindingResult);
+            return "publisherUpdateForm";
+        }
         model.addAttribute("publisher",service.updatePublisher(toUpdate));
         return "publisherDisplay";
     }

@@ -16,6 +16,9 @@ public class AuthorSectionPublisherRespBookDTO {
     @Pattern(regexp = forBookTitle, message = "Book's title is invalid")
     private String title;
 
+    public AuthorSectionPublisherRespBookDTO() {
+    }
+
     public AuthorSectionPublisherRespBookDTO(Book source){
         this.id= source.getId();
         this.title= source.getTitle();

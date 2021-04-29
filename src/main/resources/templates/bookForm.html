@@ -9,6 +9,17 @@
     <script type="text/javascript"
             th:src="@{/scripts.js}" >
     </script>
+    <style>
+        .Tc{
+            color: darkred;
+        }
+        .Bdc{
+            border-color: darkred !important;
+        }
+        ul{
+            list-style-type:none;
+        }
+    </style>
 </head>
 <body onload="loadState()">
 <header>
@@ -18,14 +29,15 @@
 
 <main>
     <section>
-
         <form id="form" method="POST" th:action="@{/books}" onsubmit="return validateIdValueIfObjectIsNew()"
               th:object="${bookToCreate}">
-
+            <ul>
+                <li class="Tc" th:each="err : ${#fields.errors('*')}" th:text="${err}" />
+            </ul>
             <fieldset>
                 <legend th:text="'Book\'s title'"></legend>
                 <label>
-                    <input placeholder="Enter title of new book" th:field="*{title}" type="text">
+                    <input placeholder="Enter title of new book" th:field="*{title}" type="text" th:errorclass="'Bdc'">
                 </label>
             </fieldset>
 
@@ -41,13 +53,13 @@
                 <div id="1Input-sectionCheckbox">
                     <label>Section's id number
                         <input id="id-sectionCheckbox" placeholder="Enter id number of existing section"
-                               th:field="*{section.id}" type="number">
+                               th:field="*{section.id}" type="number" th:errorclass="'Bdc'">
                     </label>
                 </div>
                 <div id="2Input-sectionCheckbox" style="display:none">
                     <label>Section's name
                         <input placeholder="Enter name for new section" th:field="*{section.name}"
-                               type="text">
+                               type="text" th:errorclass="'Bdc'">
                     </label>
                 </div>
             </fieldset>
@@ -69,17 +81,18 @@
                         <label> Author's id number
                             <input th:id="'id-authorCheckbox'+${authorStat.index}"
                                     th:field="*{authors[__${authorStat.index}__].id}"
-                                   th:placeholder="'Enter id number of existing author'" type="number">
+                                   th:placeholder="'Enter id number of existing author'" type="number" th:errorclass="'Bdc'">
+
                         </label>
                     </div>
                     <div style="display:none" th:id="'2Input-authorCheckbox'+${authorStat.index}">
                         <label> Author's first name
                             <input th:field="*{authors[__${authorStat.index}__].name}"
-                                   th:placeholder="'Enter fisrt name for new author'" type="text">
+                                   th:placeholder="'Enter fisrt name for new author'" type="text" th:errorclass="'Bdc'">
                         </label>
                         <label> Author's last name
                             <input th:field="*{authors[__${authorStat.index}__].lastName}"
-                                   th:placeholder="'Enter last name for new author'" type="text">
+                                   th:placeholder="'Enter last name for new author'" type="text" th:errorclass="'Bdc'">
                         </label>
                     </div>
                     <button name="removeAuthor" th:value="${authorStat.index}" type="submit">Remove&nbsp;author</button>
@@ -93,7 +106,7 @@
                     <label> Year of publication
                         <input placeholder="Enter publication year"
                                th:field="*{bookEditions[__${bookEditionStat.index}__].publicationDate}"
-                               type="number">
+                               type="number" th:errorclass="'Bdc'">
                     </label>
 
                     <label th:for="'publisherCheckbox'+${bookEditionStat.index}"
@@ -112,13 +125,13 @@
                             <input th:id="'id-publisherCheckbox'+${bookEditionStat.index}"
                                     placeholder="Enter existing publisher's id number"
                                    th:field="*{bookEditions[__${bookEditionStat.index}__].publisher.id}"
-                                   type="number">
+                                   type="number" th:errorclass="'Bdc'">
                         </label>
                     </div>
                     <div style="display: none" th:id="'2Input-publisherCheckbox'+${bookEditionStat.index}">
                         <label> Publisher's name
                             <input placeholder="Enter name for new publisher"
-                                   th:field="*{bookEditions[__${bookEditionStat.index}__].publisher.name}" type="text">
+                                   th:field="*{bookEditions[__${bookEditionStat.index}__].publisher.name}" type="text" th:errorclass="'Bdc'">
                         </label>
                     </div>
 
@@ -126,7 +139,7 @@
                         <input placeholder="Enter number of book's copies to add"
                                th:field="*{bookEditions[__${bookEditionStat.index}__].numberOfCopies}"
                                th:id="'numberOfCopies'+${bookEditionStat.index}"
-                               type="number">
+                               type="number" th:errorclass="'Bdc'">
                     </label>
                     <button name="removeBookCopy" th:if="${bookEditionStat.size}>1" th:value="${bookEditionStat.index}"
                             type="submit">Remove&nbsp;edition

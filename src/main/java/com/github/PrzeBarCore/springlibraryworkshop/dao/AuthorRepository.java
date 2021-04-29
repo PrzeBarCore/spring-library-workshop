@@ -8,13 +8,11 @@ import java.util.Optional;
 
 public interface AuthorRepository {
 
-    Optional<Author> findById(Integer id);
-
-    boolean existsAuthorById(Integer id);
-
-    Author save(Author source);
-
     Page<Author> findAll(Pageable pageable);
 
+    Optional<Author> findById(Integer id);
+
     void deleteAuthorById(Integer id);
+
+    Author save(Author source);
 }

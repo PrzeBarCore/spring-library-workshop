@@ -1,7 +1,6 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
-import com.github.PrzeBarCore.springlibraryworkshop.utils.EntitiesStringsPatterns;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -11,7 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.github.PrzeBarCore.springlibraryworkshop.utils.EntitiesStringsPatterns.*;
+import static com.github.PrzeBarCore.springlibraryworkshop.utils.EntitiesStringsPatterns.forBookTitle;
 
 public class BookRespBookDTO {
     @NotNull(message = "Book's id cannot be null")

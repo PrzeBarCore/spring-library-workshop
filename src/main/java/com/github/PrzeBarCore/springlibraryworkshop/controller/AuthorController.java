@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -45,8 +46,14 @@ class AuthorController {
     }
 
     @PostMapping("/update/{id}")
-    String updateAuthor(@Valid @ModelAttribute AuthorReqRespAuthorDTO authorToUpdate, @PathVariable int id, Model model){
-
+    String updateAuthor(@ModelAttribute("authorToUpdate") @Valid  AuthorReqRespAuthorDTO authorToUpdate,
+                        BindingResult bindingResult,
+                        @PathVariable int id, Model model){
+        if (bindingResult.hasErrors()){
+            model.addAttribute("authorToUpdate",authorToUpdate);
+            model.addAttribute(bindingResult);
+            return "authorUpdateForm";
+        }
         model.addAttribute("author",service.updateAuthor(authorToUpdate));
         return "authorDisplay";
     }

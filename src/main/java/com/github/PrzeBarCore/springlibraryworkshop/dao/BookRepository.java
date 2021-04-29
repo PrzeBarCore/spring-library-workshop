@@ -9,19 +9,15 @@ import java.util.Optional;
 
 public interface BookRepository {
 
-    Optional<Book> findById(Integer id);
-
     List<Book> findAll();
 
     Page<Book> findAll(Pageable page);
 
-    Book save(Book source);
-
-    List<Book> findBySection_Id(Integer sectionId);
-
-    boolean existsBookById(Integer id);
+    Optional<Book> findById(Integer id);
 
     void deleteBookById(Integer id);
+
+    Book save(Book source);
 
 
 

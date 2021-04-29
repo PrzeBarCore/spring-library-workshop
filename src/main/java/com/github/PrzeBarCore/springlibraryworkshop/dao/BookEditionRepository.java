@@ -10,11 +10,11 @@ import java.util.Optional;
 
 public interface BookEditionRepository {
 
-    BookEdition save(BookEdition source);
-
     Optional<BookEdition> findById(int id);
 
     List<Optional<BookEdition>> readByBookAndPublicationDateAndPublisher(Book book, Year publicationDate, Publisher publisher);
 
     void deleteById(int id);
+
+    BookEdition save(BookEdition source);
 }

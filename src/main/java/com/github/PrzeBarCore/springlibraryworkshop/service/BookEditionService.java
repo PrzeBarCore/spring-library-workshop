@@ -43,6 +43,7 @@ public class BookEditionService {
         } else {
             bookEdition.setPublisher(publisherService.readPublisherById(publisherId));
         }
+        repository.save(bookEdition);
         if (!isBookNew) {
             throwExceptionIfBookEditionAlreadyExist(bookEdition);
         }
@@ -62,6 +63,7 @@ public class BookEditionService {
 
     @Transactional
     public void updateEdition(BookEditionReqBookEditionDTO newEdition, int id) {
+        newEdition.verify();
         BookEdition editionToUpdate = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Book Edition with given id doesn't exist"));
 
@@ -113,7 +115,7 @@ public class BookEditionService {
 
         toDelete.getBookCopies().forEach(copy -> {
             if (copy.getState() != 0)
-                throw new IllegalStateException("Cannot delete book's edition when not every copy is available");
+                throw new IllegalArgumentException("Cannot delete book's edition when not every copy is available");
         });
         toDelete.getPublisher().getBookEditions().remove(toDelete);
 

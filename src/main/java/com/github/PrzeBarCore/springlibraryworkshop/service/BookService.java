@@ -156,7 +156,7 @@ public class BookService {
             book.getBookEditions().remove(editionService.getBookEditionById(editionId));
             editionService.deleteBookEditionById(editionId);
         } else {
-            throw new IllegalStateException("Cannot delete last edition of book");
+            throw new IllegalArgumentException("Cannot delete last edition of book");
         }
         repository.save(book);
     }

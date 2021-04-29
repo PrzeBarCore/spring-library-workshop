@@ -9,6 +9,17 @@
     <script type="text/javascript"
             th:src="@{/scripts.js}" >
     </script>
+    <style>
+        .Tc{
+            color: darkred;
+        }
+        .Bdc{
+            border-color: darkred !important;
+        }
+        ul{
+            list-style-type:none;
+        }
+    </style>
 </head>
 <body onload="loadState()">
 <header>
@@ -19,6 +30,9 @@
     <section>
         <form method="POST" th:action="@{/books/__${sourceBookId}__/editionUpdate/__${bookEditionToUpdate.id}__}"
               th:object="${bookEditionToUpdate}" onsubmit="validateIdValueIfObjectIsNew()">
+            <ul>
+                <li class="Tc" th:each="err : ${#fields.errors('*')}" th:text="${err}" />
+            </ul>
 
             <input type="number" th:field="*{id}" style="display: none" th:value="${bookEditionToUpdate.id}">
             <label th:each="bookCopyToRemove, bookCopyToRemoveStat : *{bookCopiesToRemove}">
@@ -32,7 +46,7 @@
                     <label> Year of publication
                         <input placeholder="Enter publication year"
                                th:field="*{publicationDate}"
-                               type="number">
+                               type="number" th:errorclass="'Bdc'">
                     </label>
 
                     <label th:for="'publisherCheckbox'"
@@ -50,14 +64,14 @@
                         <label> Publisher's id number
                             <input placeholder="Enter existing publisher's id number"
                                    th:field="*{publisher.id}"
-                                   type="number" id="id-publisherCheckbox">
+                                   type="number" id="id-publisherCheckbox" th:errorclass="'Bdc'">
                         </label>
                     </div>
                     <div style="display: none" th:id="'2Input-publisherCheckbox'">
                         <label> Publisher's name
                             <input placeholder="Enter name for new publisher"
                                    th:field="*{publisher.name}"
-                                   type="text">
+                                   type="text" th:errorclass="'Bdc'">
                         </label>
                     </div>
 

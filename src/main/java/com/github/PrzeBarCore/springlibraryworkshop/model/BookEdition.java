@@ -19,7 +19,7 @@ public class BookEdition {
 
     @Column(columnDefinition = "smallint")
     @Convert(converter = YearAttributeConverter.class)
-    @PastOrPresent
+    @PastOrPresent(message = "The date of issue cannot be later than the current one")
     private Year publicationDate;
 
     @Size(max = 12)
@@ -60,9 +60,9 @@ public class BookEdition {
 
     public void setPublicationDate(Year publicationDate) {
         if(publicationDate.isAfter(Year.now())){
-            throw new IllegalStateException("Publication year cannot be after current year");
+            throw new IllegalArgumentException("The date of issue cannot be later than the current one");
         } else if(publicationDate.isBefore(Year.of(1900))){
-            throw new IllegalStateException("Cannot add book which was published before 1900");
+            throw new IllegalArgumentException("Cannot add book which was published before 1900");
         }
         this.publicationDate = publicationDate;
     }

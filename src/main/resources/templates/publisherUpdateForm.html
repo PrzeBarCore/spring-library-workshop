@@ -6,14 +6,16 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <link href="https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.css" rel="stylesheet">
     <style>
-        .Tc{
+        .Tc {
             color: darkred;
         }
-        .Bdc{
+
+        .Bdc {
             border-color: darkred !important;
         }
-        ul{
-            list-style-type:none;
+
+        ul {
+            list-style-type: none;
         }
     </style>
 </head>
@@ -25,17 +27,18 @@
 
 <main style="background-color: #072B4F">
     <section style="margin-left: 10px;">
-        <form method="POST" th:action="@{/authors/update/__${authorToUpdate.id}__}" th:object="${authorToUpdate}">
-            <h3>Edit author:</h3>
+        <form method="POST" th:action="@{/publishers/update/__${publisherToUpdate.id}__}"
+              th:object="${publisherToUpdate}">
+            <h3>Edit publisher</h3>
+
             <fieldset>
                 <ul>
                     <li class="Tc" th:each="err : ${#fields.errors('*')}" th:text="${err}" />
                 </ul>
-                <input th:field="*{name}" type="text" th:errorclass="'Bdc'">
-                <input th:field="*{lastName}" type="text" th:errorclass="'Bdc'">
+                <input th:errorclass="'Bdc'" th:field="*{name}" type="text">
             </fieldset>
             <button type="submit">Save</button>
-            <a th:href="@{/authors/__${authorToUpdate.id}__}">
+            <a th:href="@{/publishers/__${publisherToUpdate.id}__}">
                 <button type="button">Cancel</button>
             </a>
 
@@ -44,13 +47,11 @@
                 <input th:field="*{books[__${bookStats.index}__].id}" th:value="${book.id}" type="number">
             </div>
         </form>
-
-        <h3>Author of books:</h3>
-        <div th:each="book: ${authorToUpdate.books}">
+        <h3>Books:</h3>
+        <div th:each="book: ${publisherToUpdate.books}">
             <p><a th:href="@{/books/{bookId}(bookId=${book.id})}" th:text="${book.title}"></a>
             </p>
         </div>
-        <br><br>
     </section>
 </main>
 </body>

@@ -11,7 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/sections")
@@ -31,7 +34,7 @@ class SectionController {
     @GetMapping("/{id}")
     String readSection(@PathVariable int id, Model model){
         model.addAttribute("section",service.getSectionReadModelById(id));
-        return "sectionDisplayForm";
+        return "sectionDisplay";
     }
 
     @GetMapping("/update/{id}")
@@ -41,9 +44,16 @@ class SectionController {
     }
 
     @PostMapping("/update/{id}")
-    String updateSection(@PathVariable int id, Model model, @ModelAttribute SectionReqRespSectionDTO toUpdate){
+    String updateSection(@ModelAttribute("sectionToUpdate") @Valid SectionReqRespSectionDTO toUpdate,
+                         BindingResult bindingResult,
+                         @PathVariable int id, Model model ){
+        if (bindingResult.hasErrors()){
+            model.addAttribute("sectionToUpdate",toUpdate);
+            model.addAttribute(bindingResult);
+            return "sectionUpdateForm";
+        }
         model.addAttribute("section",service.updateSection(toUpdate));
-        return "sectionDisplayForm";
+        return "sectionDisplay";
     }
 
     @ModelAttribute
