@@ -2,6 +2,7 @@
 
 Spring library workshop is web application which is being created for educational purposes.
 Current functionality allows users to store, read and manipulate basic data. 
+### Deployed applicaion available at: https://library-app-barcore.herokuapp.com/books 
 
 ## Setup
 
