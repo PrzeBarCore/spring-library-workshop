@@ -43,9 +43,9 @@ public class BookEditionService {
         } else {
             bookEdition.setPublisher(publisherService.readPublisherById(publisherId));
         }
-        repository.save(bookEdition);
         if (!isBookNew) {
             throwExceptionIfBookEditionAlreadyExist(bookEdition);
+            repository.save(bookEdition);
         }
         return bookEdition;
     }
