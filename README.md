@@ -17,7 +17,7 @@ Sometimes Heroku needs some time to run this app, so be patient.
 * Thymeleaf
 * FLyway
 
-##What's all this then?
+## What's all this then?
 ### 1. Structure of the model
 In the application, the highlight of the show are books. One book has a title, may include one or  more authors, 
 is part of certain section and must have at least one edition, which has its publisher and date of publication. <br>
