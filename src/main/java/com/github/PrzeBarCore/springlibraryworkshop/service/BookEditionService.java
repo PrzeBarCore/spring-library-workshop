@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -69,10 +68,11 @@ public class BookEditionService {
             throwExceptionIfBookEditionAlreadyExist(editionToUpdate);
         }
 
-        editionToUpdate.setBookCopies(toUpdate.getBookCopies()
+        toUpdate.getBookCopies()
                 .stream()
-                .map(bc-> bc.toBookCopy(editionToUpdate))
-                .collect(Collectors.toSet()));
+                .filter(BookEditionReqBookCopyDTO::isNewCopy)
+                .map(copy-> copy.toBookCopy(editionToUpdate))
+                .forEach(copy->editionToUpdate.getBookCopies().add(copy));
 
         toUpdate.getBookCopiesToRemove().stream()
                 .map(BookEditionReqBookCopyDTO::getId)
