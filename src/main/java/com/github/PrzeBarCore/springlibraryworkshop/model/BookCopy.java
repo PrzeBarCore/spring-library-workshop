@@ -1,5 +1,7 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model;
 
+import com.github.PrzeBarCore.springlibraryworkshop.utils.BookState;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -12,7 +14,7 @@ public class BookCopy {
     private Integer id;
 
     @NotNull
-    private Integer state;
+    private BookState state;
 
     @NotNull
     @ManyToOne
@@ -23,11 +25,11 @@ public class BookCopy {
     private LocalDateTime reservedUntil;
 
     public BookCopy(){
-        this.state=0;
+        this(null);
     }
 
     public BookCopy(BookEdition bookEdition){
-        this.state=0;
+        this.state=BookState.AVAILABLE;
         this.bookEdition=bookEdition;
     }
 
@@ -39,11 +41,11 @@ public class BookCopy {
         this.id = id;
     }
 
-    public Integer getState() {
+    public BookState getState() {
         return state;
     }
 
-    public void setState(Integer state) {
+    public void setState(BookState state) {
         this.state = state;
     }
 

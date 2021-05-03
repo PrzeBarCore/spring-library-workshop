@@ -3,12 +3,11 @@ package com.github.PrzeBarCore.springlibraryworkshop.service;
 import com.github.PrzeBarCore.springlibraryworkshop.dao.BookCopyRepository;
 import com.github.PrzeBarCore.springlibraryworkshop.dao.BookEditionRepository;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
-import com.github.PrzeBarCore.springlibraryworkshop.model.BookCopy;
 import com.github.PrzeBarCore.springlibraryworkshop.model.BookEdition;
 import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookEditionReqBookCopyDTO;
 import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookEditionReqBookEditionDTO;
 import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookReqBookEditionDTO;
-import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookReqPublisherDTO;
+import com.github.PrzeBarCore.springlibraryworkshop.utils.BookState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -32,94 +32,74 @@ public class BookEditionService {
     }
 
     @Transactional
-     BookEdition createBookEdition(BookReqBookEditionDTO toCreate, Book book, boolean isBookNew) {
+     public BookEdition createBookEdition(BookReqBookEditionDTO toCreate, Book book, boolean isBookNew) {
         BookEdition bookEdition = toCreate.toBookEdition(book);
-        Integer publisherId = toCreate.getPublisher().getId();
-        BookReqPublisherDTO publisherOfToCreate = toCreate.getPublisher();
 
-        if (publisherOfToCreate.isNewPublisher()) {
-            publisherService.throwExceptionIfPublisherNameIsTaken(publisherOfToCreate.getName(), publisherId);
-            bookEdition.setPublisher(publisherOfToCreate.toPublisher(bookEdition));
-        } else {
-            bookEdition.setPublisher(publisherService.readPublisherById(publisherId));
-        }
-        if (!isBookNew) {
+        bookEdition.setPublisher(publisherService
+                .createPublisher(toCreate.getPublisher(),bookEdition));
+
+        if (!isBookNew && !toCreate.getPublisher().isNewPublisher()) {
             throwExceptionIfBookEditionAlreadyExist(bookEdition);
             repository.save(bookEdition);
         }
         return bookEdition;
     }
 
-    public BookEditionReqBookEditionDTO getBookEditionWriteModelById(int id) {
-        return new BookEditionReqBookEditionDTO(
-                repository.findById(id)
-                        .orElseThrow(() -> new IllegalArgumentException("Book editions with given id doesn't exist")));
-    }
-
-    BookEdition getBookEditionById(int id) {
+    BookEdition findBookEditionById(int id) {
         return repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Book editions with given id doesn't exist"));
     }
 
-    @Transactional
-    public void updateEdition(BookEditionReqBookEditionDTO newEdition, int id) {
-        newEdition.verify();
-        BookEdition editionToUpdate = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Book Edition with given id doesn't exist"));
-
-        editionToUpdate.setPublicationDate(newEdition.getPublicationDate());
-        BookReqPublisherDTO publisherOfNewEdition = newEdition.getPublisher();
-        Integer newPublisherId = publisherOfNewEdition.getId();
-        Integer previousPublisherId = editionToUpdate.getPublisher().getId();
-
-        if (publisherOfNewEdition.isNewPublisher()) {
-            publisherService.throwExceptionIfPublisherNameIsTaken(publisherOfNewEdition.getName(), newPublisherId);
-            editionToUpdate.setPublisher(publisherOfNewEdition.toPublisher(editionToUpdate));
-        } else {
-            if (!previousPublisherId.equals(newPublisherId)) {
-                editionToUpdate.setPublisher(publisherService.readPublisherById(newPublisherId));
-                throwExceptionIfBookEditionAlreadyExist(editionToUpdate);
-            }
-        }
-
-        newEdition.getBookCopiesToRemove().stream()
-                .map(BookEditionReqBookCopyDTO::getId)
-                .forEach(bookCopyIdToRemove -> {
-                    editionToUpdate.getBookCopies()
-                            .remove(copyRepository
-                                    .findBookCopyById(bookCopyIdToRemove)
-                                    .orElseThrow(() -> new IllegalArgumentException("Book copy with given id doesnt exist")));
-                    copyRepository.deleteBookCopyById(bookCopyIdToRemove);
-                });
-
-        newEdition.getBookCopies().forEach(bookCopy -> {
-            if (bookCopy.isNewCopy())
-                editionToUpdate.getBookCopies()
-                        .add(new BookCopy(editionToUpdate));
-        });
-
-      repository.save(editionToUpdate);
-
-        newEdition.getBookCopiesToRemove().stream()
-                .map(BookEditionReqBookCopyDTO::getId).
-                forEach(copyRepository::deleteBookCopyById);
-        publisherService.deletePublisherIfBookEditionsIsEmpty(previousPublisherId);
+    public BookEditionReqBookEditionDTO getBookEditionWriteModelById(int id) {
+        return new BookEditionReqBookEditionDTO(findBookEditionById(id));
     }
 
+    @Transactional
+    public void updateBookEdition(BookEditionReqBookEditionDTO toUpdate, int id) {
+        toUpdate.verify();
+        BookEdition editionToUpdate = findBookEditionById(id);
+        int currentPublisherId=editionToUpdate.getPublisher().getId();
+
+        editionToUpdate.setPublicationDate(toUpdate.getPublicationDate());
+
+        editionToUpdate.setPublisher(publisherService
+                .createPublisher(toUpdate.getPublisher(),editionToUpdate));
+
+        if (!toUpdate.getPublisher().isNewPublisher()) {
+            throwExceptionIfBookEditionAlreadyExist(editionToUpdate);
+        }
+
+        editionToUpdate.setBookCopies(toUpdate.getBookCopies()
+                .stream()
+                .map(bc-> bc.toBookCopy(editionToUpdate))
+                .collect(Collectors.toSet()));
+
+        toUpdate.getBookCopiesToRemove().stream()
+                .map(BookEditionReqBookCopyDTO::getId)
+                .forEach(copyId -> {
+                    editionToUpdate.getBookCopies()
+                            .remove(copyRepository
+                                    .findById(copyId)
+                                    .orElseThrow(() -> new IllegalArgumentException("Book copy with given id doesnt exist")));
+                    copyRepository.deleteById(copyId);
+                });
+
+      repository.save(editionToUpdate);
+      publisherService.deletePublisherIfBookEditionsIsEmpty(currentPublisherId);
+    }
 
     @Transactional
-    void deleteBookEditionById(int editionId) {
-        BookEdition toDelete = repository.findById(editionId)
-                .orElseThrow(() -> new IllegalArgumentException("Book editions with given id doesn't exist"));
+    public void deleteBookEditionById(int id) {
+        BookEdition toDelete = findBookEditionById(id);
         int publisherId = toDelete.getPublisher().getId();
 
         toDelete.getBookCopies().forEach(copy -> {
-            if (copy.getState() != 0)
+            if (copy.getState() != BookState.AVAILABLE)
                 throw new IllegalArgumentException("Cannot delete book's edition when not every copy is available");
         });
         toDelete.getPublisher().getBookEditions().remove(toDelete);
 
-        repository.deleteById(editionId);
+        repository.deleteById(id);
         publisherService.deletePublisherIfBookEditionsIsEmpty(publisherId);
         logger.info("deleted book edition");
     }
@@ -129,14 +109,14 @@ public class BookEditionService {
     * hibernate saves updates before calling save() method,
     * list of objects is used as a return type.
     * */
-    private void throwExceptionIfBookEditionAlreadyExist(BookEdition editionToCheck) {
+    private void throwExceptionIfBookEditionAlreadyExist(BookEdition toCheck) {
         List<Optional<BookEdition>> foundBookEdition = repository.readByBookAndPublicationDateAndPublisher(
-                editionToCheck.getBook(),
-                editionToCheck.getPublicationDate(),
-                editionToCheck.getPublisher());
+                toCheck.getBook(),
+                toCheck.getPublicationDate(),
+                toCheck.getPublisher());
         foundBookEdition.forEach(foundEdition->{
             if(foundEdition.isPresent()){
-                if(!foundEdition.get().getId().equals(editionToCheck.getId())){
+                if(!foundEdition.get().getId().equals(toCheck.getId())){
                     throw new IllegalArgumentException("Book's edition with given publisher and date of publication already exists");
                 }
             }

@@ -2,6 +2,7 @@ package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.BookCopy;
 import com.github.PrzeBarCore.springlibraryworkshop.model.BookEdition;
+import com.github.PrzeBarCore.springlibraryworkshop.utils.BookState;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -74,19 +75,22 @@ public class BookEditionReqBookEditionDTO {
         return bookCopiesToRemove;
     }
 
+
     public void setBookCopiesToRemove(List<BookEditionReqBookCopyDTO> bookCopiesToRemove) {
         this.bookCopiesToRemove = bookCopiesToRemove;
     }
 
-    public void removeBookCopy(int copyToRemove) {
-        if(bookCopies.stream().count()<2){
+    public void removeBookCopy(int indexOfCopyToRemove) {
+        var copyToRemove=bookCopies.get(indexOfCopyToRemove);
+        if(bookCopies.size() <2){
             throw new IllegalArgumentException("Cannot delete last copy of edition");
-        } else {
-            if(!bookCopies.get(copyToRemove).isNewCopy()){
-                bookCopiesToRemove.add(bookCopies.get(copyToRemove));
-            }
-            bookCopies.remove(copyToRemove);
+        } else if(!copyToRemove.getState()
+                .equals(BookState.AVAILABLE.toString())){
+            throw new IllegalArgumentException("Copy is not available");
+        } else if(!copyToRemove.isNewCopy()){
+            bookCopiesToRemove.add(copyToRemove);
         }
+        bookCopies.remove(indexOfCopyToRemove);
     }
 
     public void addBookCopy(){

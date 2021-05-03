@@ -15,9 +15,9 @@ public interface PublisherRepository {
 
     Optional<Publisher> findById(Integer id);
 
-    Optional<Publisher> findPublisherByName(String name);
+    Optional<Publisher> findByName(String name);
 
-    void deletePublisherById(Integer id);
+    void deleteById(Integer id);
 
     Publisher save(Publisher toPublisher);
 }

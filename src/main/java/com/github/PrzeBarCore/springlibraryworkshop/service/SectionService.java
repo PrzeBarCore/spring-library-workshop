@@ -1,7 +1,9 @@
 package com.github.PrzeBarCore.springlibraryworkshop.service;
 
 import com.github.PrzeBarCore.springlibraryworkshop.dao.SectionRepository;
+import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
 import com.github.PrzeBarCore.springlibraryworkshop.model.Section;
+import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookReqSectionDTO;
 import com.github.PrzeBarCore.springlibraryworkshop.model.projection.BookSectionsRespSectionDTO;
 import com.github.PrzeBarCore.springlibraryworkshop.model.projection.SectionReqRespSectionDTO;
 import org.slf4j.Logger;
@@ -20,37 +22,43 @@ public class SectionService {
         this.repository = repository;
     }
 
-    Section readSectionById(int id){
-        return repository.findSectionById(id)
-                .orElseThrow(()->new IllegalArgumentException("Section with given id doesnt exist"));
+    public Section createSection(BookReqSectionDTO toCreate, Book book){
+        if (toCreate.isNewSection()) {
+            throwExceptionIfSectionNameIsTaken(toCreate.getName(), toCreate.getId());
+            return toCreate.toSection(book);
+        } else {
+            return readSectionById(toCreate.getId());
+        }
     }
+
 
     public Page<BookSectionsRespSectionDTO> readAllSections(Pageable pageable) {
         Page<Section> result= repository.findAll(pageable);
-
         if(pageable.getPageNumber()>=result.getTotalPages()){
             result=repository.findAll(pageable.first());
         }
-
         return result.map(BookSectionsRespSectionDTO::new);
     }
 
-    public SectionReqRespSectionDTO getSectionReadModelById(int id) {
-        return repository.findSectionById(id)
-                .map(SectionReqRespSectionDTO::new)
-                .orElseThrow(()->new IllegalArgumentException("Section with given id doesn't exist"));
+    Section readSectionById(int id){
+        return repository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("Section with given id doesnt exist"));
     }
 
-    void deleteSectionIfBookIsEmpty(Integer id) {
+    public SectionReqRespSectionDTO getSectionReadModelById(int id) {
+        return new SectionReqRespSectionDTO(readSectionById(id));
+    }
+
+    void deleteSectionIfListOfBooksIsEmpty(Integer id) {
         Section section= readSectionById(id);
         if(section.getBooks().isEmpty()){
-            repository.deleteSectionById(id);
+            repository.deleteById(id);
             logger.info("Deleting section");
         }
     }
 
     public void throwExceptionIfSectionNameIsTaken(String name, Integer idOfSectionToCheck){
-        Optional<Section> section=repository.findSectionByName(name.trim());
+        Optional<Section> section=repository.findByName(name.trim());
         if(section.isPresent()){
             if(!section.get().getId().equals(idOfSectionToCheck))
                 throw new IllegalArgumentException("Section with given name already exists");

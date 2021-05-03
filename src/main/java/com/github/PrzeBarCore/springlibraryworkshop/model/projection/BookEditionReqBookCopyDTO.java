@@ -1,8 +1,11 @@
 package com.github.PrzeBarCore.springlibraryworkshop.model.projection;
 
 import com.github.PrzeBarCore.springlibraryworkshop.model.BookCopy;
+import com.github.PrzeBarCore.springlibraryworkshop.model.BookEdition;
 
 import javax.validation.constraints.NotNull;
+
+import static com.github.PrzeBarCore.springlibraryworkshop.utils.BookState.*;
 
 public class BookEditionReqBookCopyDTO {
     @NotNull(message = "Copy's id cannot be null")
@@ -13,20 +16,13 @@ public class BookEditionReqBookCopyDTO {
 
     public BookEditionReqBookCopyDTO() {
         this.id =0;
-        this.state = "Available";
+        this.state = AVAILABLE.toString();
         this.isNewCopy =true;
     }
 
     public BookEditionReqBookCopyDTO(BookCopy source){
         this.id=source.getId();
-        int stateOfBookCopy=source.getState();
-        if(stateOfBookCopy==0){
-            this.state="Available";
-        } else if(stateOfBookCopy==1){
-            this.state="Borrowed";
-        } else{
-            this.state="Reserved";
-        }
+        state=source.getState().toString();
         this.isNewCopy =false;
     }
 
@@ -42,9 +38,7 @@ public class BookEditionReqBookCopyDTO {
         return state;
     }
 
-    public void setState(String state) {
-        this.state = state;
-    }
+    public void setState(String state) { this.state = state; }
 
     public boolean isNewCopy() {
         return isNewCopy;
@@ -52,5 +46,19 @@ public class BookEditionReqBookCopyDTO {
 
     public void setNewCopy(boolean newCopy) {
         isNewCopy = newCopy;
+    }
+
+    public BookCopy toBookCopy(BookEdition bookEdition){
+        var bookCopy=new BookCopy();
+        bookCopy.setId(id);
+        bookCopy.setBookEdition(bookEdition);
+        if(state.equals(AVAILABLE.toString())) {
+            bookCopy.setState(AVAILABLE);
+        }else if(state.equals(BORROWED.toString())){
+            bookCopy.setState(BORROWED);
+        }else {
+            bookCopy.setState(RESERVED);
+        }
+        return bookCopy;
     }
 }

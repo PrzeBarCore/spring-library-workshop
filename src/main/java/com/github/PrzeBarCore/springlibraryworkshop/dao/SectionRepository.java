@@ -12,11 +12,11 @@ public interface SectionRepository {
 
     Page<Section> findAll(Pageable page);
 
-    Optional<Section> findSectionById(Integer id);
+    Optional<Section> findById(Integer id);
 
-    Optional<Section> findSectionByName(String trim);
+    Optional<Section> findByName(String trim);
 
-    void deleteSectionById(Integer id);
+    void deleteById(Integer id);
 
     Section save(Section toCreate);
 }

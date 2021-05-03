@@ -16,14 +16,7 @@ public class BookRespBookCopyDTO {
 
     public BookRespBookCopyDTO(BookCopy source) {
         this.id = source.getId();
-        int stateOfBookCopy = source.getState();
-        if (stateOfBookCopy == 0) {
-            this.state = "Available";
-        } else if (stateOfBookCopy == 1) {
-            this.state = "Borrowed";
-        } else {
-            this.state = "Reserved";
-        }
+        state = source.getState().toString();
         this.borrowedUntil = Optional.ofNullable(
                 source.getBorrowedUntil())
                 .map(date -> date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))

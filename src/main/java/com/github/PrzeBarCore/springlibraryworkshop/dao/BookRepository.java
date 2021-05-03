@@ -15,7 +15,7 @@ public interface BookRepository {
 
     Optional<Book> findById(Integer id);
 
-    void deleteBookById(Integer id);
+    void deleteById(Integer id);
 
     Book save(Book source);
 

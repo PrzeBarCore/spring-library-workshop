@@ -68,10 +68,10 @@
                                 <button name="state" th:if="${bookCopy.reservedUntil}==''" type="submit"
                                         value="reserve">Book&nbsp;it!
                                 </button>
-                                <button name="state" th:if="${bookCopy.state}!='Borrowed'" type="submit" value="lend">
+                                <button name="state" th:if="${bookCopy.state}!='borrowed'" type="submit" value="lend">
                                     Lend&nbsp;book
                                 </button>
-                                <button name="state" th:if="${bookCopy.state} =='Borrowed'" type="submit"
+                                <button name="state" th:if="${bookCopy.state} =='borrowed'" type="submit"
                                         value="return">Return&nbsp;book
                                 </button>
                                 <button name="state" th:if="${bookCopy.reservedUntil}!= ''" type="submit"

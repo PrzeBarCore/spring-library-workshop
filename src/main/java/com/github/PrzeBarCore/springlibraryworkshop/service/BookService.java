@@ -2,8 +2,12 @@ package com.github.PrzeBarCore.springlibraryworkshop.service;
 
 import com.github.PrzeBarCore.springlibraryworkshop.dao.BookCopyRepository;
 import com.github.PrzeBarCore.springlibraryworkshop.dao.BookRepository;
-import com.github.PrzeBarCore.springlibraryworkshop.model.*;
+import com.github.PrzeBarCore.springlibraryworkshop.model.Author;
+import com.github.PrzeBarCore.springlibraryworkshop.model.Book;
+import com.github.PrzeBarCore.springlibraryworkshop.model.BookCopy;
+import com.github.PrzeBarCore.springlibraryworkshop.model.BookEdition;
 import com.github.PrzeBarCore.springlibraryworkshop.model.projection.*;
+import com.github.PrzeBarCore.springlibraryworkshop.utils.BookState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,7 +21,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class BookService {
     private final Logger logger= LoggerFactory.getLogger(BookService.class);
     private final SectionService sectionService;
@@ -36,27 +39,6 @@ public class BookService {
         this.bookCopyRepository=copyRepository;
     }
 
-    public BookRespBookDTO getBookReadModelById(Integer id) {
-        return repository.findById(id)
-                .map(BookRespBookDTO::new)
-                .orElseThrow(() ->new IllegalArgumentException("Book with given ID doesn't exist"));
-    }
-
-    public BookReqBookDTO getBookWriteModelById(Integer id) {
-        return repository.findById(id)
-                .map(BookReqBookDTO::new)
-                .orElseThrow(() ->new IllegalArgumentException("Book with given ID doesn't exist"));
-    }
-
-    public Page<BookRespBookDTO> readAllBooks(Pageable pageable) {
-        Page<Book> result= repository.findAll(pageable);
-
-        if(pageable.getPageNumber()>=result.getTotalPages()){
-            result=repository.findAll(pageable.first());
-        }
-        return result.map(BookRespBookDTO::new);
-    }
-
     @Transactional
     public BookRespBookDTO createBook(BookReqBookDTO toCreate) {
         var book = new Book();
@@ -71,7 +53,6 @@ public class BookService {
             book.setSection(sectionService.
                     readSectionById(sectionId));
         }
-
         createAndAddBookAuthors(toCreate, book);
 
         Set<BookEdition> bookEditions= new HashSet<>();
@@ -82,40 +63,44 @@ public class BookService {
         return new BookRespBookDTO(repository.save(book));
     }
 
-    public BookRespBookDTO addNewEdition(BookReqBookEditionDTO editionToCreate, int bookId){
-        Book book=repository.findById(bookId)
+    public Page<BookRespBookDTO> readAllBooks(Pageable pageable) {
+        Page<Book> result= repository.findAll(pageable);
+
+        if(pageable.getPageNumber()>=result.getTotalPages()){
+            result=repository.findAll(pageable.first());
+        }
+        return result.map(BookRespBookDTO::new);
+    }
+
+    public Book readBookById(int id){
+        return repository.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("Book with given ID doesn't exist"));
-        book.getBookEditions().add(
-                editionService.createBookEdition(editionToCreate,book,false));
-        return new BookRespBookDTO(repository.save(book));
+    }
+
+    public BookRespBookDTO getBookReadModelById(Integer id) {
+        return new BookRespBookDTO(readBookById(id));
+    }
+
+    public BookReqBookDTO getBookWriteModelById(Integer id) {
+        return new BookReqBookDTO(readBookById(id));
     }
 
     @Transactional
     public BookRespBookDTO updateBook(BookReqBookDTO toUpdate, Integer id){
-        Book book=repository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("Book with given ID doesn't exist"));
-
+        Book book=readBookById(id);
+        Integer currentSectionId= book.getSection().getId();
+        
         book.setTitle(toUpdate.getTitle());
 
-        Integer previousSectionId= book.getSection().getId();
-        BookReqSectionDTO newSection= toUpdate.getSection();
-        Integer newSectionId=newSection.getId();
+        book.setSection(sectionService.createSection(toUpdate.getSection(), book));
 
-        if (newSection.isNewSection()) {
-            sectionService.throwExceptionIfSectionNameIsTaken(newSection.getName(), newSectionId);
-            book.setSection(newSection.toSection(book));
-        } else {
-            if(!newSectionId.equals(previousSectionId)){
-                book.setSection(sectionService.readSectionById(newSectionId));
-            }
-        }
         createAndAddBookAuthors(toUpdate, book);
         repository.save(book);
 
         toUpdate.getAuthorsToRemove().stream()
                 .map(BookReqAuthorDTO::getId).
-                forEach(authorService::deleteAuthorIfBooksIsEmpty);
-        sectionService.deleteSectionIfBookIsEmpty(previousSectionId);
+                forEach(authorService::deleteAuthorIfListOfBooksIsEmpty);
+        sectionService.deleteSectionIfListOfBooksIsEmpty(currentSectionId);
         logger.info("Updating book");
 
         return new BookRespBookDTO(book);
@@ -124,8 +109,7 @@ public class BookService {
 
     @Transactional
     public void deleteBook(Integer id) {
-        Book bookToDelete= repository.findById(id).
-                orElseThrow(()->new IllegalArgumentException("Book with given ID doesn't exist"));
+        Book bookToDelete= readBookById(id);
 
         int sectionId=bookToDelete.getSection().getId();
         Set<Author> authors=bookToDelete.getAuthors();
@@ -142,18 +126,24 @@ public class BookService {
         bookToDelete.getBookEditions().clear();
         editionsIds.forEach(editionService::deleteBookEditionById);
 
-        repository.deleteBookById(id);
+        repository.deleteById(id);
 
-        authorsIds.forEach(authorService::deleteAuthorIfBooksIsEmpty);
-        sectionService.deleteSectionIfBookIsEmpty(sectionId);
+        authorsIds.forEach(authorService::deleteAuthorIfListOfBooksIsEmpty);
+        sectionService.deleteSectionIfListOfBooksIsEmpty(sectionId);
+    }
+
+    public BookRespBookDTO addNewEdition(BookReqBookEditionDTO editionToCreate, int bookId){
+        Book book=readBookById(bookId);
+        book.getBookEditions().add(
+                editionService.createBookEdition(editionToCreate,book,false));
+        return new BookRespBookDTO(repository.save(book));
     }
 
     @Transactional
     public void deleteBookEdition(int bookId, int editionId) {
-        Book book= repository.findById(bookId).
-                orElseThrow(()->new IllegalArgumentException("Book with given ID doesn't exist"));
+        Book book= readBookById(bookId);
         if(book.getBookEditions().size()>1){
-            book.getBookEditions().remove(editionService.getBookEditionById(editionId));
+            book.getBookEditions().remove(editionService.findBookEditionById(editionId));
             editionService.deleteBookEditionById(editionId);
         } else {
             throw new IllegalArgumentException("Cannot delete last edition of book");
@@ -177,17 +167,18 @@ public class BookService {
                 break;
         }
     }
-
     private BookCopy readBookCopy(Integer id){
-        return bookCopyRepository.findBookCopyById(id).orElseThrow(()->new IllegalArgumentException("Book Copy doesn't exist"));
+        return bookCopyRepository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("Book Copy doesn't exist"));
     }
     ///Should it be here?
+
     private void cancelReservationOfBookCopy(Integer id) {
         BookCopy result=readBookCopy(id);
         if(result.getReservedUntil()!=null){
             result.setReservedUntil(null);
-            if(result.getState()==2){
-                result.setState(0);
+            if(result.getState()== BookState.RESERVED){
+                result.setState(BookState.AVAILABLE);
             }
             bookCopyRepository.save(result);
         }
@@ -195,11 +186,11 @@ public class BookService {
 
     private void returnBookCopy(Integer id) {
         BookCopy result=readBookCopy(id);
-        if(result.getState()==1){
+        if(result.getState()==BookState.BORROWED){
             if(result.getReservedUntil()!=null){
-                result.setState(2);
+                result.setState(BookState.RESERVED);
             } else {
-                result.setState(0);
+                result.setState(BookState.AVAILABLE);
             }
             result.setBorrowedUntil(null);
             bookCopyRepository.save(result);
@@ -208,7 +199,6 @@ public class BookService {
             throw new IllegalArgumentException("Book have to be on loan at first to be returned");
         }
     }
-
     private void reserveBookCopy(Integer id){
 
         BookCopy result=readBookCopy(id);
@@ -216,7 +206,7 @@ public class BookService {
         if(result.getReservedUntil()==null){
             if(borrowedUntil==null){
                 result.setReservedUntil(LocalDateTime.now().plusMonths(1));
-                result.setState(2);
+                result.setState(BookState.RESERVED);
             } else {
                 result.setReservedUntil(borrowedUntil.plusMonths(1));
             }
@@ -226,12 +216,13 @@ public class BookService {
         }
 
     }
+
     private void lendBookCopy(Integer id) {
         BookCopy result=readBookCopy(id);
-        if(result.getState()==1){
-            throw new IllegalArgumentException("Book have to be reserved or available to lend it");
+        if(result.getState()==BookState.BORROWED){
+            throw new IllegalArgumentException("This book is already lent");
         }
-        result.setState(1);
+        result.setState(BookState.BORROWED);
         result.setReservedUntil(null);
         result.setBorrowedUntil(LocalDateTime.now().plusMonths(1));
         bookCopyRepository.save(result);
@@ -247,8 +238,6 @@ public class BookService {
         book.setAuthors(toCreate.getAuthors().stream()
                 .map(author -> authorService.readAuthorById(author.getId()))
                 .collect(Collectors.toSet()));
-
         logger.info("Creating or updating book. FROM"+this.getClass().getSimpleName());
     }
-
 }

@@ -27,7 +27,7 @@ public class BookEdition {
     private Set<BookCopy> bookCopies= new HashSet<>();
 
     @NotNull(message = "Edition's publisher cannot be empty")
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
     @JoinColumn(name = "publisher_id")
     private Publisher publisher;
 

@@ -26,14 +26,12 @@ public class AuthorService {
         return repository.save(author);
     }
 
-
     public Page<BookAuthorsRespAuthorDTO> readAllAuthors(Pageable pageable) {
         Page<Author> result = repository.findAll(pageable);
 
         if (pageable.getPageNumber() >= result.getTotalPages()) {
             result = repository.findAll(pageable.first());
         }
-
         return result.map(BookAuthorsRespAuthorDTO::new);
     }
 
@@ -42,23 +40,14 @@ public class AuthorService {
                 orElseThrow(() -> new IllegalArgumentException("Author with given ID doesn't exist!"));
     }
 
-    public AuthorReqRespAuthorDTO getAuthorReadModelById(Integer id) {
-        return repository.findById(id)
-                .map(AuthorReqRespAuthorDTO::new)
-                .orElseThrow(() -> new IllegalArgumentException("Author with given ID doesn't exist!"));
-
+    public AuthorReqRespAuthorDTO getAuthorReadWriteModelById(Integer id) {
+        return new AuthorReqRespAuthorDTO(readAuthorById(id));
     }
 
-    public AuthorReqRespAuthorDTO getAuthorWriteModelById(Integer id) {
-        return repository.findById(id).map(AuthorReqRespAuthorDTO::new)
-                .orElseThrow(() -> new IllegalArgumentException("Author with given ID doesn't exist!"));
-
-    }
-
-    void deleteAuthorIfBooksIsEmpty(Integer id) {
+    void deleteAuthorIfListOfBooksIsEmpty(Integer id) {
         Author author= readAuthorById(id);
        if(author.getBooks().isEmpty()){
-           repository.deleteAuthorById(id);
+           repository.deleteById(id);
             logger.info("deleting author");
        }
     }

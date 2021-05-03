@@ -5,9 +5,9 @@ import com.github.PrzeBarCore.springlibraryworkshop.model.BookCopy;
 import java.util.Optional;
 
 public interface BookCopyRepository {
-    Optional<BookCopy> findBookCopyById(int id);
+    Optional<BookCopy> findById(int id);
+
+    void deleteById(int id);
 
     BookCopy save(BookCopy result);
-
-    void deleteBookCopyById(int id);
 }

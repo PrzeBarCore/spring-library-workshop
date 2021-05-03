@@ -99,7 +99,6 @@ class BookController {
 
     @GetMapping("/{id}")
     String readBook(@PathVariable Integer id, Model model) {
-
         logger.info("Reading book. FROM " + className);
         BookRespBookDTO book = service.getBookReadModelById(id);
         model.addAttribute("book", book);
@@ -237,7 +236,7 @@ class BookController {
             return "bookEditionUpdateForm";
         } else {
             try {
-                editionService.updateEdition(current, editionId);
+                editionService.updateBookEdition(current, editionId);
                 return readBook(bookId, model);
             } catch (IllegalArgumentException e) {
                 current.setId(editionId);

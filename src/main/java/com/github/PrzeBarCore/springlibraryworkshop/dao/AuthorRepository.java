@@ -12,7 +12,7 @@ public interface AuthorRepository {
 
     Optional<Author> findById(Integer id);
 
-    void deleteAuthorById(Integer id);
+    void deleteById(Integer id);
 
     Author save(Author source);
 }

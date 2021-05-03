@@ -33,7 +33,7 @@ public class Section {
         return id;
     }
 
-    void setId(final Integer id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 

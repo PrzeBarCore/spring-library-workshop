@@ -34,14 +34,14 @@ class AuthorController {
     @GetMapping("/{id}")
     String readAuthor(@PathVariable int id, Model model){
 
-        model.addAttribute("author",service.getAuthorReadModelById(id));
+        model.addAttribute("author",service.getAuthorReadWriteModelById(id));
         return "authorDisplay";
     }
 
     @GetMapping("/update/{id}")
     String getAuthorUpdateForm(@PathVariable int id, Model model){
 
-        model.addAttribute("authorToUpdate",service.getAuthorWriteModelById(id));
+        model.addAttribute("authorToUpdate",service.getAuthorReadWriteModelById(id));
         return "authorUpdateForm";
     }
 

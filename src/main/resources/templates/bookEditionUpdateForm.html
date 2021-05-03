@@ -87,15 +87,15 @@
                             <tbody>
                             <tr th:each="bookCopy, bookCopyStat : *{bookCopies}">
                                 <td>
-                                    <span th:if="${bookCopy.id}!=-1" th:text="${bookCopy.id}"></span>
-                                    <span th:if="${bookCopy.id}==-1" th:text="'-'"></span>
+                                    <span th:if="${bookCopy.id}!=0" th:text="${bookCopy.id}"></span>
+                                    <span th:if="${bookCopy.id}==0" th:text="'-'"></span>
                                     <input th:field="*{bookCopies[__${bookCopyStat.index}__].id}"
                                            type="number" th:value="${bookCopy.id}" style="display: none">
 
                                 </td>
                                 <td>
-                                        <span th:if="${bookCopy.id}!=-1" th:text="${bookCopy.state}"></span>
-                                        <span th:if="${bookCopy.id}==-1" th:text="'New'"></span>
+                                        <span th:if="${bookCopy.id}!=0" th:text="${bookCopy.state}"></span>
+                                        <span th:if="${bookCopy.id}==0" th:text="'New'"></span>
 
                                     <input th:field="*{bookCopies[__${bookCopyStat.index}__].state}"
                                            type="text" th:value="${bookCopy.state}"  style="display: none">
